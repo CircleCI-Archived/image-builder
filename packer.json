@@ -1,8 +1,9 @@
 {
+
    "builders" : [
       {
          "type" : "lxc",
-         "export_path" : "container.tar",
+         "export_path" : "container.tar.gz",
          "template" : "ubuntu-cloud",
          "template_arguments" : {
             "arch" : "amd64",
@@ -13,7 +14,7 @@
    "provisioners" : [
       {
          "type" : "shell-local",
-         "command" : "build.sh provision.sh"
+         "command" : "./build.sh provision.sh"
       },
       {
          "type": "shell",
