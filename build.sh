@@ -32,6 +32,7 @@ MODULES=(
 	casperjs
 	misc
 	heroku
+	docker
 )
 
 cat helper.sh > $OUTPUT_FILE
