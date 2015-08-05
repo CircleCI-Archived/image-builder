@@ -16,8 +16,8 @@
          "command" : "build.sh provision.sh"
       },
       {
-         "type": "shell", 
-         "script": "provision.sh", 
+         "type": "shell",
+         "script": "provision.sh",
 	 "execute_command": "cd /home/ubuntu; sudo {{ .Vars }} bash {{ .Path }} ubuntu"
       }
    ]

@@ -3,7 +3,7 @@
 set -ex
 
 echo '>>> Installing Chrome'
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 apt-get update
@@ -11,7 +11,7 @@ apt-get install -qq google-chrome-stable
 
 # Disable sandboxing - it conflicts with unprivileged lxc containers
 sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --enable-logging --no-sandbox|g' \
-       	"/opt/google/chrome/google-chrome"
+           "/opt/google/chrome/google-chrome"
 
 
 # Chrome Driver
@@ -21,4 +21,4 @@ curl -L -o /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/${CH
 unzip -p /tmp/chromedriver.zip > /usr/local/bin/chromedriver
 chmod +x /usr/local/bin/chromedriver
 rm -rf /tmp/chromedriver.zip
- 
+

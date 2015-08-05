@@ -11,27 +11,27 @@ echo 'export PATH=$PATH:/usr/local/heroku/bin' >> ${CIRCLECI_HOME}/.circlerc
 
 ## Workaround heroku not reporting exit codes properly
 function patch_heroku_bin() {
-	HEROKU_BIN=${1:-$(which heroku)}
+    HEROKU_BIN=${1:-$(which heroku)}
 
-	if [ ! -f "$HEROKU_BIN" ]
-	then
-	    echo "Heroku file not found: $HEROKU_BIN"
-	    exit 127
-	fi
+    if [ ! -f "$HEROKU_BIN" ]
+    then
+        echo "Heroku file not found: $HEROKU_BIN"
+        exit 127
+    fi
 
-	HEROKU_PATH=$(readlink -m "$HEROKU_BIN")
+    HEROKU_PATH=$(readlink -m "$HEROKU_BIN")
 
-	if ( grep -q "Circle Monkey" "$HEROKU_PATH" )
-	then
-	  echo "Heroku file has been patched already"
-	  exit 0
-	fi
+    if ( grep -q "Circle Monkey" "$HEROKU_PATH" )
+    then
+      echo "Heroku file has been patched already"
+      exit 0
+    fi
 
-	TMP_FILE=`mktemp /tmp/heroku.XXXXXXXX` || exit 1
+    TMP_FILE=`mktemp /tmp/heroku.XXXXXXXX` || exit 1
 
-	head -n-1 "$HEROKU_PATH" > "$TMP_FILE"
+    head -n-1 "$HEROKU_PATH" > "$TMP_FILE"
 
-	cat <<EOF >> $TMP_FILE
+    cat <<EOF >> $TMP_FILE
 #########################################
 # Circle Monkey-patching starts here
 # https://github.com/heroku/heroku/issues/186
@@ -65,7 +65,7 @@ begin
                 output.write(data)
                 Process.exit code
             end
-	                data
+                    data
         end
 
         alias fixup_unmodified fixup
@@ -83,13 +83,13 @@ end
 
 EOF
 
-	tail -n1 "$HEROKU_PATH" >> "$TMP_FILE"
+    tail -n1 "$HEROKU_PATH" >> "$TMP_FILE"
 
-	# Preseve heroku attributes
-	cat "$TMP_FILE" > "$HEROKU_PATH"
-	rm "$TMP_FILE"
+    # Preseve heroku attributes
+    cat "$TMP_FILE" > "$HEROKU_PATH"
+    rm "$TMP_FILE"
 
-	echo "Heroku file has been patched"
+    echo "Heroku file has been patched"
 }
 
 patch_heroku_bin /usr/bin/heroku

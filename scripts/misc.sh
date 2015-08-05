@@ -5,6 +5,6 @@ set -ex
 echo '>>> Setup misc tools'
 
 apt-get install -qq \
-	memcached libmemcache-dev \
-	redis-server
+    memcached libmemcache-dev \
+    redis-server
 

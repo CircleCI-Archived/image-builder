@@ -2,16 +2,13 @@
 
 set -ex
 
-printenv
-
 export CIRCLECI_USER=$1
 [ -n "$CIRCLECI_USER" ] || export CIRCLECI_USER=${SUDO_USER}
 
 if [ -z "$CIRCLECI_USER" ]
 then
-	echo CIRCLECI_USER env-var is not defined
-	printenv
-	exit 1
+    echo CIRCLECI_USER env-var is not defined
+    exit 1
 fi
 
 export CIRCLECI_HOME=/home/${CIRCLECI_USER}

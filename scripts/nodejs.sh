@@ -5,22 +5,22 @@ set -ex
 echo '>>> Installing NodeJS'
 
 function install_nvm() {
-	apt-get install -qq build-essential libssl-dev make python g++ curl libssl-dev
+    apt-get install -qq build-essential libssl-dev make python g++ curl libssl-dev
 
-	echo 'Install VNM'
-	(cat <<'EOF'
+    echo 'Install VNM'
+    (cat <<'EOF'
 set -e
 cd ~
 [[ -e nvm ]] || git clone https://github.com/creationix/nvm.git nvm
 mkdir -p nvm/log
 echo 'source ~/nvm/nvm.sh' >> ~/.circlerc
 EOF
-	) | $USER_STEP bash
+    ) | $USER_STEP bash
 }
 
 function install_nodejs() {
-	NODEJS_VERSION=$1
-	(cat <<'EOF'
+    NODEJS_VERSION=$1
+    (cat <<'EOF'
 set -e
 source ~/.circlerc
 nvm install $NODEJS_VERSION
@@ -44,17 +44,17 @@ npm install -g mocha
 hash -r
 
 EOF
-	) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
+    ) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
 }
 
 function set_nodejs_default() {
-	NODEJS_VERSION=$1
-	(cat <<'EOF'
+    NODEJS_VERSION=$1
+    (cat <<'EOF'
 set -e
 source ~/.circlerc
 nvm alias default $NODEJS_VERSION
 EOF
-	) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
+    ) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
 }
 
 install_nvm

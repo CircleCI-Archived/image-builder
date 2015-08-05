@@ -42,7 +42,7 @@ DPkg {
 EOF
 ) > /etc/apt/apt.conf
 
-echo 'Defaults	env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
+echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
 export DEBIAN_FRONTEND=noninteractive
 
 
@@ -50,7 +50,7 @@ apt-get update -q
 
 # Install base packages
 apt-get install -qq \
-	build-essential cmake git-core mercurial zip gdb \
-	htop emacs vim nano lsof vnc4server tmux lzop \
-	build-essential htop emacs vim nano lsof tmux zip vnc4server \
-	curl unzip git-core ack-grep software-properties-common build-essential \
+    build-essential cmake git-core mercurial zip gdb \
+    htop emacs vim nano lsof vnc4server tmux lzop \
+    build-essential htop emacs vim nano lsof tmux zip vnc4server \
+    curl unzip git-core ack-grep software-properties-common build-essential \
