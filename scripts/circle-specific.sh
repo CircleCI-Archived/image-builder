@@ -16,6 +16,25 @@ EOF
 
 $USER_STEP mkdir -p ${CIRCLECI_HOME}/bin
 
+# Configure SSH so it can talk to servers OK
+
+cat <<'EOF' > /etc/ssh/ssh_config
+Host *
+  StrictHostKeyChecking no
+  HashKnownHosts no
+  SendEnv LANG LC_*
+EOF
+
+# Some optimizations for the sshd daemon
+sed -i 's/PasswordAuthentication yes/PasswordAuthoentication no/g' /etc/ssh/sshd_config
+
+cat <<'EOF' >> /etc/ssh/sshd_config
+UseDns no
+MaxStartups 1000
+MaxSessions 1000
+PermitTunnel yes
+AddressFamily inet
+EOF
 
 # Setup xvfb
 
