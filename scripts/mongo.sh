@@ -17,9 +17,5 @@ echo 'noprealloc = true' >> /etc/mongodb.conf
 echo 'nojournal = true' >> /etc/mongodb.conf
 echo 'smallfiles = true' >> /etc/mongodb.conf
 
-service mongod stop
 rm -rf /var/lib/mongodb/journal/prealloc.*
 rm -rf /var/lib/mongodb/journal/j.*
-
-service mongod start
-service mongod stop
