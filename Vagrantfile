@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
 
     # Install Packer
     curl -sSL -o /tmp/packer.zip https://dl.bintray.com/mitchellh/packer/packer_0.8.2_linux_amd64.zip
-    unzip -f -d /usr/bin /tmp/packer.zip
+    unzip -o -d /usr/bin /tmp/packer.zip
 
     # Install packer-lxc-builder
     curl -sSL -o /usr/bin/packer-builder-lxc https://s3.amazonaws.com/circle-downloads/packer-builder-lxc-0.0.1
