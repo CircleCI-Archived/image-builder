@@ -22,16 +22,16 @@ Vagrant.configure(2) do |config|
         Name= 'CircleCI Image Builder'
     }
 
-    # Ubuntu 14.04.2 LTS hvm-ssd: http://cloud-images.ubuntu.com/trusty/20150803/
-    aws.region_config "ap-northeast-1", :ami => "ami-bc43ffbc"
-    aws.region_config "ap-southeast-1", :ami => "ami-18c2ce4a"
-    aws.region_config "ap-southeast-2", :ami => "ami-5b82c261"
-    aws.region_config "eu-central-1", :ami => "ami-f4c2c6e9"
-    aws.region_config "eu-west-1", :ami => "ami-bacf99cd"
-    aws.region_config "sa-east-1", :ami => "ami-add158b0"
-    aws.region_config "us-east-1", :ami => "ami-89b414e2"
-    aws.region_config "us-west-1", :ami => "ami-81b946c5"
-    aws.region_config "us-west-2", :ami => "ami-c39990f3"
+    # Ubuntu 14.04.3 LTS hvm-ssd: http://cloud-images.ubuntu.com/trusty/current/
+    aws.region_config "ap-northeast-1", :ami => "ami-b23051b2"
+    aws.region_config "ap-southeast-1", :ami => "ami-aa3c2cf8"
+    aws.region_config "ap-southeast-2", :ami => "ami-21b0fb1b"
+    aws.region_config "eu-central-1", :ami => "ami-08a1ac15"
+    aws.region_config "eu-west-1", :ami => "ami-63a19214"
+    aws.region_config "sa-east-1", :ami => "ami-43d6475e"
+    aws.region_config "us-east-1", :ami => "ami-f3752196"
+    aws.region_config "us-west-1", :ami => "ami-d7bf7f93"
+    aws.region_config "us-west-2", :ami => "ami-0820c13b"
 
     override.ssh.username = "ubuntu"
 
