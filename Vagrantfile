@@ -23,15 +23,15 @@ Vagrant.configure(2) do |config|
     }
 
     # Ubuntu 14.04.3 LTS hvm-ssd: http://cloud-images.ubuntu.com/trusty/current/
-    aws.region_config "ap-northeast-1", :ami => "ami-b23051b2"
-    aws.region_config "ap-southeast-1", :ami => "ami-aa3c2cf8"
-    aws.region_config "ap-southeast-2", :ami => "ami-21b0fb1b"
-    aws.region_config "eu-central-1", :ami => "ami-08a1ac15"
-    aws.region_config "eu-west-1", :ami => "ami-63a19214"
-    aws.region_config "sa-east-1", :ami => "ami-43d6475e"
-    aws.region_config "us-east-1", :ami => "ami-f3752196"
-    aws.region_config "us-west-1", :ami => "ami-d7bf7f93"
-    aws.region_config "us-west-2", :ami => "ami-0820c13b"
+    aws.region_config "ap-northeast-1", :ami => "ami-d886a1b6"
+    aws.region_config "ap-southeast-1", :ami => "ami-a17dbac2"
+    aws.region_config "ap-southeast-2", :ami => "ami-067d2365"
+    aws.region_config "eu-central-1", :ami => "ami-99cad9f5"
+    aws.region_config "eu-west-1", :ami => "ami-a317ced0"
+    aws.region_config "sa-east-1", :ami => "ami-ae44ffc2"
+    aws.region_config "us-east-1", :ami => "ami-f7136c9d"
+    aws.region_config "us-west-1", :ami => "ami-44b1de24"
+    aws.region_config "us-west-2", :ami => "ami-46a3b427"
 
     override.ssh.username = "ubuntu"
 
