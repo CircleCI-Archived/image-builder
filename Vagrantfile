@@ -1,11 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.configure(2) do |config|
+Vagrant.configure("2") do |config|
   config.vm.box_check_update = false
 
   config.vm.provider :virtualbox do |vb|
-      #config.vm.box = "ubuntu/trusty64"
+      config.vm.box = "ubuntu/trusty64"
 
   end
 
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
 
     override.ssh.username = "ubuntu"
 
-    config.vm.box = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+    override.vm.box = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
