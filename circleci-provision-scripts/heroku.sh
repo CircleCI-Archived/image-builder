@@ -1,13 +1,13 @@
 #!/bin/bash
 
-set -ex
+function heroku_bin() {
+    echo '>>> Installing heroku'
 
-echo '>>> Installing heroku'
+    wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
-wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
-
-# Heroku installer doesn't add to path in non-login shells
-echo 'export PATH=$PATH:/usr/local/heroku/bin' >> ${CIRCLECI_HOME}/.circlerc
+    # Heroku installer doesn't add to path in non-login shells
+    echo 'export PATH=$PATH:/usr/local/heroku/bin' >> ${CIRCLECI_HOME}/.circlerc
+}
 
 ## Workaround heroku not reporting exit codes properly
 function patch_heroku_bin() {
@@ -92,4 +92,7 @@ EOF
     echo "Heroku file has been patched"
 }
 
-patch_heroku_bin /usr/bin/heroku
+function heroku() {
+    heroku_bin
+    patch_heroku_bin /usr/bin/heroku
+}

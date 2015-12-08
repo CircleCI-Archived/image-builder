@@ -1,16 +1,14 @@
 #!/bin/bash
 
-set -ex
-
-echo '>>> Installing RVM and Ruby'
-
 function install_rvm() {
-    $USER_STEP gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-    curl -sSL https://get.rvm.io | $USER_STEP bash -s stable --ruby
+    echo '>>> Installing RVM and Ruby'
+
+    as_user gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    curl -sSL https://get.rvm.io | as_user bash -s stable --ruby
 
     ln -sf ${CIRCLECI_HOME}/.rvm /usr/local/rvm
 
-    echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' | $USER_STEP tee -a ${CIRCLECI_HOME}/.circlerc
+    echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' | as_user tee -a ${CIRCLECI_HOME}/.circlerc
 
     # Setting up user rmvrc
 
@@ -20,7 +18,7 @@ export rvm_install_on_use_flag=1
 export rvm_trust_rvmrcs_flag=1
 export rvm_verify_downloads_flag=1
 EOF
-    ) | $USER_STEP tee ${CIRCLECI_HOME}/.rvmrc
+    ) | as_user tee ${CIRCLECI_HOME}/.rvmrc
 
     # Setting up default gemrc
 
@@ -29,13 +27,13 @@ EOF
 - https://rubygems.org
 gem:  --no-ri --no-rdoc
 EOF
-    ) | $USER_STEP tee ${CIRCLECI_HOME}/.gemrc
+    ) | as_user tee ${CIRCLECI_HOME}/.gemrc
 
     (cat <<'EOF'
 source ~/.circlerc
 rvm rvmrc warning ignore allGemfiles
 EOF
-    ) | $USER_STEP bash
+    ) | as_user bash
 }
 
 
@@ -59,10 +57,11 @@ rvm @global do gem install bundler -v 1.9.5
 rvm @global do gem install rspec
 
 EOF
-    ) | $USER_STEP RUBY_VERSION=$RUBY_VERSION RUBYGEMS_MAJOR_RUBY_VERSION=$RUBYGEMS_MAJOR_RUBY_VERSION bash
+    ) | as_user RUBY_VERSION=$RUBY_VERSION RUBYGEMS_MAJOR_RUBY_VERSION=$RUBYGEMS_MAJOR_RUBY_VERSION bash
 }
 
-install_rvm
-install_ruby 2.2.2
-install_ruby 2.2.0
-install_ruby 1.9.3-p551
+function ruby() {
+    VERSION=$1
+    [[ -e $CIRCLECI_HOME/.rvm ]] || install_rvm
+    install_ruby $1
+}
