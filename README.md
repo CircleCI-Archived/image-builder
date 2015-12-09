@@ -108,6 +108,31 @@ ubuntu=# ;; psql is running
 ubuntu-# \quit
 ```
 
+**TODO**: Offer automated testing, in a similar style to [Docker official image testing](https://github.com/docker-library/official-images/tree/master/test).
+
 # 3. Hooking up CircleCI to use the container
 
-*TODO*: WIP
+Once you gain confidence in the image you just created, you can start pushing it to new builds.
+You must configure CircleCI Enterprise builders to point to the container
+image.  You can do so, by passing additional environment variable in your
+launch configuration: `CIRCLE_CONTAINER_IMAGE_URI`.
+
+Currently, builders can only support public http or S3 uris (e.g.
+`https://example.com/container_0.0.1.tar.gz` or
+`s3://example/container_0.0.1.tar.gz`.  Future releases will support docker
+URIs (e.g. `docker://acme-org/circleci-test-image:0.0.1`).  For the timebeing,
+we suggest exporting the container and uploading it to S3.
+
+Assuming you have the official aws-cli client, you can export the container and
+upload it to a bucket of your choice.  Ideally, it's located in the same region
+as the builders, and you can reuse the bucket that got created for the CCIE installation:
+
+```bash
+$ ./docker-export example-image > example-image_0.0.1.tar.gz
+$ aws s3 cp ./example-image_0.0.1.tar.gz s3://circleci-enterprise-bucket/containers/example-image_0.0.1.tar.gz
+```
+
+Once uploaded, attempt to start a new builder configured with
+`CIRCLE_CONTAINER_IMAGE_URI=s3://circleci-enterprise-bucket/containers/example-image_0.0.1.tar.gz`.
+Try running new builds on it.  Once it's all good, update the AutoScalingGroup
+Launch configuration to use the environment variable as well.
