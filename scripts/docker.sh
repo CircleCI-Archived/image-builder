@@ -9,7 +9,7 @@ service lxc stop
 sed -i 's|10\.0\.3|10.0.4|g' /etc/default/lxc
 
 # Install Docker
-curl -L -s https://get.docker.io/ubuntu | sh
+curl -L -s https://get.docker.com | sh
 service docker stop
 
 # Devicemapper files are huge if got created - we don't use device mapper anyway
