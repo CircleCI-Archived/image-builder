@@ -25,6 +25,6 @@ fi
 
 IMAGE_ID=$1
 
-(docker run --rm=true "${IMAGE_ID}" tar -cz --one-file-system --exclude='/tmp/*' --exclude='.dockerinit' --transform 's|^|rootfs/|' -f - /)
+(docker run --rm=true "${IMAGE_ID}" tar -cz --one-file-system --exclude='/tmp/*' --exclude='.dockerinit' --transform 's|^|rootfs/|SH' -f - /)
 echoerr "Image exported: ${IMAGE_ID}"
 exit 0
