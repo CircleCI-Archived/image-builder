@@ -6,7 +6,7 @@ function scala() {
     rm -rf /tmp/scala.deb
 
     apt-get update
-    apt-get install -qq typesafe-stack
+    apt-get install typesafe-stack
 
     # Force dependencies to download
     as_user sbt -batch

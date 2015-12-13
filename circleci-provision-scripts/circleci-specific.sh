@@ -39,7 +39,7 @@ EOF
 
     # Setup xvfb
 
-    apt-get install -qq xvfb xfwm4
+    apt-get install xvfb xfwm4
 
     sed -i 's/^exit 0/nohup Xvfb :99 -screen 0 1280x1024x24 \&\nsleep 2\nDISPLAY=:99.0 xfwm4 --daemon\nexit 0/g' /etc/rc.local
 

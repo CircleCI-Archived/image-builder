@@ -25,6 +25,7 @@ RUN circleci-install memcached
 
 # Install Docker
 RUN circleci-install docker
+RUN circleci-install docker_compose
 
 # Browser
 RUN circleci-install firefox
@@ -36,7 +37,6 @@ RUN circleci-install golang
 
 RUN circleci-install ruby 2.2.2
 
-RUN circleci-install python 2.7.1
 RUN circleci-install python 3.5.1
 
 RUN circleci-install nodejs v5.1.1

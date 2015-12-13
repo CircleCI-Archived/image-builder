@@ -6,7 +6,7 @@ function chrome_browser() {
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
     apt-get update
-    apt-get install -qq google-chrome-stable
+    apt-get install google-chrome-stable
 
     # Disable sandboxing - it conflicts with unprivileged lxc containers
     sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --enable-logging --no-sandbox|g' \

@@ -27,9 +27,9 @@ function mongo() {
     mv /etc/mongod.conf /etc/mongod.conf.orig
 
     # Customize mongo more
-    echo 'noprealloc = true' >> /etc/mongodb.conf
-    echo 'nojournal = true' >> /etc/mongodb.conf
-    echo 'smallfiles = true' >> /etc/mongodb.conf
+    echo 'noprealloc = true' >> /etc/mongod.conf
+    echo 'nojournal = true' >> /etc/mongod.conf
+    echo 'smallfiles = true' >> /etc/mongod.conf
 
     mkdir -p /data/db && chown -R mongodb:mongodb /data/db
 

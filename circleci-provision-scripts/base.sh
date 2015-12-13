@@ -47,7 +47,7 @@ EOF
     apt-get update -y
 
     # Install base packages
-    apt-get install -qq \
+    apt-get install \
         build-essential cmake git-core mercurial zip gdb \
         htop emacs vim nano lsof vnc4server tmux lzop \
         build-essential htop emacs vim nano lsof tmux zip vnc4server \
