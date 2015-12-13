@@ -1,11 +1,9 @@
 #!/bin/bash
 
-set -ex
-
-echo '>>> Installing NodeJS'
-
 function install_nvm() {
-    apt-get install -qq build-essential libssl-dev make python g++ curl libssl-dev
+    echo '>>> Installing NodeJS NVM'
+
+    apt-get install build-essential libssl-dev make python g++ curl libssl-dev
 
     echo 'Install VNM'
     (cat <<'EOF'
@@ -15,10 +13,10 @@ cd ~
 mkdir -p nvm/log
 echo 'source ~/nvm/nvm.sh' >> ~/.circlerc
 EOF
-    ) | $USER_STEP bash
+    ) | as_user bash
 }
 
-function install_nodejs() {
+function install_nodejs_version() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
 set -e
@@ -44,7 +42,7 @@ npm install -g mocha
 hash -r
 
 EOF
-    ) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
+    ) | as_user NODEJS_VERSION=$NODEJS_VERSION bash
 }
 
 function set_nodejs_default() {
@@ -54,13 +52,11 @@ set -e
 source ~/.circlerc
 nvm alias default $NODEJS_VERSION
 EOF
-    ) | $USER_STEP NODEJS_VERSION=$NODEJS_VERSION bash
+    ) | as_user NODEJS_VERSION=$NODEJS_VERSION bash
 }
 
-install_nvm
-
-install_nodejs "v0.10.34"
-install_nodejs "v0.11.14"
-install_nodejs "v0.12.0"
-
-set_nodejs_default "v0.12.0"
+function install_nodejs() {
+    VERSION=$1
+    [[ -e $CIRCLECI_HOME/nvm ]] || install_nvm
+    install_nodejs_version $1
+}
