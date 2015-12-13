@@ -15,7 +15,7 @@ function usage() {
 if [  $# -ne 1 ]
 then
 	echoerr 'Missing docker image name'
-	usage
+        usage
 fi
 
 [ ! -t 1 ] || {
@@ -25,6 +25,12 @@ fi
 
 IMAGE_ID=$1
 
-(docker run --rm=true "${IMAGE_ID}" tar -cz --one-file-system --exclude='/tmp/*' --exclude='.dockerinit' --transform 's|^|rootfs/|SH' -f - /)
+(
+    docker run --rm=true "${IMAGE_ID}" \
+        tar --create --gzip --one-file-system \
+	    --exclude='/tmp/*' --exclude='.dockerinit' --exclude='.dockerenv' \
+            --transform 's|^|rootfs/|S' \
+            -f - / /dev
+)
 echoerr "Image exported: ${IMAGE_ID}"
 exit 0
