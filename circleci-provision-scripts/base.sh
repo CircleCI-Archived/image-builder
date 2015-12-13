@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function base_requirements() {
+function install_base_requirements() {
     echo "Setting Timezone & Locale to $3 & C.UTF-8"
 
     ln -sf /usr/share/zoneinfo/$3 /etc/localtime
@@ -51,5 +51,6 @@ EOF
         build-essential cmake git-core mercurial zip gdb \
         htop emacs vim nano lsof vnc4server tmux lzop \
         build-essential htop emacs vim nano lsof tmux zip vnc4server \
-        curl unzip git-core ack-grep software-properties-common build-essential
+        curl unzip git-core ack-grep software-properties-common build-essential \
+        parallel
 }

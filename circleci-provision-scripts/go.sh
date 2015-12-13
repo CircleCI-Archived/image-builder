@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function golang() {
+function install_golang() {
     echo '>>> Installing Go'
 
 

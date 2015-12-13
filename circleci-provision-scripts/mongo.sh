@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function mongo() {
+function install_mongo() {
     MONGO_MAJOR=3.0
     MONGO_VERSION=3.0.7
 

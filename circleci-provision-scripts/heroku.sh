@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function heroku_bin() {
+function install_heroku_bin() {
     echo '>>> Installing heroku'
 
     wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
@@ -92,7 +92,7 @@ EOF
     echo "Heroku file has been patched"
 }
 
-function heroku() {
-    heroku_bin
+function install_heroku() {
+    install_heroku_bin
     patch_heroku_bin /usr/bin/heroku
 }

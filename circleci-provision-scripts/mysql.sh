@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function mysql_56() {
+function install_mysql_56() {
     {
             echo mysql-community-server mysql-community-server/data-dir select '';
             echo mysql-community-server mysql-community-server/root-pass password '';

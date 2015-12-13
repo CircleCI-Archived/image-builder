@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function circleci_specific() {
+function install_circleci_specific() {
     # CircleCI specific commands
 
     echo '>>> Installing CircleCI Specific things'
@@ -44,7 +44,4 @@ EOF
     sed -i 's/^exit 0/nohup Xvfb :99 -screen 0 1280x1024x24 \&\nsleep 2\nDISPLAY=:99.0 xfwm4 --daemon\nexit 0/g' /etc/rc.local
 
     echo 'export DISPLAY=:99' >> $CIRCLECI_HOME/.circlerc
-
-    # Setup parallel for artifacts upload
-    apt-get install parallel
 }

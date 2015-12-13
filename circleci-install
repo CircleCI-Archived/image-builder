@@ -14,8 +14,8 @@ export -f as_user
 set -a
 for n in $SCRIPTS_PATH/*.sh
 do
-	source $n
+    source $n
 done
 
 set -ex
-$@
+install_$@

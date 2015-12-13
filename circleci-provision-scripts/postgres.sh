@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function postgres() {
+function install_postgres() {
     POSTGRES_VERSION=9.4
 
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -

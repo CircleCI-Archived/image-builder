@@ -1,9 +1,9 @@
 #/bin/bash
 
-function redis() {
+function install_redis() {
     apt-get install redis-server
 }
 
-function memcached() {
+function install_memcached() {
     apt-get install memcached libmemcache-dev
 }

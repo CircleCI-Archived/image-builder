@@ -16,7 +16,7 @@ EOF
     ) | as_user bash
 }
 
-function install_nodejs() {
+function install_nodejs_version() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
 set -e
@@ -55,8 +55,8 @@ EOF
     ) | as_user NODEJS_VERSION=$NODEJS_VERSION bash
 }
 
-function nodejs() {
+function install_nodejs() {
     VERSION=$1
     [[ -e $CIRCLECI_HOME/nvm ]] || install_nvm
-    install_nodejs $1
+    install_nodejs_version $1
 }

@@ -18,7 +18,7 @@ EOF
     ) | as_user bash
 }
 
-function install_python() {
+function install_python_version() {
     PYTHON_VERSION=$1
     (cat <<'EOF'
 set -e
@@ -46,8 +46,8 @@ EOF
     ) | as_user PYTHON_VERSION=$PYTHON_VERSION bash
 }
 
-function python() {
+function install_python() {
     VERSION=$1
     [[ -e $CIRCLECI_HOME/.pyenv ]] || install_pyenv
-    install_python $1
+    install_python_version $1
 }

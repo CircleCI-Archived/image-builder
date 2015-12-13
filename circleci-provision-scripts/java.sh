@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function oraclejdk8() {
+function install_oraclejdk8() {
     echo '>>> Installing Java 8'
 
     # Install java
@@ -10,12 +10,12 @@ function oraclejdk8() {
     apt-get install oracle-java8-installer
 }
 
-function java() {
-    oraclejdk8
+function install_java() {
+    install_oraclejdk8
 }
 
 
-function maven() {
+function install_maven() {
     echo '>>> Installing Maven'
 
     # Install Maven
@@ -31,7 +31,7 @@ function maven() {
     echo 'export PATH=$M2_HOME/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }
 
-function gradle() {
+function install_gradle() {
     echo '>>> Installing Gradle'
 
     GRADLE_VERSION=1.10

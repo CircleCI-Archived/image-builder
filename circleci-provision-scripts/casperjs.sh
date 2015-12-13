@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function casperjs() {
+function install_casperjs() {
     echo '>>> Installing casperjs'
 
     cd "/usr/local"
