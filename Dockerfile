@@ -16,7 +16,9 @@ RUN circleci-install base_requirements  && circleci-install circleci_specific
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
 ## Databases
-RUN circleci-install mysql
+
+RUN circleci-install mysql_56
+
 RUN circleci-install mongo
 RUN circleci-install postgres
 

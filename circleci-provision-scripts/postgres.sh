@@ -15,6 +15,10 @@ function postgres() {
     (cat <<'EOF'
 listen_addresses = '*'
 
+# Pstgres 9.4 introduced some dynamic shared memory changes that are incompatible with containers
+# Let us disable it for now: https://github.com/aptible/docker-postgresql/issues/14
+dynamic_shared_memory_type = none
+
 # Add settings for extensions here
 # optimizations from http://rhaas.blogspot.com/2010/06/postgresql-as-in-memory-only-database_24.html
 fsync=off

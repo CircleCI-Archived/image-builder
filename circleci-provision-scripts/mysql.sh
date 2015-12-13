@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function mysql() {
+function mysql_56() {
     {
             echo mysql-community-server mysql-community-server/data-dir select '';
             echo mysql-community-server mysql-community-server/root-pass password '';
@@ -26,11 +26,15 @@ innodb_flush_log_at_trx_commit=2
 sync_binlog=0
 EOF
 
+    # start MySQL manually
+    mysqld &
+    sleep 5
+
     ## Add users and such
-    #echo "CREATE USER '${CIRCLECI_USER}'@'localhost'" | mysql -u root
-    #echo "GRANT ALL PRIVILEGES ON *.* TO '${CIRCLECI_USER}'@'localhost' WITH GRANT OPTION" | mysql -u root
-    #echo "CREATE USER 'circle'@'localhost'" | mysql -u root
-    #echo "GRANT ALL PRIVILEGES ON *.* TO 'circle'@'localhost' WITH GRANT OPTION" | mysql -u root
-    #echo "FLUSH PRIVILEGES" | mysql -u root
-    #echo "CREATE DATABASE circle_test" | mysql -u root
+    echo "CREATE USER '${CIRCLECI_USER}'@'localhost'" | mysql -u root
+    echo "GRANT ALL PRIVILEGES ON *.* TO '${CIRCLECI_USER}'@'localhost' WITH GRANT OPTION" | mysql -u root
+    echo "CREATE USER 'circle'@'localhost'" | mysql -u root
+    echo "GRANT ALL PRIVILEGES ON *.* TO 'circle'@'localhost' WITH GRANT OPTION" | mysql -u root
+    echo "FLUSH PRIVILEGES" | mysql -u root
+    echo "CREATE DATABASE circle_test" | mysql -u root
 }
