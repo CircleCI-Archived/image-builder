@@ -14,8 +14,12 @@ function docker() {
     sed -i 's|^limit|#limit|g' /etc/init/docker.conf
     usermod -a -G docker ${CIRCLECI_USER}
 
-    echo manual >> /etc/init/docker.conf
+    # Docker will be running inside a container (lxc or privileged docker)
+    # Internally, docker checks container env-var to condition some apparmor profile activities that don't work within lxc
     echo 'env container=yes' >> /etc/init/docker.conf
+
+    # Don't start Docker by default
+    echo manual >> /etc/init/docker.conf
 }
 
 function docker_compose() {
