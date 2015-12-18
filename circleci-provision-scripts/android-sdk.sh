@@ -92,7 +92,7 @@ function install_fb_adb() {
     rm -rf $TMP_FB_ADB
 }
 
-function install_android() {
+function install_android_sdk() {
     SDK_PACKAGE=$1
     [[ -e /usr/local/android-sdk ]] || install_sdk
     [[ -e /usr/local/android-ndk ]] || install_ndk
