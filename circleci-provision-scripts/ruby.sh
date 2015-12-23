@@ -38,16 +38,17 @@ EOF
 
 
 function install_ruby_version() {
-    RUBY_VERSION=$1
+    INSTALL_RUBY_VERSION=$1
     RUBYGEMS_MAJOR_RUBY_VERSION=${2:-2}
     (cat <<'EOF'
 
 set -e
 
-echo Installing Ruby version: $RUBY_VERSION
+echo Installing Ruby version: $INSTALL_RUBY_VERSION
+
 source ~/.circlerc
 
-rvm use $RUBY_VERSION
+rvm use $INSTALL_RUBY_VERSION
 
 # TODO: Avoid this for jruby
 rvm rubygems latest-${RUBYGEMS_MAJOR_RUBY_VERSION}
@@ -57,7 +58,7 @@ rvm @global do gem install bundler -v 1.9.5
 rvm @global do gem install rspec
 
 EOF
-    ) | as_user RUBY_VERSION=$RUBY_VERSION RUBYGEMS_MAJOR_RUBY_VERSION=$RUBYGEMS_MAJOR_RUBY_VERSION bash
+    ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION RUBYGEMS_MAJOR_RUBY_VERSION=$RUBYGEMS_MAJOR_RUBY_VERSION bash
 }
 
 function install_ruby() {
