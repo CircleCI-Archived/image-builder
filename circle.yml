@@ -1,0 +1,25 @@
+machine:
+  environment:
+    image: container-image:$CIRCLE_SHA1
+
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - docker
+
+  override:
+    - if [[ -e docker/image.tar ]]; then echo "Using docker cache"; docker load -i docker/image.tar; fi
+    - docker build -t $image .
+    - mkdir -p docker; docker save $image > docker/image.tar
+
+test:
+  override:
+   - ./docker-export $image > $image.tar.gz
+
+deployment:
+  aws-s3:
+    branch: /.*/
+    commands:
+      - aws s3 cp $image.tar.gz s3://circle-downloads/ --acl public-read
