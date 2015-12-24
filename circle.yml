@@ -20,6 +20,6 @@ test:
 
 deployment:
   aws-s3:
-    branch: /.*/
+    branch: /trusty-beta/
     commands:
       - aws s3 cp $image.tar.gz s3://circle-downloads/ --acl public-read
