@@ -8,7 +8,7 @@ function install_postgres() {
     echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
     apt-get update
-    apt-get install -y postgresql-$POSTGRES_VERSION postgresql-contrib-$POSTGRES_VERSION
+    apt-get install -y postgresql-$POSTGRES_VERSION postgresql-contrib-$POSTGRES_VERSION libpq-dev
 
     # Configure Postgres
 
@@ -40,7 +40,7 @@ host    all     all             ::1/128 trust
 host all all 0.0.0.0/0 trust
 
 EOF
-    ) >> /etc/postgresql/$POSTGRES_VERSION/main/pg_hba.conf
+    ) > /etc/postgresql/$POSTGRES_VERSION/main/pg_hba.conf
 
     sudo service postgresql restart
 
