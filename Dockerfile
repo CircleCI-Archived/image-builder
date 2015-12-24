@@ -26,7 +26,8 @@ RUN circleci-install redis
 RUN circleci-install memcached
 
 # Install Docker
-RUN circleci-install docker
+#RUN circleci-install docker
+RUN circleci-install lxc_docker
 RUN circleci-install docker_compose
 
 # Browser
