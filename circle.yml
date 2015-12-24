@@ -1,6 +1,6 @@
 machine:
   environment:
-    image: container-image:$CIRCLE_SHA1
+    image: trusty-beta:$CIRCLE_SHA1
 
   services:
     - docker
