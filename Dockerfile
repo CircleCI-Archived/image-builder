@@ -46,6 +46,9 @@ RUN circleci-install nodejs v5.1.1
 
 #RUN circleci-install scala
 
+# Qt5
+RUN circleci-install qt
+
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
 
