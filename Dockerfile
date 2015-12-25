@@ -26,7 +26,6 @@ RUN circleci-install redis
 RUN circleci-install memcached
 
 # Install Docker
-#RUN circleci-install docker
 RUN circleci-install lxc_docker
 RUN circleci-install docker_compose
 
@@ -51,5 +50,6 @@ RUN circleci-install qt
 
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
+
 
 LABEL circleci.user="ubuntu"

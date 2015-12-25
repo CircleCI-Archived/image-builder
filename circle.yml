@@ -1,6 +1,8 @@
 machine:
   environment:
     image: trusty-beta:$CIRCLE_SHA1
+    cache_image: docker/image.tar
+    tar: trusty-beta-$CIRCLE_SHA1.tar.gz
 
   services:
     - docker
@@ -10,16 +12,21 @@ dependencies:
     - docker
 
   override:
-    - if [[ -e docker/image.tar ]]; then echo "Using docker cache"; docker load -i docker/image.tar; fi
+    #- if [[ -e $cache_image ]]; then echo "Using docker cache"; docker load -i $cache_image; fi
     - docker build -t $image .
-    - mkdir -p docker; docker save $image > docker/image.tar
+    #- mkdir -p docker; docker save $image > $cache_image
 
 test:
   override:
-   - ./docker-export $image > $image.tar.gz
+   - ./docker-export $image > $tar
 
 deployment:
+  release:
+    tag: /.*/
+    commands:
+      - aws s3 cp $tar s3://circle-downloads/ --acl public-read
+
   aws-s3:
     branch: /trusty-beta/
     commands:
-      - aws s3 cp $image.tar.gz s3://circle-downloads/ --acl public-read
+      - aws s3 cp $tar s3://circle-downloads/ --acl public-read
