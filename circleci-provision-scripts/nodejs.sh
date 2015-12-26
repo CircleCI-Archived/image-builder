@@ -43,6 +43,8 @@ hash -r
 
 EOF
     ) | as_user NODEJS_VERSION=$NODEJS_VERSION bash
+
+    set_nodejs_default $NODEJS_VERSION
 }
 
 function set_nodejs_default() {
