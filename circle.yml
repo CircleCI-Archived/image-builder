@@ -3,6 +3,7 @@ machine:
     image: trusty-beta:$CIRCLE_SHA1
     cache_image: docker/image.tar
     tar: trusty-beta-$CIRCLE_SHA1.tar.gz
+    tagged_tar: trusty-beta-$CIRCLE_TAG.tar.gz
 
   services:
     - docker
@@ -22,9 +23,10 @@ test:
 
 deployment:
   release:
-    tag: /.*/
+    tag: /v.*/
     commands:
-      - aws s3 cp $tar s3://circle-downloads/ --acl public-read
+      - mv $tar $tagged_tar
+      - aws s3 cp $tagged_tar s3://circle-downloads/ --acl public-read
 
   aws-s3:
     branch: /trusty-beta/
