@@ -11,9 +11,6 @@ echo "y" | android update sdk --no-ui --all --filter $PACKAGE
 EOF
     ) | as_user PACKAGE=$PACKAGE bash
 
-    source ${CIRCLECI_HOME}/.circlerc
-    echo "y" | android update sdk --no-ui --all --filter $PACKAGE
-
     if [[ "$PACKAGE" =~ ^android-[0-9][0-9]$ ]]; then
        AVD_VERSION=$(echo $PACKAGE | sed 's/android-//')
        create_avd $AVD_VERSION

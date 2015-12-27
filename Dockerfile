@@ -15,6 +15,12 @@ RUN circleci-install base_requirements  && circleci-install circleci_specific
 
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
+# Android
+ADD scripts/circle-android /usr/local/bin/circle-android
+RUN circleci-install android_sdk platform-tools
+RUN circleci-install android_sdk android-22
+RUN circleci-install android_sdk android-23
+
 ## Databases
 
 RUN circleci-install mysql_56
@@ -47,12 +53,6 @@ RUN circleci-install nodejs v5.1.1
 
 # Qt5
 RUN circleci-install qt
-
-# Android
-ADD scripts/circle-android /usr/local/bin/circle-android
-RUN circleci-install android_sdk platform-tools
-RUN circleci-install android_sdk android-22
-RUN circleci-install android_sdk android-23
 
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
