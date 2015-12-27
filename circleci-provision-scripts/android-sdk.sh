@@ -48,7 +48,7 @@ function install_sdk(){
     echo 'export PATH=/usr/local/android-sdk-linux/platform-tools:$PATH' >> ${CIRCLECI_HOME}/.circlerc
     echo 'export ANDROID_HOME=/usr/local/android-sdk-linux' >> ${CIRCLECI_HOME}/.circlerc
     echo 'export ADB_INSTALL_TIMEOUT=10' >> ${CIRCLECI_HOME}/.circlerc
-    chown -R ubuntu:ubuntu /usr/local/android-sdk-linux
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER /usr/local/android-sdk-linux
     rm -rf $TMP_SDK
 }
 
