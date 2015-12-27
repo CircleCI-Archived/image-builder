@@ -49,7 +49,9 @@ RUN circleci-install nodejs v5.1.1
 RUN circleci-install qt
 
 # Android
+RUN circleci-install android_sdk platform-tools
 RUN circleci-install android_sdk android-22
+RUN circleci-install android_sdk android-23
 
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
