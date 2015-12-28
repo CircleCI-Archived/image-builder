@@ -49,6 +49,10 @@ RUN circleci-install python 3.5.1
 
 RUN circleci-install nodejs v5.1.1
 
+RUN circleci-install php 5.6.16
+
+RUN circleci-install php 7.0.0
+
 #RUN circleci-install scala
 
 # Qt5
