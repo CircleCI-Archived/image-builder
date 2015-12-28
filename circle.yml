@@ -16,7 +16,8 @@ dependencies:
     - if [[ -e $cache_image ]]; then echo "Using docker cache"; docker load -i $cache_image; fi
     - docker build -t $image .:
         timeout: 3600
-    - mkdir -p docker; docker save $image > $cache_image
+    - mkdir -p docker; docker save $image > $cache_image:
+        timeout: 3600
 
 test:
   override:
