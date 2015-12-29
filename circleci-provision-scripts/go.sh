@@ -20,5 +20,5 @@ function install_golang() {
     as_user mkdir -p ${CIRCLECI_HOME}/.go_workspace
 
     echo 'export PATH=~/.go_workspace/bin:/usr/local/go/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
-    echo 'export GOPATH=~/.go_workspace:$GOPATH' >> ${CIRCLECI_HOME}/.circlerc
+    echo 'export GOPATH=~/.go_workspace:/usr/local/go_workspace' >> ${CIRCLECI_HOME}/.circlerc
 }

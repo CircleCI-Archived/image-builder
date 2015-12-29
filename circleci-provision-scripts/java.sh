@@ -3,15 +3,31 @@
 function install_oraclejdk8() {
     echo '>>> Installing Java 8'
 
-    # Install java
-    add-apt-repository -y ppa:webupd8team/java
-    apt-get update
-    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-    apt-get install oracle-java8-installer
+    # We could install java8 with PPA but our inference code expects java to be installed under /usr/lib/jvm
+    # so taking old approach here.
+    FILE=jdk-8u40-linux-x64.gz
+    URL="https://circle-downloads.s3.amazonaws.com/jdk-8u40-linux-x64.gz"
+    JAVA_TMP=/tmp/java
+
+    mkdir -p $JAVA_TMP
+    pushd $JAVA_TMP
+
+    curl -L -O $URL
+    tar zxf $FILE
+    mkdir -p /usr/lib/jvm
+    mv ./jdk1.8.0_40 /usr/lib/jvm/jdk1.8.0
+
+    update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0/bin/java" 1
+    update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac" 1
+    update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws" 1
+
+    popd
+
+    rm -rf $JAVA_TMP
 }
 
 function install_java() {
-    install_oraclejdk8
+    [[ -e /usr/lib/jvm/jdk/1.8.0 ]] || install_oraclejdk8
 }
 
 
