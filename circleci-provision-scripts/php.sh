@@ -3,7 +3,7 @@
 function install_phpenv(){
     PHP_TMP=/tmp/php
 
-    apt-get install -y libpng12-dev re2c m4 libxslt1-dev libjpeg-dev libxml2-dev libtidy-dev libmcrypt-dev libreadline-dev libmagic-dev libssl-dev libcurl4-openssl-dev libfreetype6-dev
+    apt-get install -y libpng12-dev re2c m4 libxslt1-dev libjpeg-dev libxml2-dev libtidy-dev libmcrypt-dev libreadline-dev libmagic-dev libssl-dev libcurl4-openssl-dev libfreetype6-dev libapache2-mod-php5
 
     # bison 2.7 is the latest version that php supports
     mkdir -p $PHP_TMP
