@@ -21,7 +21,8 @@ dependencies:
 
 test:
   override:
-   - ./docker-export $image > $tar
+   - ./docker-export $image > $tar:
+        timeout: 3600
 
 deployment:
   release:
