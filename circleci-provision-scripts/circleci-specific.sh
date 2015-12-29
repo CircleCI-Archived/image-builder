@@ -5,7 +5,6 @@ function install_circleci_specific() {
 
     echo '>>> Installing CircleCI Specific things'
 
-    echo 'source ~/.bashrc &>/dev/null' >> ${CIRCLECI_HOME}/.bash_profile
     echo 'source ~/.circlerc &>/dev/null' > ${CIRCLECI_HOME}/.bashrc
     echo 'source ~/.circlerc &>/dev/null' > ${CIRCLECI_HOME}/.bash_login
 
