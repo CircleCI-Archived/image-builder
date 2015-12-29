@@ -40,7 +40,7 @@ RUN circleci-install firefox
 RUN circleci-install chrome
 
 # Languages
-RUN circleci-install oraclejdk8
+RUN circleci-install java
 RUN circleci-install golang
 
 RUN circleci-install ruby 2.2.2

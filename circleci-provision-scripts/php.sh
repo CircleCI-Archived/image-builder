@@ -16,8 +16,8 @@ function install_phpenv(){
     (cat <<'EOF'
 curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 git clone git://github.com/php-build/php-build.git ~/.phpenv/plugins/php-build
-echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.bash_profile
-echo 'eval "$(phpenv init -)"' >> ~/.bash_profile
+echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.circlerc
+echo 'eval "$(phpenv init -)"' >> ~/.circlerc
 git clone https://github.com/ngyuki/phpenv-composer.git ~/.phpenv/plugins/phpenv-composer
 EOF
     ) | as_user bash
@@ -31,7 +31,7 @@ function install_php_version() {
     
     (cat <<'EOF'
 set -ex
-source ~/.bash_profile
+source ~/.circlerc
 phpenv install $PHP_VERSION
 rm -rf /tmp/php-build*
 EOF
