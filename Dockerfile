@@ -61,7 +61,7 @@ RUN circleci-install oraclejdk8
 
 RUN circleci-install golang
 
-RUN circleci-install scala
+#RUN circleci-install scala
 
 ## Misc
 RUN circleci-install qt
