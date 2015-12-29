@@ -33,15 +33,6 @@ function install_composer() {
     install_base_php_packages
 }
 
-function install_base_php_packages() {
-    composer global require --prefer-source phpunit/phpunit=5.1.*
-    composer global require --prefer-source sebastian/phpcpd=*
-    composer global require --prefer-source pdepend/pdepend=*
-    composer global require --prefer-source squizlabs/php_codesniffer=*
-    composer global require --prefer-source phpdocumentor/phpdocumentor=*
-    composer global require --prefer-source phploc/phploc=*
-}
-
 function install_php_version() {
     PHP_VERSION=$1
     echo ">>> Installing php $PHP_VERSION"
@@ -51,6 +42,13 @@ set -ex
 source ~/.circlerc
 phpenv install $PHP_VERSION
 rm -rf /tmp/php-build*
+phpenv global $PHP_VERSION
+composer global require --prefer-source phpunit/phpunit=5.*
+composer global require --prefer-source sebastian/phpcpd=*
+composer global require --prefer-source pdepend/pdepend=*
+composer global require --prefer-source squizlabs/php_codesniffer=*
+composer global require --prefer-source phpdocumentor/phpdocumentor=*
+composer global require --prefer-source phploc/phploc=*
 EOF
     ) | as_user PHP_VERSION=$PHP_VERSION bash
 }
