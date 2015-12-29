@@ -28,6 +28,8 @@ function install_oraclejdk8() {
 
 function install_java() {
     [[ -e /usr/lib/jvm/jdk/1.8.0 ]] || install_oraclejdk8
+    type mvn &>/dev/null || install_maven
+    type gradle &>/dev/null || install_gradle
 }
 
 
