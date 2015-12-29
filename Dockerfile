@@ -15,13 +15,10 @@ RUN circleci-install base_requirements  && circleci-install circleci_specific
 
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
-## Android
+# Android
 ADD scripts/circle-android /usr/local/bin/circle-android
-
 RUN circleci-install android_sdk platform-tools
-
 RUN circleci-install android_sdk android-22
-
 RUN circleci-install android_sdk android-23
 
 ## Databases
@@ -29,27 +26,22 @@ RUN circleci-install android_sdk android-23
 RUN circleci-install mysql_56
 
 RUN circleci-install mongo
-
 RUN circleci-install postgres
 
 RUN circleci-install redis
-
 RUN circleci-install memcached
 
-## Docker
+# Install Docker
 RUN circleci-install lxc_docker
-
 RUN circleci-install docker_compose
 
-## Browsers
+# Browser
 RUN circleci-install firefox
-
 RUN circleci-install chrome
 
-## Languages
-RUN circleci-install php 5.6.16
-
-RUN circleci-install php 7.0.0
+# Languages
+RUN circleci-install oraclejdk8
+RUN circleci-install golang
 
 RUN circleci-install ruby 2.2.2
 
@@ -57,13 +49,13 @@ RUN circleci-install python 3.5.1
 
 RUN circleci-install nodejs v5.1.1
 
-RUN circleci-install oraclejdk8
+RUN circleci-install php 5.6.16
 
-RUN circleci-install golang
+RUN circleci-install php 7.0.0
 
 #RUN circleci-install scala
 
-## Misc
+# Qt5
 RUN circleci-install qt
 
 # Undivert upstart
