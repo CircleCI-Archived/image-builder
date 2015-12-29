@@ -18,11 +18,28 @@ curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 git clone git://github.com/php-build/php-build.git ~/.phpenv/plugins/php-build
 echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.circlerc
 echo 'eval "$(phpenv init -)"' >> ~/.circlerc
-git clone https://github.com/ngyuki/phpenv-composer.git ~/.phpenv/plugins/phpenv-composer
 EOF
     ) | as_user bash
 
     rm -rf $PHP_TMP
+}
+
+function install_composer() {
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+    chmod a+x /usr/local/bin/composer
+    echo 'export PATH=~/.composer/vendor/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
+
+    install_base_php_packages
+}
+
+function install_base_php_packages() {
+    composer global require --prefer-source phpunit/phpunit=5.1.*
+    composer global require --prefer-source sebastian/phpcpd=*
+    composer global require --prefer-source pdepend/pdepend=*
+    composer global require --prefer-source squizlabs/php_codesniffer=*
+    composer global require --prefer-source phpdocumentor/phpdocumentor=*
+    composer global require --prefer-source phploc/phploc=*
 }
 
 function install_php_version() {
@@ -42,4 +59,5 @@ function install_php() {
     VERSION=$1
     [[ -e $CIRCLECI_HOME/.phpenv ]] || install_phpenv
     install_php_version $VERSION
+    type composer &>/dev/null || install_composer
 }
