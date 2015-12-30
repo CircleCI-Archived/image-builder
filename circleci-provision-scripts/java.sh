@@ -21,6 +21,8 @@ function install_oraclejdk8() {
     update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac" 1
     update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws" 1
 
+    echo 'export PATH=/usr/lib/jvm/jdk1.8.0/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
+
     popd
 
     rm -rf $JAVA_TMP

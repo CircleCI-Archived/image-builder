@@ -41,6 +41,9 @@ RUN circleci-install firefox
 ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
 RUN circleci-install chrome
 
+ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
+RUN circleci-install phantomjs
+
 # Android
 ADD scripts/circle-android /usr/local/bin/circle-android
 ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
