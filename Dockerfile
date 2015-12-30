@@ -68,6 +68,8 @@ ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.6.16
 RUN circleci-install php 7.0.0
 
+ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
+RUN circleci-install clojure
 #RUN circleci-install scala
 
 # Qt
