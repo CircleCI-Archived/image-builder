@@ -29,8 +29,6 @@ function install_composer() {
     mv composer.phar /usr/local/bin/composer
     chmod a+x /usr/local/bin/composer
     echo 'export PATH=~/.composer/vendor/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
-
-    install_base_php_packages
 }
 
 function install_php_version() {
@@ -56,6 +54,7 @@ EOF
 function install_php() {
     VERSION=$1
     [[ -e $CIRCLECI_HOME/.phpenv ]] || install_phpenv
-    install_php_version $VERSION
     type composer &>/dev/null || install_composer
+
+    install_php_version $VERSION
 }
