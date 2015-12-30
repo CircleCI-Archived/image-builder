@@ -13,7 +13,8 @@ dependencies:
     - docker
 
   override:
-    - if [[ -e $cache_image ]]; then echo "Using docker cache"; docker load -i $cache_image; fi
+    - if [[ -e $cache_image ]]; then echo "Using docker cache"; docker load -i $cache_image; fi:
+        timeout: 3600
     - docker build -t $image .:
         timeout: 3600
     - mkdir -p docker; docker save $image > $cache_image:
