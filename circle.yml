@@ -1,7 +1,6 @@
 machine:
   environment:
-    image: trusty-beta:$CIRCLE_SHA1
-    cache_image: docker/image.tar
+    image: circleci/build-image
     tar: trusty-beta-$CIRCLE_SHA1.tar.gz
     tagged_tar: trusty-beta-$CIRCLE_TAG.tar.gz
 
@@ -9,20 +8,21 @@ machine:
     - docker
 
 dependencies:
-  cache_directories:
-    - docker
-
   override:
-    - if [[ -e $cache_image ]]; then echo "Using docker cache"; docker load -i $cache_image; fi:
-        timeout: 3600
-    - docker build -t $image .:
-        timeout: 3600
-    - mkdir -p docker; docker save $image > $cache_image:
-        timeout: 3600
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
 test:
   override:
-   - ./docker-export $image > $tar:
+    - docker pull $image || true:
+        timeout: 3600
+
+    - docker build -t $image .:
+        timeout: 3600
+
+    - docker push $image:
+        timeout: 3600
+
+    - ./docker-export $image > $tar:
         timeout: 3600
 
 deployment:
