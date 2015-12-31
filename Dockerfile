@@ -28,10 +28,8 @@ RUN circleci-install redis
 RUN circleci-install memcached
 
 # Docker
-ADD circleci-provision-scripts/lxc-docker.sh /opt/circleci-provision-scripts/lxc-docker.sh
-RUN circleci-install lxc_docker
-
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
+RUN circleci-install docker
 RUN circleci-install docker_compose
 
 # Browsers
@@ -79,6 +77,10 @@ RUN circleci-install scala
 # Qt
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
 RUN circleci-install qt
+
+# When running in unprivileged containers, need to use CircleCI Docker fork
+ARG TARGET_UNPRIVILEGED_LXC
+RUN if [ "n$TARGET_UNPRIVILEGED_LXC" = "ntrue" ]; then circleci-install circleci_docker; fi
 
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
