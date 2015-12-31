@@ -45,7 +45,6 @@ ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phan
 RUN circleci-install phantomjs
 
 # Android
-ADD scripts/circle-android /usr/local/bin/circle-android
 ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
 RUN circleci-install android_sdk platform-tools
 RUN circleci-install android_sdk android-22
