@@ -27,11 +27,6 @@ ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN circleci-install redis
 RUN circleci-install memcached
 
-# Docker
-ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
-RUN circleci-install docker
-RUN circleci-install docker_compose
-
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
 RUN circleci-install firefox
@@ -77,6 +72,11 @@ RUN circleci-install scala
 # Qt
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
 RUN circleci-install qt
+
+# Docker have be last - to utilize cache better
+ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
+RUN circleci-install docker
+RUN circleci-install docker_compose
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
 ARG TARGET_UNPRIVILEGED_LXC
