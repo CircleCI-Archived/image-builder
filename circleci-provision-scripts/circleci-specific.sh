@@ -13,9 +13,9 @@ export GIT_ASKPASS=echo
 export SSH_ASKPASS=false
 export PATH=~/bin:$PATH
 EOF
-) | as_user tee ${CIRCLECI_HOME}/.circlerc
+) | sudo -H -u ${CIRCLECI_USER} tee ${CIRCLECI_HOME}/.circlerc
 
-    as_user mkdir -p ${CIRCLECI_HOME}/bin
+    sudo -H -u ${CIRCLECI_USER} mkdir -p ${CIRCLECI_HOME}/bin
 
     # Configure SSH so it can talk to servers OK
 

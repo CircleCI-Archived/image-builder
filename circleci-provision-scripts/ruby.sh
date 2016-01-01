@@ -38,7 +38,7 @@ EOF
 }
 
 
-function install_ruby_version() {
+function install_ruby_rvm() {
     INSTALL_RUBY_VERSION=$1
     RUBYGEMS_MAJOR_RUBY_VERSION=${2:-2}
     (cat <<'EOF'
@@ -62,8 +62,28 @@ EOF
     ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION RUBYGEMS_MAJOR_RUBY_VERSION=$RUBYGEMS_MAJOR_RUBY_VERSION bash
 }
 
+function install_ruby_precompile() {
+    local VERSION=$1
+
+    apt-get -y install circleci-ruby${VERSION}=0.0.1
+}
+
 function install_ruby() {
-    VERSION=$1
-    [[ -e $CIRCLECI_HOME/.rvm ]] || install_rvm
-    install_ruby_version $1
+    local VERSION=$1
+
+    if use_precompile ruby; then
+        install_ruby_precompile $VERSION
+        switch_ruby $VERSION
+    else
+        [[ -e $CIRCLECI_HOME/.rvm ]] || install_rvm
+        install_ruby_rvm $VERSION
+    fi
+}
+
+function switch_ruby() {
+    local VERSION=$1
+
+    add_path "/opt/circleci/ruby/${VERSION}/bin"
+    append_rc "RUBYLIB=/opt/circleci/ruby/${VERSION}/lib/ruby/2.2.0:/opt/circleci/ruby/${VERSION}/lib/ruby/2.2.0/x86_64-linux"
+    load_rc
 }
