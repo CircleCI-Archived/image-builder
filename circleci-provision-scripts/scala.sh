@@ -1,13 +1,26 @@
-#!/bin/bash
-
 function install_scala() {
-    curl -sSL -o /tmp/scala.deb http://apt.typesafe.com/repo-deb-build-0002.deb
-    dpkg -i /tmp/scala.deb
-    rm -rf /tmp/scala.deb
 
-    apt-get update
-    apt-get install typesafe-stack
+    wget https://dl.bintray.com/sbt/debian/sbt-0.13.9.deb
+    dpkg -i sbt-0.13.9.deb
+    rm sbt-0.13.9.deb
 
-    # Force dependencies to download
-    as_user sbt -batch
+    (cat <<'EOF'
+# Run sbt once to download dependencies.
+# SBT_OPTS="-XX:MaxMetaspaceSize=384M" sbt -v
+SBT_LAUNCH_VERSIONS="0.13.5 0.13.6 0.13.7 0.13.8 0.13.9"
+for VER in $(echo $SBT_LAUNCH_VERSIONS); do
+
+SBT_DIR=~/.sbt/.lib/${VER}
+SBT_JAR=$SBT_DIR/sbt-launch.jar
+SBT_URL="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${VER}/sbt-launch.jar"
+
+mkdir -p $SBT_DIR
+curl -L -o $SBT_JAR $SBT_URL
+
+done
+EOF
+    ) | as_user bash
 }
+
+## TODO
+#     ) | as_user SBT_LAUNCH_VERSIONS="${SBT_LAUNCH_VERSIONS}" bash

@@ -52,5 +52,5 @@ EOF
         htop emacs vim nano lsof vnc4server tmux lzop \
         build-essential htop emacs vim nano lsof tmux zip vnc4server \
         curl unzip git-core ack-grep software-properties-common build-essential \
-        parallel libav-tools make autoconf
+        parallel libav-tools make autoconf liblapack-dev gfortran
 }

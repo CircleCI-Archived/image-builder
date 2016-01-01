@@ -1,25 +1,42 @@
 machine:
   environment:
-    image: trusty-beta:$CIRCLE_SHA1
+    IMAGE_TAG: 0.0.${CIRCLE_BUILD_NUM}
 
-  services:
-    - docker
+  post:
+    - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
+    - sudo service docker start
 
 dependencies:
-  cache_directories:
-    - docker
-
   override:
-    - if [[ -e docker/image.tar ]]; then echo "Using docker cache"; docker load -i docker/image.tar; fi
-    - docker build -t $image .
-    - mkdir -p docker; docker save $image > docker/image.tar
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
 test:
   override:
-   - ./docker-export $image > $image.tar.gz
+    # Scratch is the latest cache
+    - docker pull circleci/build-image:scratch || true:
+        timeout: 3600
+
+    - docker build -t circleci/build-image:scratch .:
+        timeout: 3600
+
+    - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
+    - docker push circleci/build-image:scratch:
+        timeout: 3600
+    - docker push circleci/build-image:trusty-${IMAGE_TAG}
+
+    # Build a slightly modified image for unprivileged lxc
+    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=yes -t circleci/build-image:scratch-unprivileged .:
+        timeout: 3600
+
+    - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
+    - docker push circleci/build-image:scratch:
+        timeout: 3600
+    - docker push circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
 
 deployment:
-  aws-s3:
-    branch: /trusty-beta/
+  release:
+    tag: /v.*/
     commands:
-      - aws s3 cp $image.tar.gz s3://circle-downloads/ --acl public-read
+      - ./docker-export circleci/build-image:scratch-unprivileged > trusty-beta-${CIRCLE_TAG}.tar.gz:
+          timeout: 3600
+      - aws s3 cp trusty-beta-${CIRCLE_TAG}.tar.gz s3://circle-downloads/ --acl public-read

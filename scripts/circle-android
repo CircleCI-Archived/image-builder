@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+spinstr='|/-\'
+spin_index=0
+
+spin_until () {
+    while ! $@
+    do
+        spin_index=$(expr $(expr $spin_index + 1) % 4)
+        printf "\r${spinstr:spin_index:1}"
+        sleep 0.5
+    done
+    printf "\r"
+}
+
+adb_shell_getprop () {
+    adb shell getprop $1 | tr -d [:space:] # delete the whitespace
+}
+
+device_actually_ready () {
+    # https://devmaze.wordpress.com/2011/12/12/starting-and-stopping-android-emulators/
+    [ "$(adb_shell_getprop init.svc.bootanim)" = "stopped" ]
+}
+
+if [ "$1" == "wait-for-boot" ]
+then
+    # wait for the device to respond to shell commands
+    spin_until adb shell true 2> /dev/null
+    # wait for the emulator to be completely finished booting.
+    # adb wait-for-device is not sufficient for this.
+    spin_until device_actually_ready
+else
+    echo "$0, a collection of tools for CI with android."
+    echo ""
+    echo "Usage:"
+    echo "  $0 wait-for-boot - wait for a device to fully boot."
+    echo "    (adb wait-for-device only waits for it to be ready for shell access)."
+fi
+
