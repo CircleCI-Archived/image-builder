@@ -30,6 +30,7 @@ EOF
     ) | as_user tee ${CIRCLECI_HOME}/.gemrc
 
     (cat <<'EOF'
+set -ex
 source ~/.circlerc
 rvm rvmrc warning ignore allGemfiles
 EOF
@@ -42,7 +43,7 @@ function install_ruby_version() {
     RUBYGEMS_MAJOR_RUBY_VERSION=${2:-2}
     (cat <<'EOF'
 
-set -e
+set -ex
 
 echo Installing Ruby version: $INSTALL_RUBY_VERSION
 

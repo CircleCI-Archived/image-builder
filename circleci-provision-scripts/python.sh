@@ -9,7 +9,7 @@ function install_pyenv() {
 
     echo 'Installing pyenv'
     (cat <<'EOF'
-set -e
+set -ex
 cd ~
 [[ -e .pyenv ]] || git clone https://github.com/yyuu/pyenv.git .pyenv
 echo 'export PATH=~/.pyenv/bin:$PATH' >> ~/.circlerc
@@ -21,7 +21,7 @@ EOF
 function install_python_version() {
     PYTHON_VERSION=$1
     (cat <<'EOF'
-set -e
+set -ex
 source ~/.circlerc
 pyenv install $PYTHON_VERSION
 pyenv global $PYTHON_VERSION
@@ -38,7 +38,7 @@ EOF
 function set_python_default() {
     PYTHON_VERSION=$1
     (cat <<'EOF'
-set -e
+set -ex
 source ~/.circlerc
 pyenv global $PYTHON_VERSION
 pyenv rehash
