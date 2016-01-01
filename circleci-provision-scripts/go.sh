@@ -1,10 +1,9 @@
 #!/bin/bash
 
 function install_golang() {
-    echo '>>> Installing Go'
+    GO_VERSION=$1
 
-
-    GO_VERSION=1.5.2
+    echo ">>> Installing Go ${GO_VERSION}"
 
     URL=http://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
 
@@ -21,4 +20,6 @@ function install_golang() {
 
     echo 'export PATH=~/.go_workspace/bin:/usr/local/go/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
     echo 'export GOPATH=~/.go_workspace:/usr/local/go_workspace' >> ${CIRCLECI_HOME}/.circlerc
+
+    rm -rf /tmp/go.tar.gz
 }

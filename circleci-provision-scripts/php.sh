@@ -14,6 +14,7 @@ function install_phpenv(){
 
     echo '>>> Installing php-env and php-build'
     (cat <<'EOF'
+set -ex
 curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 git clone git://github.com/php-build/php-build.git ~/.phpenv/plugins/php-build
 echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.circlerc

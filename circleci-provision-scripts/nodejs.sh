@@ -7,7 +7,7 @@ function install_nvm() {
 
     echo 'Install VNM'
     (cat <<'EOF'
-set -e
+set -ex
 cd ~
 [[ -e nvm ]] || git clone https://github.com/creationix/nvm.git nvm
 mkdir -p nvm/log
@@ -19,7 +19,7 @@ EOF
 function install_nodejs_version() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
-set -e
+set -ex
 source ~/.circlerc
 nvm install $NODEJS_VERSION
 rm -rf ~/nvm/src
@@ -50,7 +50,7 @@ EOF
 function set_nodejs_default() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
-set -e
+set -ex
 source ~/.circlerc
 nvm alias default $NODEJS_VERSION
 EOF

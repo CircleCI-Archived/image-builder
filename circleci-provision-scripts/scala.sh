@@ -5,6 +5,8 @@ function install_scala() {
     rm sbt-0.13.9.deb
 
     (cat <<'EOF'
+set -ex
+
 # Run sbt once to download dependencies.
 # SBT_OPTS="-XX:MaxMetaspaceSize=384M" sbt -v
 SBT_LAUNCH_VERSIONS="0.13.5 0.13.6 0.13.7 0.13.8 0.13.9"
