@@ -85,5 +85,5 @@ function switch_ruby() {
 
     add_path "/opt/circleci/ruby/${VERSION}/bin"
     append_rc "RUBYLIB=/opt/circleci/ruby/${VERSION}/lib/ruby/2.2.0:/opt/circleci/ruby/${VERSION}/lib/ruby/2.2.0/x86_64-linux"
-    load_rc
+    #load_rc
 }
