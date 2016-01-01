@@ -1,0 +1,60 @@
+[ -n "$CIRCLECI_USER" ] || export CIRCLECI_USER=ubuntu
+export CIRCLECI_HOME=/home/${CIRCLECI_USER}
+export CIRCLECI_PKG_DIR=/opt/circleci
+
+if ! [ -d $CIRCLECI_PKG_DIR ]; then
+    mkdir -p $CIRCLECI_PKG_DIR
+fi
+
+chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR
+
+function as_user() {
+    sudo -H -u ${CIRCLECI_USER} $@
+}
+export -f as_user
+
+
+[[ $SCRIPTS_PATH ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
+
+set -a
+for n in $SCRIPTS_PATH/*.sh
+do
+    source $n
+done
+
+sub_help(){
+    echo "Usage: $SCRIPT_NAME <subcommand> [options]"
+    echo ""
+    echo "Subcommands:"
+    echo "    install: install things"
+    echo "    switch:  switch things"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "$SCRIPT_NAME <subcommand> -h|--help"
+    echo ""
+}
+
+sub_install(){
+    install_$@
+}
+
+sub_switch(){
+    switch_$@
+}
+
+set -ex
+subcommand=$1
+case $subcommand in
+    "" | "-h" | "--help")
+        sub_help
+        ;;
+    *)
+        shift
+        sub_${subcommand} $@
+        if [ $? = 127 ]; then
+            echo "Error: '$subcommand' is not a known subcommand." >&2
+            echo "Run '$SCRIPT_NAME --help' for a list of known subcommands." >&2
+            exit 1
+        fi
+        ;;
+esac
