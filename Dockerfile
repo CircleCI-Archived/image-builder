@@ -73,6 +73,10 @@ RUN circleci-install scala
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
 RUN circleci-install qt
 
+# awscli
+ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
+RUN circleci-install awscli
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker
