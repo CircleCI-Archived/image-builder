@@ -84,7 +84,7 @@ RUN circleci-install docker_compose
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
 ARG TARGET_UNPRIVILEGED_LXC
-RUN if [ "n$TARGET_UNPRIVILEGED_LXC" = "ntrue" ]; then circleci-install circleci_docker; fi
+RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
 
 # Undivert upstart
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
