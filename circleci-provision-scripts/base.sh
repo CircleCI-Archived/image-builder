@@ -48,30 +48,21 @@ EOF
 
     # Install base packages
     cat << EOS | xargs apt-get install
-ack-grep
 autoconf
 bsdtar
 build-essential
 cmake
 curl
-emacs
-gdb
 gfortran
 git-core
-htop
 libav-tools
 liblapack-dev
-lsof
 lzop
 make
 mercurial
-nano
 parallel
 software-properties-common
-tmux
 unzip
-vim
-vnc4server
 zip
 EOS
 }
