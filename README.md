@@ -1,4 +1,4 @@
-# Basic CircleCI Image Builder
+# CircleCI Image Builder
 
 This demos a process to build CircleCI compatible containers for use in CircleCI Enterprise.
 We love feedback - please reach out!
@@ -32,11 +32,13 @@ RUN update-ca-certificates
 
 And then you can build it as you would typically do (i.e. `docker build -t my-container:0.3 .`).
 
+Another common tweak is removing packages/tools that you don't use. For example, if you don't have
+Android projects, you should remove the lines that install Android SDKs from the Dockerfile.
+We encourage you to install only what you need because having a smaller container image will give you many benefits such as faster container start up time.
+
 With this workflow, you will be basing your container on CircleCI published container image,
 speeding up creation process.  When CircleCI publishes new container image, you can rebuild
 your image and Docker will pick up the latest published version.
-
-**TODO**: Document available base image and document them
 
 ## Building a container with substantial changes
 
@@ -107,8 +109,6 @@ ubuntu=# ;; psql is running
 ubuntu=# ;; psql is running
 ubuntu-# \quit
 ```
-
-**TODO**: Offer automated testing, in a similar style to [Docker official image testing](https://github.com/docker-library/official-images/tree/master/test).
 
 # 3. Hooking up CircleCI to use the container
 
