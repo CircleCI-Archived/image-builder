@@ -24,6 +24,8 @@ ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postg
 RUN circleci-install postgres
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
+RUN circleci-install sysadmin
+RUN circleci-install devtools
 RUN circleci-install redis
 RUN circleci-install memcached
 

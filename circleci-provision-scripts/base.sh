@@ -47,10 +47,22 @@ EOF
     apt-get update -y
 
     # Install base packages
-    apt-get install \
-        build-essential cmake git-core mercurial zip gdb \
-        htop emacs vim nano lsof vnc4server tmux lzop \
-        build-essential htop emacs vim nano lsof tmux zip vnc4server \
-        curl unzip git-core ack-grep software-properties-common build-essential \
-        parallel libav-tools make autoconf liblapack-dev gfortran
+    cat << EOS | xargs apt-get install
+autoconf
+bsdtar
+build-essential
+cmake
+curl
+gfortran
+git-core
+libav-tools
+liblapack-dev
+lzop
+make
+mercurial
+parallel
+software-properties-common
+unzip
+zip
+EOS
 }
