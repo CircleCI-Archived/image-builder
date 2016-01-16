@@ -57,6 +57,7 @@ gfortran
 git-core
 libav-tools
 liblapack-dev
+libmysqld-dev
 lzop
 make
 mercurial
