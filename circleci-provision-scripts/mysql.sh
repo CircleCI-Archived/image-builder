@@ -8,7 +8,7 @@ function install_mysql_56() {
             echo mysql-community-server mysql-community-server/remove-test-db select false;
     } | debconf-set-selections
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.6
+    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.6 libmysqld-dev
 
     cat <<EOF >> /etc/mysql/my.cnf
 [client]
