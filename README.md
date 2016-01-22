@@ -125,8 +125,10 @@ we suggest exporting the container and uploading it to S3.
 
 Assuming you have the official aws-cli client, you can export the container and
 upload it to a bucket of your choice.  Ideally, it's located in the same region
-as the builders, and you can reuse the bucket that got created for the CCIE installation:
+as the builders, and you can reuse the bucket that got created for the CCIE installation
+':
 
+(_note: this uses the included `docker-export`, which is different than `docker export`_)
 ```bash
 $ ./docker-export example-image > example-image_0.0.1.tar.gz
 $ aws s3 cp ./example-image_0.0.1.tar.gz s3://circleci-enterprise-bucket/containers/example-image_0.0.1.tar.gz
