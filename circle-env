@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -ex
+
+SCRIPT_NAME=$(basename $0)
+
+if ! [[ -v CIRCLECI_USER ]]; then
+   CIRCLECI_USER=ubuntu
+fi
+
+if ! [[ -v SCRIPTS_PATH ]]; then
+   SCRIPTS_PATH=/opt/circleci-provision-scripts
+fi
+
+CIRCLECI_HOME=/home/${CIRCLECI_USER}
+CIRCLECI_RC=$CIRCLECI_HOME/.circlerc
+
+set -a
+for n in $SCRIPTS_PATH/*.sh
+do
+    source $n
+done
+
+sub_help(){
+    echo "Usage: $SCRIPT_NAME <subcommand> [options]"
+    echo ""
+    echo "Subcommands:"
+    echo "    install: install things"
+    echo "    switch:  switch things"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "$SCRIPT_NAME <subcommand> -h|--help"
+    echo ""
+}
+
+sub_install(){
+    install_$@
+}
+
+sub_switch(){
+    switch_$@
+}
+
+subcommand=$1
+case $subcommand in
+    "" | "-h" | "--help")
+        sub_help
+        ;;
+    *)
+        shift
+        sub_${subcommand} $@
+        if [ $? = 127 ]; then
+            echo "Error: '$subcommand' is not a known subcommand." >&2
+            echo "Run '$SCRIPT_NAME --help' for a list of known subcommands." >&2
+            exit 1
+        fi
+        ;;
+esac
