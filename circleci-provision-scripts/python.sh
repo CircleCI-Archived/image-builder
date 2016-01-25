@@ -10,15 +10,25 @@ function install_pyenv() {
     echo 'Installing pyenv'
     (cat <<'EOF'
 set -ex
-cd ~
-[[ -e .pyenv ]] || git clone https://github.com/yyuu/pyenv.git .pyenv
-echo 'export PATH=~/.pyenv/bin:$PATH' >> ~/.circlerc
+git clone https://github.com/yyuu/pyenv.git $CIRCLECI_PKG_DIR/.pyenv
+echo "export PYENV_ROOT=$CIRCLECI_PKG_DIR/.pyenv" >> ~/.circlerc
+echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> ~/.circlerc
 echo 'eval "$(pyenv init -)"' >> ~/.circlerc
 EOF
-    ) | as_user bash
+    ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
+
+    if [ -n "$USE_PRECOMPILE" ]; then
+    # Preparing for hooking up packaged Python into pyenv directories
+        (cat <<'EOF'
+set -ex
+mkdir $CIRCLECI_PKG_DIR/python
+ln -s $CIRCLECI_PKG_DIR/python $CIRCLECI_PKG_DIR/.pyenv/versions
+EOF
+        ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
+    fi
 }
 
-function install_python_version() {
+function install_python_version_pyenv() {
     PYTHON_VERSION=$1
     (cat <<'EOF'
 set -ex
@@ -26,17 +36,22 @@ source ~/.circlerc
 pyenv install $PYTHON_VERSION
 pyenv global $PYTHON_VERSION
 pyenv rehash
-
 pip install -U virtualenv
 pip install -U nose
 pip install -U pep8
-
 EOF
     ) | as_user PYTHON_VERSION=$PYTHON_VERSION bash
 }
 
+function install_python_version_precompile() {
+    local PYTHON_VERSION=$1
+
+    apt-get install circleci-python-$PYTHON_VERSION
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/python
+}
+
 function set_python_default() {
-    PYTHON_VERSION=$1
+    local PYTHON_VERSION=$1
     (cat <<'EOF'
 set -ex
 source ~/.circlerc
@@ -46,8 +61,18 @@ EOF
     ) | as_user PYTHON_VERSION=$PYTHON_VERSION bash
 }
 
+function install_python_version() {
+    local VERSION=$1
+
+    if [ -n "$USE_PRECOMPILE" ]; then
+        install_python_version_precompile $VERSION
+    else
+        install_python_version_pyenv $VERSION
+    fi
+}
+
 function install_python() {
-    VERSION=$1
-    [[ -e $CIRCLECI_HOME/.pyenv ]] || install_pyenv
+    local VERSION=$1
+    [[ -e $CIRCLECI_PKG_DIR/.pyenv ]] || install_pyenv
     install_python_version $1
 }
