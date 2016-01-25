@@ -15,47 +15,78 @@ function install_phpenv(){
     echo '>>> Installing php-env and php-build'
     (cat <<'EOF'
 set -ex
+
+# Because of https://github.com/phpenv/phpenv/issues/43 I can't install from git directly
 curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
-git clone git://github.com/php-build/php-build.git ~/.phpenv/plugins/php-build
-echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.circlerc
+mv ~/.phpenv $CIRCLECI_PKG_DIR
+git clone git://github.com/php-build/php-build.git $CIRCLECI_PKG_DIR/.phpenv/plugins/php-build
+echo "export PHPENV_ROOT=$CIRCLECI_PKG_DIR/.phpenv" >> ~/.circlerc
+echo 'export PATH=$PHPENV_ROOT/bin:$PATH' >> ~/.circlerc
 echo 'eval "$(phpenv init -)"' >> ~/.circlerc
 EOF
-    ) | as_user bash
+    ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
+
+    if [ -n "$USE_PRECOMPILE" ]; then
+        # Preparing for hooking up packaged Python into pyenv directories
+        (cat <<'EOF'
+set -ex
+mkdir $CIRCLECI_PKG_DIR/php
+ln -s $CIRCLECI_PKG_DIR/php $CIRCLECI_PKG_DIR/.phpenv/versions
+EOF
+        ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
+    fi
 
     rm -rf $PHP_TMP
 }
 
 function install_composer() {
-    curl -sS https://getcomposer.org/installer | php
+    curl -sS https://getcomposer.org/installer | /usr/bin/php
     mv composer.phar /usr/local/bin/composer
     chmod a+x /usr/local/bin/composer
     echo 'export PATH=~/.composer/vendor/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }
 
-function install_php_version() {
+function install_phpunit() {
+    wget https://phar.phpunit.de/phpunit.phar
+    chmod +x phpunit.phar
+    mv phpunit.phar /usr/local/bin/phpunit
+}
+
+function install_php_version_phpenv() {
     PHP_VERSION=$1
     echo ">>> Installing php $PHP_VERSION"
-    
+
     (cat <<'EOF'
 set -ex
 source ~/.circlerc
 phpenv install $PHP_VERSION
-rm -rf /tmp/php-build*
-phpenv global $PHP_VERSION
-composer global require --prefer-source phpunit/phpunit=5.*
-composer global require --prefer-source sebastian/phpcpd=*
-composer global require --prefer-source pdepend/pdepend=*
-composer global require --prefer-source squizlabs/php_codesniffer=*
-composer global require --prefer-source phpdocumentor/phpdocumentor=*
-composer global require --prefer-source phploc/phploc=*
 EOF
     ) | as_user PHP_VERSION=$PHP_VERSION bash
 }
 
-function install_php() {
-    VERSION=$1
-    [[ -e $CIRCLECI_HOME/.phpenv ]] || install_phpenv
-    type composer &>/dev/null || install_composer
+function install_php_version_precompile() {
+    local PHP_VERSION=$1
+    echo ">>> Installing php $PHP_VERSION"
 
+    apt-get install circleci-php-$PHP_VERSION
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/php
+}
+
+function install_php_version() {
+    local VERSION=$1
+
+    if [ -n "$USE_PRECOMPILE" ]; then
+        install_php_version_precompile $VERSION
+    else
+        install_php_version_phpenv $VERSION
+    fi
+}
+
+function install_php() {
+    local VERSION=$1
+
+    [[ -e $CIRCLECI_PKG_DIR/.phpenv ]] || install_phpenv
+    type composer &>/dev/null || install_composer
+    type phpunit &>/dev/null || install_phpunit
     install_php_version $VERSION
 }
