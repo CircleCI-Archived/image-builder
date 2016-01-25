@@ -8,6 +8,9 @@ function install_circleci_specific() {
     echo 'source ~/.bashrc &>/dev/null' >> ${CIRCLECI_HOME}/.bash_profile
     echo 'source ~/.circlerc &>/dev/null' > ${CIRCLECI_HOME}/.bashrc
 
+    chown $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.bash_profile
+    chown $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.bashrc
+
     (cat <<'EOF'
 export GIT_ASKPASS=echo
 export SSH_ASKPASS=false
