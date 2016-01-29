@@ -1,0 +1,25 @@
+{
+
+   "builders" : [
+      {
+         "type" : "lxc",
+         "export_path" : "container.tar.gz",
+         "template" : "ubuntu-cloud",
+         "template_arguments" : {
+            "arch" : "amd64",
+            "release" : "trusty"
+         }
+      }
+   ],
+   "provisioners" : [
+      {
+         "type" : "shell-local",
+         "command" : "./build.sh provision.sh"
+      },
+      {
+         "type": "shell",
+         "script": "provision.sh",
+	 "execute_command": "cd /home/ubuntu; sudo {{ .Vars }} bash {{ .Path }} ubuntu"
+      }
+   ]
+}
