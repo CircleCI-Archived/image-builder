@@ -62,6 +62,7 @@ make
 mercurial
 parallel
 software-properties-common
+sysv-rc-conf
 unzip
 zip
 EOS
