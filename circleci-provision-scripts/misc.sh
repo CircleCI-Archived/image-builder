@@ -8,6 +8,29 @@ function install_memcached() {
     apt-get install memcached libmemcache-dev
 }
 
+function install_rabbitmq() {
+    apt-get install rabbitmq-server
+}
+
+function install_neo4j() {
+    apt-get install neo4j
+
+    # Disable auth
+    sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.pr
+}
+
+function install_elasticsearch() {
+    local CONFIG_FILE=/etc/elasticsearch/elasticsearch.yml
+
+    pushd tmp
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb
+    dpkg -i elasticsearch-1.7.2.deb
+    popd
+
+    echo 'index.number_of_shards: 1' >> $CONFIG_FILE
+    echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
+}
+
 function install_sysadmin() {
     cat << EOS | xargs apt-get install
 htop
