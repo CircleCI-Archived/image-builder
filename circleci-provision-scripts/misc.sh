@@ -26,7 +26,7 @@ function install_neo4j() {
     apt-get install neo4j
 
     # Disable auth
-    sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.pr
+    sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
 
     disable_service neo4j
 }
