@@ -1,11 +1,48 @@
 #/bin/bash
 
+function disable_service() {
+    sysv-rc-conf $1 off
+}
+
 function install_redis() {
     apt-get install redis-server
+    disable_service redis-server
 }
 
 function install_memcached() {
     apt-get install memcached libmemcache-dev
+    disable_service memcached
+}
+
+function install_rabbitmq() {
+    apt-get install rabbitmq-server
+    disable_service rabbitmq-server
+}
+
+function install_neo4j() {
+    wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
+    echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
+    apt-get update
+    apt-get install neo4j
+
+    # Disable auth
+    sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
+
+    disable_service neo4j
+}
+
+function install_elasticsearch() {
+    local CONFIG_FILE=/etc/elasticsearch/elasticsearch.yml
+
+    pushd tmp
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb
+    dpkg -i elasticsearch-1.7.2.deb
+    popd
+
+    echo 'index.number_of_shards: 1' >> $CONFIG_FILE
+    echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
+
+    disable_service elasticsearch
 }
 
 function install_sysadmin() {

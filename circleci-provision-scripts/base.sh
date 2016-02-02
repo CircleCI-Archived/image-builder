@@ -57,11 +57,13 @@ gfortran
 git-core
 libav-tools
 liblapack-dev
+libmysqld-dev
 lzop
 make
 mercurial
 parallel
 software-properties-common
+sysv-rc-conf
 unzip
 zip
 EOS
