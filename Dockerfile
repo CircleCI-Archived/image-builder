@@ -29,6 +29,9 @@ RUN circleci-install sysadmin
 RUN circleci-install devtools
 RUN circleci-install redis
 RUN circleci-install memcached
+RUN circleci-install rabbitmq
+RUN circleci-install neo4j
+RUN circleci-install elasticsearch
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
