@@ -18,63 +18,27 @@ RUN circleci-install base_requirements  && circleci-install circleci_specific
 ADD circleci-provision-scripts/mysql.sh /opt/circleci-provision-scripts/mysql.sh
 RUN circleci-install mysql_56
 
-ADD circleci-provision-scripts/mongo.sh /opt/circleci-provision-scripts/mongo.sh
-RUN circleci-install mongo
-
-ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
-RUN circleci-install postgres
-
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN circleci-install sysadmin
 RUN circleci-install devtools
 RUN circleci-install redis
-RUN circleci-install memcached
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
-RUN circleci-install firefox
+RUN circleci-install firefox_version 32.0
 
 ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
 RUN circleci-install chrome
 
-ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
-RUN circleci-install phantomjs
-
-# Android
-ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
-RUN circleci-install android_sdk platform-tools
-RUN circleci-install android_sdk android-22
-RUN circleci-install android_sdk android-23
-
 # Languages
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
-RUN circleci-install python 3.5.1
-
-ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
-RUN circleci-install nodejs v5.1.1
+RUN circleci-install python 2.7.6
 
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
 RUN circleci-install java
 
-ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.5.2
-
-ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
-RUN circleci-install ruby 2.2.2
-
-ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
-RUN circleci-install php 5.6.16
-RUN circleci-install php 7.0.0
-
-ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
-RUN circleci-install clojure
-
-ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
-RUN circleci-install scala
-
-# Qt
-ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
-RUN circleci-install qt
+ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
+RUN circleci-install nodejs v5.1.1
 
 # awscli
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
