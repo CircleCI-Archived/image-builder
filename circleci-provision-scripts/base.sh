@@ -55,6 +55,7 @@ cmake
 curl
 gfortran
 git-core
+imagemagick
 libav-tools
 liblapack-dev
 lzop
