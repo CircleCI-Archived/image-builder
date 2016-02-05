@@ -3,6 +3,8 @@
 function install_rvm() {
     echo '>>> Installing RVM and Ruby'
 
+    apt-get install libmagickwand-dev
+
     as_user gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     curl -sSL https://get.rvm.io | as_user bash -s -- --path $CIRCLECI_PKG_DIR/.rvm
 
@@ -70,6 +72,15 @@ function install_ruby_version_precompile() {
 
     apt-get install circleci-ruby-$INSTALL_RUBY_VERSION
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/
+
+    (cat <<'EOF'
+set -ex
+echo Installing Ruby version: $INSTALL_RUBY_VERSION
+source ~/.circlerc
+rvm use $INSTALL_RUBY_VERSION
+gem install bundler
+EOF
+    ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION bash
 }
 
 function install_ruby_version() {
