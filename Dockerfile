@@ -25,7 +25,7 @@ RUN circleci-install redis
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
-RUN circleci-install firefox_version 32.0
+RUN circleci-install firefox_version 42.0
 
 ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
 RUN circleci-install chrome
@@ -38,7 +38,7 @@ ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
 RUN circleci-install java
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
-RUN circleci-install nodejs v5.1.1
+RUN circleci-install nodejs v0.12.7
 
 # awscli
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
@@ -48,10 +48,7 @@ RUN circleci-install awscli
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker
 RUN circleci-install docker_compose
-
-# When running in unprivileged containers, need to use CircleCI Docker fork
-ARG TARGET_UNPRIVILEGED_LXC
-RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
+RUN circleci-install circleci_docker
 
 # Undivert upstart
 # You shouldn't change the line unless you understad the consequence
