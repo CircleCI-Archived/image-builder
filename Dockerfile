@@ -39,6 +39,7 @@ RUN circleci-install java
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
 RUN circleci-install nodejs v0.12.7
+RUN su ubuntu -c 'source ~/.circlerc && npm install -g npm@2.11.3'
 
 # awscli
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
