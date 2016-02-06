@@ -45,6 +45,13 @@ RUN su ubuntu -c 'source ~/.circlerc && npm install -g npm@2.11.3'
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
 RUN circleci-install awscli
 
+# random things they expect
+RUN apt-get install -y swig liblua5.1 unzip imagemagick poppler-utils
+RUN apt-get install -y libffi-dev libfontconfig1-dev libfreetype6 libgif4 libicu-dev \
+  libjpeg-dev liblua5.1 libmagickwand-dev libmysqlclient-dev libncurses5-dev \
+  libncurses5-dev libpng-dev libsqlite3-dev libssl-dev libx11-dev libxext-dev \
+  libxslt1-dev xfonts-100dpi xfonts-75dpi xfonts-base xfonts-cyrillic xfonts-scalable
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker
