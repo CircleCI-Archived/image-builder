@@ -118,6 +118,7 @@ RUN circleci-install docker
 RUN circleci-install docker_compose
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
+RUN echo "cache busting"
 ARG TARGET_UNPRIVILEGED_LXC
 RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
 
