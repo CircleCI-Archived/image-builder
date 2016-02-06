@@ -43,7 +43,7 @@ test:
 
 deployment:
   release:
-    tag: /v.*/
+    tag: /\d\d\.\d\d\.\d\d/
     commands:
       - ./docker-export circleci/build-image:scratch-unprivileged | aws s3 cp - s3://circle-downloads/trusty-beta-${CIRCLE_TAG}.tar.gz --acl public-read:
           timeout: 3600
