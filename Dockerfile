@@ -23,6 +23,9 @@ RUN circleci-install mongo
 
 ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
 RUN circleci-install postgres
+# We only install in dotcom image.
+# TODO: handle better when using seperate Dockerfile for enterprise and dotcom
+RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install postgres_ext_postgis; fi
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN circleci-install sysadmin
