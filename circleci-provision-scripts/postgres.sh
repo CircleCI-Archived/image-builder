@@ -1,5 +1,31 @@
 #!/bin/bash
 
+function install_postgres_ext_postgis() {
+    local VERSION=3.5.0
+    local FILE=geos-${VERSION}.tar.bz2
+    local DIR=geos-${VERSION}
+    local URL=http://download.osgeo.org/geos/${FILE}
+
+    apt-get install ruby-dev swig swig2.0 postgis postgresql-9.4-postgis-2.1
+
+    # Install GEOS
+    pushd /tmp
+    wget $URL
+    tar -jxf $FILE
+    cd $DIR
+    ./configure --enable-ruby "--prefix=/usr"
+    make &> "/tmp/goes.log"
+    make install
+    popd
+
+    rm -rf /tmp/*
+
+    export VERSION=3.5.0
+    export FILE=geos-${VERSION}.tar.bz2
+    export DIR=geos-${VERSION}
+    export URL=http://download.osgeo.org/geos/${FILE}
+}
+
 function install_postgres() {
     POSTGRES_VERSION=9.4
 

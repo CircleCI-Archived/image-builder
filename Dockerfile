@@ -23,6 +23,7 @@ RUN circleci-install mongo
 
 ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
 RUN circleci-install postgres
+RUN circleci-install postgres_ext_postgis
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN circleci-install sysadmin
