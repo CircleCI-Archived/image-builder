@@ -57,6 +57,7 @@ gfortran
 git-core
 imagemagick
 libav-tools
+libicu-dev
 liblapack-dev
 lzop
 make
