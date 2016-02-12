@@ -39,7 +39,7 @@ RUN circleci-install java
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
 RUN circleci-install nodejs v0.12.7
-RUN su ubuntu -c 'source ~/.circlerc && npm install -g npm@2.11.3'
+RUN su ubuntu -c 'source ~/.circlerc && npm install -g npm@2.11.3 bower ember ember-cli'
 
 # awscli
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
@@ -51,6 +51,15 @@ RUN apt-get install -y libffi-dev libfontconfig1-dev libfreetype6 libgif4 libicu
   libjpeg-dev liblua5.1 libmagickwand-dev libmysqlclient-dev libncurses5-dev \
   libncurses5-dev libpng-dev libsqlite3-dev libssl-dev libx11-dev libxext-dev \
   libxslt1-dev xfonts-100dpi xfonts-75dpi xfonts-base xfonts-cyrillic xfonts-scalable
+# symlinks from lev's notes:
+RUN ln -s /usr/lib/x86_64-linux-gnu/liblua5.1.so /usr/lib/x86_64-linux-gnu/liblua51.so
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+
+RUN circleci-install prince
+RUN circleci-install closure
+
+ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
+RUN circleci-install phantomjs
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
