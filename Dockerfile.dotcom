@@ -1,4 +1,4 @@
-FROM circleci/build-image:common
+FROM circleci/build-image:scratch
 
 RUN echo "this is dotcom build"
 RUN echo "fffffffffffff"
