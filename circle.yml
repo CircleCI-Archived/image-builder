@@ -17,9 +17,9 @@ test:
   override:
     - |
         if build_target "enterprise"; then
-          make dotcom;
-        elif build_target "dotcom"; then
           make enterprise;
+        elif build_target "dotcom"; then
+          make dotcom;
         else
           echo "<<<<<< NO BUILD TARGET SPECIFIED >>>>>>>";
         fi
