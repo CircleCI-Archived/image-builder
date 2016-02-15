@@ -20,8 +20,8 @@ test:
           make dotcom;
         elif build_target "dotcom"; then
           make enterprise;
-	else
-	  echo "<<<<<< NO BUILD TARGET SPECIFIED >>>>>>>";
+        else
+          echo "<<<<<< NO BUILD TARGET SPECIFIED >>>>>>>";
         fi
 
 deployment:
