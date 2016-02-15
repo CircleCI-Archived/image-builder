@@ -1,6 +1,7 @@
 FROM circleci/build-image:scratch
 
 RUN echo "this is dotcom build"
+RUN echo "hoooooooo"
 RUN echo "fffffffffffff"
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
