@@ -13,7 +13,7 @@ dependencies:
 test:
   override:
     - make common
-    - make dotocom
+    - make dotcom
     - make enterprise
 
 deployment:
