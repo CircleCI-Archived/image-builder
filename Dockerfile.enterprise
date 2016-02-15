@@ -1,6 +1,7 @@
 FROM circleci/build-image:common
 
 RUN echo "this is enterprise image"
+RUN echo "zzzzzzzzzzzzzz"
 
 # Undivert upstart
 # You shouldn't change the line unless you understad the consequence

@@ -6,17 +6,17 @@ IMAGE_ENTERPRISE := circleci/build-image:enterprise
 
 default: dotcom enterprise
 
-pull:
-	docker pull circleci/build-image:scratch || true
-
-common: pull
+common:
+	docker pull $(IMAGE_COMMON) || true
 	docker build -f Dockerfile.common -t $(IMAGE_COMMON) .
 	docker push $(IMAGE_COMMON)
 
 dotcom: common
+	docker pull $(IMAGE_DOTCOM) || true
 	docker build -f Dockerfile.dotcom -t $(IMAGE_DOTCOM) .
 	docker push $(IMAGE_DOTCOM)
 
 enterprise: common
+	docker pull $(IMAGE_ENTERPRISE) || true
 	docker build -f Dockerfile.enterprise -t $(IMAGE_ENTERPRISE) .
 	docker push $(IMAGE_ENTERPRISE)

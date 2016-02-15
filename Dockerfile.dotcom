@@ -1,6 +1,7 @@
 FROM circleci/build-image:common
 
 RUN echo "this is dotcom build"
+RUN echo "fffffffffffff"
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
 ARG TARGET_UNPRIVILEGED_LXC
