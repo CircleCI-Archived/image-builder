@@ -1,0 +1,55 @@
+FROM circleci/ubuntu-server:trusty-latest
+
+# Avoid any installation scripts interact with upstart
+# So divert now, but undivert at the end
+# You shouldn't change the line unless you understad the consequence
+RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
+	&& chmod +x /usr/sbin/policy-rc.d \
+        && dpkg-divert --local --rename --add /sbin/initctl \
+        && ln -s /bin/true /sbin/initctl
+
+ADD circleci-install /usr/local/bin/circleci-install
+
+ADD circleci-provision-scripts/base.sh /opt/circleci-provision-scripts/base.sh
+ADD circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/circleci-specific.sh
+RUN circleci-install base_requirements  && circleci-install circleci_specific
+
+# Databases
+ADD circleci-provision-scripts/mysql.sh /opt/circleci-provision-scripts/mysql.sh
+RUN circleci-install mysql_56
+
+ADD circleci-provision-scripts/mongo.sh /opt/circleci-provision-scripts/mongo.sh
+RUN circleci-install mongo
+
+ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
+RUN circleci-install postgres
+# We only install in dotcom image.
+# TODO: handle better when using seperate Dockerfile for enterprise and dotcom
+RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install postgres_ext_postgis; fi
+
+ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
+RUN circleci-install sysadmin
+RUN circleci-install devtools
+RUN circleci-install redis
+RUN circleci-install memcached
+RUN circleci-install rabbitmq
+RUN circleci-install neo4j
+RUN circleci-install elasticsearch
+
+# Browsers
+ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
+RUN circleci-install firefox
+
+ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
+RUN circleci-install chrome
+
+ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
+RUN circleci-install phantomjs
+
+# Qt
+ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
+RUN circleci-install qt
+
+# awscli
+ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
+RUN circleci-install awscli

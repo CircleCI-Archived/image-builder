@@ -1,0 +1,9 @@
+FROM circleci/build-image:common
+
+RUN echo "this is enterprise image"
+
+# Undivert upstart
+# You shouldn't change the line unless you understad the consequence
+RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
+
+LABEL circleci.user="ubuntu"

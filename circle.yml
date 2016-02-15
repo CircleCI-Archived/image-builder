@@ -12,34 +12,7 @@ dependencies:
 
 test:
   override:
-    # Scratch is the latest cache
-    - docker pull circleci/build-image:scratch || true:
-        timeout: 3600
-
-    - docker build -t circleci/build-image:scratch .:
-        timeout: 3600
-
-    - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
-
-    - docker push circleci/build-image:scratch:
-        timeout: 3600
-
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}
-
-    # Build a slightly modified image for unprivileged lxc
-    - docker pull circleci/build-image:scratch-unprivileged || true:
-        timeout: 3600
-
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg use_precompile=true -t circleci/build-image:scratch-unprivileged .:
-        timeout: 3600
-
-    - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
-
-    - docker push circleci/build-image:scratch-unprivileged:
-        timeout: 3600
-
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}-unprivileged:
-        timeout: 3600
+    - make
 
 deployment:
   release:
