@@ -3,7 +3,7 @@ machine:
     IMAGE_TAG: 0.0.${CIRCLE_BUILD_NUM}
 
   pre:
-    echo 'build_target() { git show | grep $1 > /dev/null; }' >> ~/.circlerc
+    - echo 'build_target() { git show | grep $1 > /dev/null; }' >> ~/.circlerc
 
   post:
     - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
