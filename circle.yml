@@ -12,7 +12,9 @@ dependencies:
 
 test:
   override:
-    - make
+    - make common
+    - make dotocom
+    - make enterprise
 
 deployment:
   release:
