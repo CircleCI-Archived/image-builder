@@ -21,7 +21,7 @@ test:
         elif build_target "dotcom"; then
           make enterprise;
 	else
-	  echo "<<<<<< NO BUILD TARGET SPECIFIED >>>>>>>"
+	  echo "<<<<<< NO BUILD TARGET SPECIFIED >>>>>>>";
         fi
 
 deployment:
