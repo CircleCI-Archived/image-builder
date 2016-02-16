@@ -58,7 +58,7 @@ ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.
 RUN circleci-install awscli
 
 # Languages
-ARG use_precompile
+ARG use_precompile=true
 ENV USE_PRECOMPILE $use_precompile
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 
