@@ -29,6 +29,7 @@ function install_neo4j() {
     sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
 
     disable_service neo4j
+    disable_service neo4j-service
 }
 
 function install_elasticsearch() {
