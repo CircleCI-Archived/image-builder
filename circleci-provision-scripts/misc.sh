@@ -1,22 +1,15 @@
 #/bin/bash
 
-function disable_service() {
-    sysv-rc-conf $1 off
-}
-
 function install_redis() {
     apt-get install redis-server
-    disable_service redis-server
 }
 
 function install_memcached() {
     apt-get install memcached libmemcache-dev
-    disable_service memcached
 }
 
 function install_rabbitmq() {
     apt-get install rabbitmq-server
-    disable_service rabbitmq-server
 }
 
 function install_neo4j() {
@@ -27,9 +20,6 @@ function install_neo4j() {
 
     # Disable auth
     sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
-
-    disable_service neo4j
-    disable_service neo4j-service
 }
 
 function install_elasticsearch() {
@@ -42,8 +32,6 @@ function install_elasticsearch() {
 
     echo 'index.number_of_shards: 1' >> $CONFIG_FILE
     echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
-
-    disable_service elasticsearch
 }
 
 function install_sysadmin() {

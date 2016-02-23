@@ -114,6 +114,15 @@ RUN circleci-install clojure
 ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
 
+# Dislabe services by default
+RUN sysv-rc-conf apache2 off
+RUN sysv-rc-conf redis-server off
+RUN sysv-rc-conf memcached off
+RUN sysv-rc-conf rabbitmq-server off
+RUN sysv-rc-conf neo4j off
+RUN sysv-rc-conf neo4j-service off
+RUN sysv-rc-conf elasticsearch off
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker
