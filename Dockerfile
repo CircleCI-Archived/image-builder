@@ -92,7 +92,7 @@ ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
 RUN circleci-install java
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.5.2
+RUN circleci-install golang 1.5.3
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.0.0-p647
