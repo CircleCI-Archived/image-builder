@@ -33,6 +33,7 @@ RUN circleci-install memcached
 RUN circleci-install rabbitmq
 RUN circleci-install neo4j
 RUN circleci-install elasticsearch
+RUN circleci-install beanstalkd
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
@@ -122,6 +123,7 @@ RUN sysv-rc-conf rabbitmq-server off
 RUN sysv-rc-conf neo4j off
 RUN sysv-rc-conf neo4j-service off
 RUN sysv-rc-conf elasticsearch off
+RUN sysv-rc-conf beanstalkd off
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh

@@ -12,6 +12,10 @@ function install_rabbitmq() {
     apt-get install rabbitmq-server
 }
 
+function install_beanstalkd() {
+    apt-get install beanstalkd
+}
+
 function install_neo4j() {
     wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
     echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
@@ -33,6 +37,7 @@ function install_elasticsearch() {
     echo 'index.number_of_shards: 1' >> $CONFIG_FILE
     echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
 }
+
 
 function install_sysadmin() {
     cat << EOS | xargs apt-get install
