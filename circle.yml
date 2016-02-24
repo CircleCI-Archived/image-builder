@@ -45,5 +45,9 @@ deployment:
   release:
     tag: /\d\d\.\d\d\.\d\d/
     commands:
+      - docker tag circleci/build-image:scratch circleci/trusty-dotcom:${IMAGE_TAG}
+      - docker tag circleci/build-image:scratch-unprivileged circleci/trusty-enterprise:${IMAGE_TAG}
+      - docker push circleci/trusty-dotcom:${IMAGE_TAG}
+      - docker push circleci/trusty-enterprise:${IMAGE_TAG}
       - ./docker-export circleci/build-image:scratch-unprivileged | aws s3 cp - s3://circle-downloads/trusty-beta-${CIRCLE_TAG}.tar.gz --acl public-read:
           timeout: 3600
