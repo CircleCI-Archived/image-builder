@@ -63,6 +63,7 @@ lzop
 make
 mercurial
 parallel
+protobuf-compiler
 software-properties-common
 sysv-rc-conf
 unzip
