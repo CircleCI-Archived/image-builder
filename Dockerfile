@@ -139,4 +139,7 @@ RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_d
 # You shouldn't change the line unless you understad the consequence
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
 
+# Add rest of provisioning files -- add at end to avoid cache invalidation
+ADD circleci-provision-scripts /opt/circleci-provision-scripts
+
 LABEL circleci.user="ubuntu"
