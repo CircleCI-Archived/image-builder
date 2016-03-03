@@ -54,7 +54,7 @@ build-essential
 cmake
 curl
 gfortran
-git-core
+git
 imagemagick
 libav-tools
 libicu-dev

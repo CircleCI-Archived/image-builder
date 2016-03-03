@@ -57,3 +57,14 @@ vim
 vnc4server
 EOS
 }
+
+function install_closure() {
+    curl -L -o /tmp/closure.zip https://dl.google.com/closure-compiler/compiler-latest.zip
+    unzip -n /tmp/closure.zip
+}
+
+function install_prince() {
+    curl -L -o /tmp/prince.zip http://www.princexml.com/download/prince_9.0-5_ubuntu14.04_amd64.deb
+    dpkg -i /tmp/prince.zip
+    ln -s /usr/bin/prince /usr/local/bin/prince
+}
