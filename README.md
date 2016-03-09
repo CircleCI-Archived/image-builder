@@ -88,7 +88,7 @@ host $ docker run -d \
 5b43b9fd24dd046a389dc2bbc2e84925c011910cfdd2de6cf638dd245f074831
 host $ # Now ssh into the container.  This depends whether you are using Docker natively or through docker-machine
 host $ # With native docker
-host $ CONTAINER_SSH_PORT=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}')
+host $ CONTAINER_SSH_PORT=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}' example-image-tester)
 host $ # If using docker-machine, need to connect to the docker-machine ip address
 host $ CONTAINER_SSH_HOST=$(docker-machine ip default) # or set to 127.0.0.1 if using Docker natively on a Linux box
 host $
