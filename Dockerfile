@@ -2,7 +2,7 @@ FROM circleci/ubuntu-server:trusty-latest
 
 # Avoid any installation scripts interact with upstart
 # So divert now, but undivert at the end
-# You shouldn't change the line unless you understad the consequence
+# You shouldn't change the line unless you understand the consequence
 RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
 	&& chmod +x /usr/sbin/policy-rc.d \
         && dpkg-divert --local --rename --add /sbin/initctl \
