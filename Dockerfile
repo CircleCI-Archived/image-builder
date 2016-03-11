@@ -84,6 +84,7 @@ RUN circleci-install nodejs 4.3.0
 RUN circleci-install nodejs 5.0.0
 RUN circleci-install nodejs 5.1.1
 RUN circleci-install nodejs 5.2.0
+RUN circleci-install nodejs 5.3.0
 RUN circleci-install nodejs 5.4.1
 RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
