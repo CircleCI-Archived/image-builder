@@ -87,6 +87,8 @@ RUN circleci-install nodejs 5.2.0
 RUN circleci-install nodejs 5.4.1
 RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
+RUN circleci-install nodejs 5.7.0
+
 
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; nvm alias default 4.2.6"
