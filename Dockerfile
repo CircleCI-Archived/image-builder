@@ -66,6 +66,7 @@ RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.
 
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
 RUN circleci-install python 2.7.11
+RUN circleci-install python 2.7.9
 RUN circleci-install python 3.1.5
 RUN circleci-install python 3.3.6
 RUN circleci-install python 3.5.1
