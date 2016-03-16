@@ -104,7 +104,7 @@ RUN circleci-install golang 1.6
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.0.0-p647
-RUN circleci-install ruby 2.1.6
+# TODO: RUN circleci-install ruby 2.1.6
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.2.4
 RUN circleci-install ruby 2.3.0
@@ -114,7 +114,7 @@ RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; rvm use 2.2.4 --default"
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.5.31
 RUN circleci-install php 5.6.17
-# RUN circleci-install php 7.0.1 ~ not working at present
+# TODO: RUN circleci-install php 7.0.1 ~ not working at presentq
 RUN circleci-install php 7.0.2
 RUN circleci-install php 7.0.3
 # TODO: make this more robust
