@@ -114,6 +114,7 @@ ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.5.31
 RUN circleci-install php 5.6.17
 RUN circleci-install php 7.0.2
+RUN circleci-install php 7.0.3
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; phpenv global 5.6.17"
 
