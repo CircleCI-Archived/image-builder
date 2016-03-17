@@ -68,7 +68,7 @@ function install_php_version_precompile() {
     local PHP_VERSION=$1
     echo ">>> Installing php $PHP_VERSION"
 
-    apt-get install circleci-php-$PHP_VERSION
+    apt-get update; apt-get install circleci-php-$PHP_VERSION
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/php
 }
 

@@ -65,7 +65,9 @@ ENV USE_PRECOMPILE $use_precompile
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
+# RUN circleci-install python 2.7.10
 RUN circleci-install python 2.7.11
+RUN circleci-install python 2.7.9
 RUN circleci-install python 3.1.5
 RUN circleci-install python 3.3.6
 RUN circleci-install python 3.5.1
@@ -84,9 +86,12 @@ RUN circleci-install nodejs 4.3.0
 RUN circleci-install nodejs 5.0.0
 RUN circleci-install nodejs 5.1.1
 RUN circleci-install nodejs 5.2.0
+RUN circleci-install nodejs 5.3.0
 RUN circleci-install nodejs 5.4.1
 RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
+RUN circleci-install nodejs 5.7.0
+
 
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; nvm alias default 4.2.6"
@@ -99,6 +104,7 @@ RUN circleci-install golang 1.6
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.0.0-p647
+# TODO: RUN circleci-install ruby 2.1.6
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.2.4
 RUN circleci-install ruby 2.3.0
@@ -108,7 +114,9 @@ RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; rvm use 2.2.4 --default"
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.5.31
 RUN circleci-install php 5.6.17
+# TODO: RUN circleci-install php 7.0.1 ~ not working at presentq
 RUN circleci-install php 7.0.2
+RUN circleci-install php 7.0.3
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; phpenv global 5.6.17"
 
