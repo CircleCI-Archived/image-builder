@@ -18,7 +18,7 @@ use our published containers as your base.
 For doing so, you can create a Dockerfile with the appropriate customizations:
 
 ```
-FROM circleci/ubuntu-server:trusty-latest
+FROM circleci/build-image:latest
 
 # You can use some basic tools, using the `circleci-install` helper function
 # for tools, CircleCI supports
