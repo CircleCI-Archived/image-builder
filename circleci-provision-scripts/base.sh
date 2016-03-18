@@ -45,9 +45,12 @@ EOF
     export DEBIAN_FRONTEND=noninteractive
 
     apt-get update -y
+    apt-get install -y software-properties-common
+    apt-get update -y
+    apt-add-repository ppa:git-core/ppa
 
     # Install base packages
-    cat << EOS | xargs apt-get install
+    apt-get install $(tr '\n' ' ' <<EOS
 autoconf
 bsdtar
 build-essential
@@ -64,9 +67,9 @@ make
 mercurial
 parallel
 protobuf-compiler
-software-properties-common
 sysv-rc-conf
 unzip
 zip
 EOS
+)
 }
