@@ -46,8 +46,9 @@ EOF
 
     apt-get update -y
     apt-get install -y software-properties-common
-    apt-get update -y
     apt-add-repository ppa:git-core/ppa
+    apt-get update -y
+
 
     # Install base packages
     apt-get install $(tr '\n' ' ' <<EOS
