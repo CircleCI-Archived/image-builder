@@ -50,7 +50,7 @@ EOF
     apt-add-repository ppa:git-core/ppa
 
     # Install base packages
-    cat << EOS | xargs apt-get install
+    apt-get install $(tr '\n' ' ' <<EOS
 autoconf
 bsdtar
 build-essential
@@ -71,4 +71,5 @@ sysv-rc-conf
 unzip
 zip
 EOS
+)
 }

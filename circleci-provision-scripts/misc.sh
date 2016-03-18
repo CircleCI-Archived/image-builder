@@ -40,13 +40,11 @@ function install_elasticsearch() {
 
 
 function install_sysadmin() {
-    cat << EOS | xargs apt-get install
-htop
-EOS
+    apt-get install htop
 }
 
 function install_devtools() {
-    cat << EOS | xargs apt-get install
+    apt-get install $(tr '\n' ' ' <<EOS
 ack-grep
 emacs
 gdb
@@ -56,6 +54,7 @@ tmux
 vim
 vnc4server
 EOS
+)
 }
 
 function install_closure() {
