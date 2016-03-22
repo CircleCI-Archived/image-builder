@@ -2,6 +2,9 @@ machine:
   environment:
     IMAGE_TAG: 0.0.${CIRCLE_BUILD_NUM}
 
+  pre:
+    - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
+
   post:
     - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
     - sudo service docker start
@@ -16,7 +19,7 @@ test:
     - docker pull circleci/build-image:scratch || true:
         timeout: 3600
 
-    - docker build -t circleci/build-image:scratch .:
+    - if $(no_cache); then docker build --no-cache -t circleci/build-image:scratch .; else docker build -t circleci/build-image:scratch .; fi:
         timeout: 3600
 
     - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
@@ -30,7 +33,7 @@ test:
     - docker pull circleci/build-image:scratch-unprivileged || true:
         timeout: 3600
 
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .:
+    - if $(no_cache); then docker build --no-cache --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .; else docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .; fi:
         timeout: 3600
 
     - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
