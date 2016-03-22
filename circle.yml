@@ -19,8 +19,14 @@ test:
     - docker pull circleci/build-image:scratch || true:
         timeout: 3600
 
-    - if $(no_cache); then docker build --no-cache -t circleci/build-image:scratch .; else docker build -t circleci/build-image:scratch .; fi:
-        timeout: 3600
+    - ? |
+        if $(no_cache); then
+          docker build --no-cache -t circleci/build-image:scratch .;
+        else
+          docker build -t circleci/build-image:scratch .;
+        fi
+        :
+          timeout: 3600
 
     - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
 
@@ -33,8 +39,15 @@ test:
     - docker pull circleci/build-image:scratch-unprivileged || true:
         timeout: 3600
 
-    - if $(no_cache); then docker build --no-cache --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .; else docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .; fi:
-        timeout: 3600
+    - ? |
+        if $(no_cache); then
+          docker build --no-cache --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .;
+        else
+          docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .;
+        fi
+        :
+          timeout: 3600
+
 
     - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
 
