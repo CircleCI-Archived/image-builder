@@ -65,11 +65,20 @@ ENV USE_PRECOMPILE $use_precompile
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
-# RUN circleci-install python 2.7.10
-RUN circleci-install python 2.7.11
 RUN circleci-install python 2.7.9
-RUN circleci-install python 3.1.5
+RUN circleci-install python 2.7.10
+RUN circleci-install python 2.7.11
+RUN circleci-install python 3.1.3
+RUN circleci-install python 3.1.4
+RUN circleci-install python 3.2.4
+RUN circleci-install python 3.2.5
+RUN circleci-install python 3.2.6
+RUN circleci-install python 3.3.4
+RUN circleci-install python 3.3.5
 RUN circleci-install python 3.3.6
+RUN circleci-install python 3.4.3
+RUN circleci-install python 3.4.4
+RUN circleci-install python 3.5.0
 RUN circleci-install python 3.5.1
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
