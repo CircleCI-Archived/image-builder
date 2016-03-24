@@ -117,6 +117,7 @@ RUN circleci-install ruby 2.1.6
 RUN circleci-install ruby 2.1.7
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.2.2
+RUN circleci-install ruby 2.2.3
 RUN circleci-install ruby 2.2.4
 RUN circleci-install ruby 2.3.0
 # TODO: make this more robust
