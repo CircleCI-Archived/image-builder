@@ -47,6 +47,18 @@ ln -s $CIRCLECI_PKG_DIR/ruby $CIRCLECI_PKG_DIR/.rvm/rubies
 EOF
     ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
     fi
+
+    # Install bundler to @global gemset
+    # Otherwise bundler is missing when not pre-installed version of ruby is used
+    # because `rvm install` doesn't take care of bundler installation
+    local BUNDLER_VERSION=1.11.2
+
+    (cat <<'EOF'
+set -ex
+source ~/.circlerc
+rvm @global do gem install bundler -v $BUNDLER_VERSION
+EOF
+    ) | as_user BUNDLER_VERSION=$BUNDLER_VERSION bash
 }
 
 function install_ruby_version_rvm() {
