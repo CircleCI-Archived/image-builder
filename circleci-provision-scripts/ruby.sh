@@ -53,12 +53,7 @@ EOF
     # because `rvm install` doesn't take care of bundler installation
     local BUNDLER_VERSION=1.11.2
 
-    (cat <<'EOF'
-set -ex
-source ~/.circlerc
-rvm @global do gem install bundler -v $BUNDLER_VERSION
-EOF
-    ) | as_user BUNDLER_VERSION=$BUNDLER_VERSION bash
+    rvm @global do gem install bundler -v $BUNDLER_VERSION
 }
 
 function install_ruby_version_rvm() {
