@@ -36,9 +36,6 @@ test:
     - docker push circleci/build-image:trusty-${IMAGE_TAG}
 
     # Build a slightly modified image for unprivileged lxc
-    - docker pull circleci/build-image:scratch-unprivileged || true:
-        timeout: 3600
-
     - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .:
         timeout: 3600
 
