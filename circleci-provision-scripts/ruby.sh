@@ -79,35 +79,42 @@ EOF
 }
 
 function install_ruby_version_precompile() {
-    local INSTALL_RUBY_VERSION=$1
-    echo ">>> Installing Ruby $INSTALL_RUBY_VERSION"
+    local INSTALL_RUBY_VERSIONS="$@"
+    local INSTALL_ARGS=""
 
-    apt-get install circleci-ruby-$INSTALL_RUBY_VERSION
+    for v in $INSTALL_RUBY_VERSIONS; do
+	INSTALL_ARGS="$INSTALL_ARGS circleci-ruby-$v"
+    done
+
+    echo ">>> Installing Ruby $INSTALL_RUBY_VERSIONS"
+
+    apt-get install $INSTALL_ARGS
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/
 
     (cat <<'EOF'
-set -ex
-echo Installing Ruby version: $INSTALL_RUBY_VERSION
+for v in $INSTALL_RUBY_VERSIONS; do
+echo Installing Ruby version: $v
 source ~/.circlerc
-rvm use $INSTALL_RUBY_VERSION
+rvm use $v
 gem install bundler
+done
 EOF
-    ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION bash
+    ) | as_user INSTALL_RUBY_VERSIONS=$INSTALL_RUBY_VERSIONS bash
 }
 
 function install_ruby_version() {
-    local VERSION=$1
+    local VERSIONS="$@"
 
     if [ -n "$USE_PRECOMPILE" ]; then
-        install_ruby_version_precompile $VERSION
+        install_ruby_version_precompile $VERSIONS
     else
-        install_ruby_version_rvm $VERSION
+        install_ruby_version_rvm $VERSIONS
     fi
 }
 
 function install_ruby() {
-    local VERSION=$1
+    local VERSIONS="$@"
 
     [[ -e $CIRCLECI_PKG_DIR/.rvm ]] || install_rvm
-    install_ruby_version $VERSION
+    install_ruby_version $VERSIONS
 }
