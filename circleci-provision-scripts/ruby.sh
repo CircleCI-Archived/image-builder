@@ -47,6 +47,13 @@ ln -s $CIRCLECI_PKG_DIR/ruby $CIRCLECI_PKG_DIR/.rvm/rubies
 EOF
     ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
     fi
+
+    # Make sure bundler is installed in all versions
+    (cat <<'EOF'
+source ~/.circlerc
+echo 'bundler' >> $rvm_path/gemsets/default.gems
+EOF
+    ) | as_user bash
 }
 
 function install_ruby_version_rvm() {
