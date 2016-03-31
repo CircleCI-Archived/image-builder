@@ -59,6 +59,10 @@ RUN circleci-install qt
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
 RUN circleci-install awscli
 
+# gcloud
+ADD circleci-provision-scripts/gcloud.sh /opt/circleci-provision-scripts/gcloud.sh
+RUN circleci-install gcloud
+
 # Languages
 ARG use_precompile=true
 ENV USE_PRECOMPILE $use_precompile
