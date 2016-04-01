@@ -40,6 +40,7 @@ all_php() {
 cat<<EOF
 {
   "summary": {
+    "build-image": "$(cat /opt/circleci/image_version)",
     "google-chrome": "$(google-chrome --version | col 3)",
     "chromedriver": "$(chromedriver --version | col 2)",
     "firefox": "$(firefox --version | col 3)",
