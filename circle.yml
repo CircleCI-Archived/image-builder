@@ -22,9 +22,9 @@ test:
 
     - ? |
         if $(no_cache); then
-          docker build --no-cache -t ${IMAGE_REPO}:scratch .;
+          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
         else
-          docker build -t ${IMAGE_REPO}:scratch .;
+          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
         fi
       :
         timeout: 3600
@@ -37,7 +37,7 @@ test:
     - docker push ${IMAGE_REPO}:${IMAGE_TAG}
 
     # Build a slightly modified image for unprivileged lxc
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t ${IMAGE_REPO}:scratch-unprivileged .:
+    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch-unprivileged .:
         timeout: 3600
 
     - docker tag ${IMAGE_REPO}:scratch-unprivileged ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged

@@ -157,3 +157,6 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
 LABEL circleci.user="ubuntu"
+
+ARG IMAGE_TAG
+RUN echo $IMAGE_TAG > /opt/circleci/version
