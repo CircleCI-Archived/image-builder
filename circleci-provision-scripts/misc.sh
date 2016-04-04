@@ -38,6 +38,29 @@ function install_elasticsearch() {
     echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
 }
 
+function install_cassandra() {
+    local VERSION=34
+    echo "deb http://www.apache.org/dist/cassandra/debian ${VERSION}x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+
+    apt-get update
+    apt-get install cassandra
+
+    # Supressing ulimit error because of the lack of permission
+    sed -i 's/ulimit/#ulimit/'  /etc/init.d/cassandra
+
+    # Putting resource restriction
+    sed -i 's/system_memory_in_mb=.*/system_memory_in_mb=2048/' /etc/cassandra/cassandra-env.sh
+    sed -i 's/system_cpu_cores=.*/system_cpu_cores=1/' /etc/cassandra/cassandra-env.sh
+    sed -i 's/JVM_OPTS="$JVM_OPTS -Xms${MAX_HEAP_SIZE}"/JVM_OPTS="$JVM_OPTS -Xms256M"/' /etc/cassandra/cassandra-env.sh
+}
+
+function install_riak() {
+    local VERSION=2.1.3
+
+    curl -s https://packagecloud.io/install/repositories/basho/riak/script.deb.sh | sudo bash
+    sudo apt-get install riak=${VERSION}-1
+}
+
 
 function install_sysadmin() {
     apt-get install htop

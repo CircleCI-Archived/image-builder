@@ -25,6 +25,11 @@ ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postg
 RUN circleci-install postgres
 RUN circleci-install postgres_ext_postgis
 
+# Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
+ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
+RUN circleci-install java oraclejdk8
+RUN circleci-install java openjdk8
+
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN circleci-install sysadmin
 RUN circleci-install devtools
@@ -34,6 +39,8 @@ RUN circleci-install rabbitmq
 RUN circleci-install neo4j
 RUN circleci-install elasticsearch
 RUN circleci-install beanstalkd
+RUN circleci-install cassandra
+RUN circleci-install riak
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
@@ -105,8 +112,7 @@ RUN circleci-install nodejs 5.7.0
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; nvm alias default 4.2.6"
 
-ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
-RUN circleci-install java
+
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
 RUN circleci-install golang 1.6
@@ -138,7 +144,7 @@ ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
 
 # Dislabe services by default
-RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd; do sysv-rc-conf $s off; done
+RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak; do sysv-rc-conf $s off; done
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh

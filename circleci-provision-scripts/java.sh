@@ -28,10 +28,19 @@ function install_oraclejdk8() {
     rm -rf $JAVA_TMP
 }
 
+function install_openjdk8() {
+    add-apt-repository -y ppa:openjdk-r/ppa
+    apt-get update
+    apt-get install openjdk-8-jdk
+}
+
 function install_java() {
-    [[ -e /usr/lib/jvm/jdk/1.8.0 ]] || install_oraclejdk8
-    type mvn &>/dev/null || install_maven
-    type gradle &>/dev/null || install_gradle
+    local VERSION=$1
+
+    install_$VERSION
+
+    [[ -e /usr/local/apache-maven/bin/mvn ]] || install_maven
+    [[ -e /usr/local/gradle-1.10 ]] || install_gradle
 }
 
 
