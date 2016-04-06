@@ -36,6 +36,8 @@ function install_elasticsearch() {
 
     echo 'index.number_of_shards: 1' >> $CONFIG_FILE
     echo 'index.number_of_replicas: 0' >> $CONFIG_FILE
+    # Because Getting Permission Denied error
+    sudo sed -i 's/sysctl -q -w vm.max_map_count=$MAX_MAP_COUNT/true/' /etc/init.d/elasticsearch
 }
 
 function install_cassandra() {

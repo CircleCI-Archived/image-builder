@@ -162,4 +162,6 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 # Add rest of provisioning files -- add at end to avoid cache invalidation
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
+ADD Dockerfile /opt/circleci/Dockerfile
+
 LABEL circleci.user="ubuntu"
