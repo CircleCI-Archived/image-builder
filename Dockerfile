@@ -1,4 +1,4 @@
-FROM circleci/ubuntu-server:trusty-latest
+FROM circleci/ubuntu-server:xenial-latest
 
 # Avoid any installation scripts interact with upstart
 # So divert now, but undivert at the end

@@ -21,7 +21,9 @@ function install_base_requirements() {
 APT {
   Get {
     Assume-Yes "true";
-    force-yes "true";
+    allow-downgrades "true";
+    allow-remove-essential "true";
+    allow-change-held-packages "true;"
   };
 };
 
