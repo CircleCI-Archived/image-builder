@@ -31,16 +31,10 @@ RUN circleci-install java oraclejdk8
 RUN circleci-install java openjdk8
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
-RUN circleci-install sysadmin
-RUN circleci-install devtools
-RUN circleci-install redis
-RUN circleci-install memcached
-RUN circleci-install rabbitmq
-RUN circleci-install neo4j
-RUN circleci-install elasticsearch
-RUN circleci-install beanstalkd
-RUN circleci-install cassandra
-RUN circleci-install riak
+RUN for package in sysadmin devtools redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak; do circleci-install $package; done
+
+# Dislabe services by default
+RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak; do sysv-rc-conf $s off; done
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
@@ -54,7 +48,6 @@ RUN circleci-install phantomjs
 
 # Android
 ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
-RUN circleci-install android_sdk tools
 RUN circleci-install android_sdk platform-tools
 RUN circleci-install android_sdk extra-android-support
 RUN circleci-install android_sdk android-23
@@ -116,11 +109,8 @@ RUN circleci-install nodejs 5.4.1
 RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
-
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; nvm alias default 4.2.6"
-
-
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
 RUN circleci-install golang 1.6
@@ -150,9 +140,6 @@ RUN circleci-install clojure
 
 ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
-
-# Dislabe services by default
-RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak; do sysv-rc-conf $s off; done
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
