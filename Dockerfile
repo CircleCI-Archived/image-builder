@@ -55,8 +55,15 @@ RUN circleci-install phantomjs
 # Android
 ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
 RUN circleci-install android_sdk platform-tools
-RUN circleci-install android_sdk android-22
+RUN circleci-install android_sdk extra-android-support
 RUN circleci-install android_sdk android-23
+RUN circleci-install android_sdk android-22
+RUN circleci-install android_sdk build-tools-23.0.3
+RUN circleci-install android_sdk build-tools-23.0.2
+RUN circleci-install android_sdk build-tools-22.0.1
+RUN circleci-install android_sdk extra-android-m2repository
+RUN circleci-install android_sdk extra-google-m2repository
+RUN circleci-install android_sdk extra-google-google_play_services
 
 # Qt
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
