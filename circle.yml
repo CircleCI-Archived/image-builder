@@ -13,8 +13,6 @@ dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-test:
-  override:
     # Scratch is the latest cache
     - docker pull circleci/build-image:scratch || true:
         timeout: 3600
@@ -46,6 +44,14 @@ test:
 
     - docker push circleci/build-image:trusty-${IMAGE_TAG}-unprivileged:
         timeout: 3600
+
+test:
+  override:
+    - docker build -t test-image tests/
+
+    - docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
+
+    - sleep 10; chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
 
 deployment:
   release:

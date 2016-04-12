@@ -110,6 +110,35 @@ ubuntu=# ;; psql is running
 ubuntu-# \quit
 ```
 
+### Unit tests
+We also have unit tests written in [bats](https://github.com/sstephenson/bats). The tests are written to make sure tools/services installed in Dockerfile works correctly.
+
+If you write a Dockerfile to customize the container image, you can easily add/remove test bats files under `tests/unit` directory.
+
+Here is how you can run the unit tests.
+
+```
+# Build a test image.
+docker build -t test-image tests/
+
+# Run a test container with ssh port-forwarding
+docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
+
+# Run tests via ssh
+ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
+
+1..55
+ok 1 nodejs: all versions are installed
+ok 2 nodejs: 0.12.9 works
+ok 3 nodejs: 4.0.0 works
+ok 4 nodejs: 4.1.2 works
+ok 5 nodejs: 4.2.6 works
+ok 6 nodejs: 4.3.0 works
+ok 7 nodejs: 5.0.0 works
+ok 8 nodejs: 5.1.1 works
+.....
+```
+
 # 3. Hooking up CircleCI to use the container
 
 Once you gain confidence in the image you just created, you can start pushing it to new builds.
