@@ -4,8 +4,11 @@ function install_pyenv() {
     echo '>>> Installing Python'
 
     # FROM https://github.com/yyuu/pyenv/wiki/Common-build-problems
-    sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 	    libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev
+
+    # Installing system pip because sometimes our app uses `pyenv global system`. e.g. CodeDeploy
+    apt-get install python-pip
 
     echo 'Installing pyenv'
     (cat <<'EOF'
