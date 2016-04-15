@@ -80,7 +80,7 @@ EOF
 }
 
 function install_sdk(){
-    SDK_VERSION=r24
+    SDK_VERSION="r24.4.1"
     TMP_SDK=/tmp/sdk
     FILE=android-sdk_${SDK_VERSION}-linux.tgz
 
