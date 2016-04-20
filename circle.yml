@@ -1,6 +1,7 @@
 machine:
   environment:
-    IMAGE_TAG: 0.0.${CIRCLE_BUILD_NUM}
+    IMAGE_TAG: "trusty-$(date '+%y%m%d')-${CIRCLE_BUILD_NUM}-$(git rev-parse --short HEAD)"
+    IMAGE_REPO: "circleci/build-image"
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
@@ -14,35 +15,35 @@ dependencies:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
     # Scratch is the latest cache
-    - docker pull circleci/build-image:scratch || true:
+    - docker pull ${IMAGE_REPO}:scratch || true:
         timeout: 3600
 
     - ? |
         if $(no_cache); then
-          docker build --no-cache -t circleci/build-image:scratch .;
+          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
         else
-          docker build -t circleci/build-image:scratch .;
+          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
         fi
       :
         timeout: 3600
 
-    - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
+    - docker tag ${IMAGE_REPO}:scratch ${IMAGE_REPO}:${IMAGE_TAG}
 
-    - docker push circleci/build-image:scratch:
+    - docker push ${IMAGE_REPO}:scratch:
         timeout: 3600
 
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}
+    - docker push ${IMAGE_REPO}:${IMAGE_TAG}
 
     # Build a slightly modified image for unprivileged lxc
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .:
+    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch-unprivileged .:
         timeout: 3600
 
-    - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
+    - docker tag ${IMAGE_REPO}:scratch-unprivileged ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged
 
-    - docker push circleci/build-image:scratch-unprivileged:
+    - docker push ${IMAGE_REPO}:scratch-unprivileged:
         timeout: 3600
 
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}-unprivileged:
+    - docker push ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
         timeout: 3600
 
 test:
@@ -54,12 +55,8 @@ test:
     - sleep 10; chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
 
 deployment:
-  release:
-    tag: /\d\d\.\d\d\.\d\d/
+  production:
+    branch: master
     commands:
-      - docker tag circleci/build-image:scratch circleci/build-image:trusty-enterprise-${CIRCLE_TAG}
-      - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-dotcom-${CIRCLE_TAG}
-      - docker push circleci/build-image:trusty-enterprise-${CIRCLE_TAG}
-      - docker push circleci/build-image:trusty-dotcom-${CIRCLE_TAG}
-      - ./docker-export circleci/build-image:trusty-dotcom-${CIRCLE_TAG} | aws s3 cp - s3://circle-downloads/trusty-dotcom-${CIRCLE_TAG}.tar.gz --acl public-read:
+      - ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - s3://circle-downloads/$IMAGE_TAG.tar.gz --acl public-read:
           timeout: 3600

@@ -160,3 +160,6 @@ ADD circleci-provision-scripts /opt/circleci-provision-scripts
 ADD Dockerfile /opt/circleci/Dockerfile
 
 LABEL circleci.user="ubuntu"
+
+ARG IMAGE_TAG
+RUN echo $IMAGE_TAG > /opt/circleci/version
