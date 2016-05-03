@@ -17,10 +17,12 @@ function install_beanstalkd() {
 }
 
 function install_neo4j() {
+    # 2.3.3 is the last version that works with Java7 and later release needs Java8
+    local version="2.3.3"
     wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
     echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
     apt-get update
-    apt-get install neo4j
+    apt-get install neo4j=$version
 
     # Disable auth
     sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
