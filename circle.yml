@@ -26,6 +26,8 @@ dependencies:
       :
         timeout: 3600
 
+    - docker run circleci/build-image:scratch cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
+
     - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
 
     - docker push circleci/build-image:scratch:
