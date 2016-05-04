@@ -122,10 +122,13 @@ Here is how you can run the unit tests.
 docker build -t test-image tests/
 
 # Run a test container with ssh port-forwarding
-docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
+docker run -d -v <path-to-image-builder>/tests:/home/ubuntu/tests -p 13939:22 --name test-container test-image
+
+# Get the IP address of docker-machine VM
+export CONTAINER_SSH_HOST=$(docker-machine ip <your-docker-vm>)
 
 # Run tests via ssh
-ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
+ssh -i tests/insecure-ssh-key -p 13939 ubuntu@$CONTAINER_SSH_HOST bats tests/unit
 
 1..55
 ok 1 nodejs: all versions are installed
