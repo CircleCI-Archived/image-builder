@@ -11,12 +11,17 @@ test_php () {
     run php_test_composer
     [ "$status" -eq 0 ]
 
+    run php_test_pecl
+    [ "$status" -eq 0 ]
+
+    run php_test_libphp_exists $version
+    [ "$status" -eq 0 ]
 
     # Current version of phpunit (5.3) doesn't support php 5.5
     # but this appears not to be a major issue for our customers.
     if ! echo $version | grep "5.5"; then
-	run php_test_phpunit
-	[ "$status" -eq 0 ]
+       run php_test_phpunit
+       [ "$status" -eq 0 ]
     fi
 }
 
@@ -32,6 +37,26 @@ php_test_composer () {
 
 php_test_phpunit () {
     phpunit --version
+}
+
+php_test_pecl () {
+    pecl --version
+}
+
+php_test_libphp_exists () {
+    local version=$1
+
+    # PHP 5
+    if echo $version | grep -q "^5"; then
+        local libphp_path="$PHPENV_ROOT/versions/$version/usr/lib/apache2/modules/libphp5.so"
+    # PHP 7
+    elif echo $version | grep -q "^7"; then
+        local libphp_path="$PHPENV_ROOT/versions/$version/usr/lib/apache2/modules/libphp7.so"
+    else
+        echo "unknown version: $version" && return 1
+    fi
+
+    test -e $libphp_path
 }
 
 @test "php: all versions are installed" {
@@ -59,10 +84,10 @@ php_test_phpunit () {
     test_php 5.6.18
 }
 
-@test "php: 7.0.2 works" {
-    test_php 7.0.2
-}
-
 @test "php: 7.0.3 works" {
     test_php 7.0.3
+}
+
+@test "php: 7.0.4 works" {
+    test_php 7.0.4
 }
