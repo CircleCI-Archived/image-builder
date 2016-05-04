@@ -31,7 +31,7 @@ RUN circleci-install java oraclejdk8
 RUN circleci-install java openjdk8
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
-RUN for package in sysadmin devtools redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak; do circleci-install $package; done
+RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak; do circleci-install $package; done
 
 # Dislabe services by default
 RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak; do sysv-rc-conf $s off; done

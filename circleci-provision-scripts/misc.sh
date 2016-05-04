@@ -84,6 +84,14 @@ EOS
 )
 }
 
+function install_jq() {
+    local url="https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"
+    local install_path="/usr/local/bin/jq"
+
+    curl -L -o $install_path $url
+    chmod +x $install_path
+}
+
 function install_closure() {
     curl -L -o /tmp/closure.zip https://dl.google.com/closure-compiler/compiler-latest.zip
     unzip -n /tmp/closure.zip
