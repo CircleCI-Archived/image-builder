@@ -15,6 +15,7 @@ function install_circleci_specific() {
 export GIT_ASKPASS=echo
 export SSH_ASKPASS=false
 export PATH=~/bin:$PATH
+export CIRCLECI_PKG_DIR="/opt/circleci"
 EOF
 ) | as_user tee ${CIRCLECI_HOME}/.circlerc
 
