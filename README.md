@@ -118,6 +118,9 @@ If you write a Dockerfile to customize the container image, you can easily add/r
 Here is how you can run the unit tests.
 
 ```
+# Pull the latest circleci/build-image:scratch (only necessary when you want to test against the latest build image)
+docker pull circleci/build-image:scratch
+
 # Build a test image.
 docker build -t test-image tests/
 
