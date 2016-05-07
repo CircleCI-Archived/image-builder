@@ -8,33 +8,37 @@ function install_nvm() {
     echo 'Install NVM'
     (cat <<'EOF'
 set -ex
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | NVM_DIR=$CIRCLECI_PKG_DIR/.nvm bash
+
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | NVM_DIR=$CIRCLECI_PKG_DIR/.nvm bash
 echo "export NVM_DIR=$CIRCLECI_PKG_DIR/.nvm" >> ~/.circlerc
 echo 'source $NVM_DIR/nvm.sh' >> ~/.circlerc
 EOF
     ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
 
-
     if [ -n "$USE_PRECOMPILE" ]; then
-        patch_nvm_always_delete_npm_prefix
+        patch_nvm
 
         # Preparing for hooking up packaged NodeJS into nvm directories
         (cat <<'EOF'
 set -ex
 mkdir $CIRCLECI_PKG_DIR/nodejs
-mkdir $CIRCLECI_PKG_DIR/.nvm/versions
-ln -s $CIRCLECI_PKG_DIR/nodejs $CIRCLECI_PKG_DIR/.nvm/versions/node
-
 EOF
         ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
     fi
 }
 
-# This is a kind of hack to prevent 'nvm is not compatible with the npm config "prefix" option' error
-# when you run `nvm use vX.Y.Z`. We get this error because nvm expects nodejs to be installed under $NVM_DIR
-# but we actually install under /opt/circleci/nodejs.
-function patch_nvm_always_delete_npm_prefix() {
-     sed -i 's/NVM_DELETE_PREFIX=0/NVM_DELETE_PREFIX=1/' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
+function patch_nvm() {
+    # This is a kind of hack to prevent 'nvm is not compatible with the npm config "prefix" option' error
+    # when you run `nvm use vX.Y.Z`. We get this error because nvm expects nodejs to be installed under $NVM_DIR
+    # but we actually install under /opt/circleci/.
+    sed -i 's/NVM_DELETE_PREFIX=0/NVM_DELETE_PREFIX=1/' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
+
+    # We want nvm to install versions under $CIRCLECI_PKG_DIR/nodejs where we install precompiled nodejs
+    sed -i 's|\$NVM_DIR/versions/node|$CIRCLECI_PKG_DIR/nodejs|' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
+
+    # nvm uses sed to convert implicit version to explict version: e.g. 6 -> v6.1.1
+    # https://github.com/creationix/nvm/blob/a55130627516519c21d9449b2daa773ae72325d2/nvm.sh#L767
+    sed -i 's|\(s#^$NVM_DIR/##;\)|\1\ns#^\$CIRCLECI_PKG_DIR/nodejs/##;|' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
 }
 
 function install_nodejs_version_nvm() {

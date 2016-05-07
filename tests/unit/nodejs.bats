@@ -86,3 +86,25 @@ nodejs_test_npm () {
 @test "nodejs: 5.7.0 works" {
     test_nodejs 5.7.0
 }
+
+# We are not testing the behavior of nvm here...
+# There was a bug that implicit versioning of nvm is broken
+# because we use $CIRCLECI_PKG_DIR to store installed nodejs.
+# This test makes sure the bug is fixed.
+@test "nodejs: nvm implicit default alias works" {
+    . /opt/circleci/.nvm/nvm.sh;
+
+    local version="5"
+    # Need to remove color from the string with sed
+    local explicit=$(nvm ls-remote | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" | grep v5 | tail -1)
+
+    nvm install $version
+    nvm alias default $version
+
+    # Reload nvm to make sure default versinon persists
+    nvm unload; . /opt/circleci/.nvm/nvm.sh;
+
+    run node --version
+
+    [ "$output" = $explicit ]
+}
