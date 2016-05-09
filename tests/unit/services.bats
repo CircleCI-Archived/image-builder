@@ -24,53 +24,53 @@ wait_service () {
 @test "mysql is enabled by default" {
     run test_enabled_default "mysql"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "mysql works" {
     run mysql -e "STATUS;"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "postgresql is enabled by default" {
     run sudo service postgresql status
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "postgresql works" {
     run psql -c "SELECT version();"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "mongodb is enabled by default" {
     run test_enabled_default "mongod"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "mongodb works" {
-    run echo 'show dbs;' | mongo
+    run bash -c "echo 'show dbs;' | mongo"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "redis works" {
     sudo service redis-server start
 
-    run echo "SET hoge bar" | redis-cli
+    run bash -c "echo 'SET hoge bar' | redis-cli"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "memcached works" {
     sudo service memcached start
 
-    run echo stats | nc localhost 11211
+    run bash -c "echo stats | nc localhost 11211"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "neo4j works" {
@@ -78,7 +78,7 @@ wait_service () {
 
     run neo4j-shell -c "mknode --cd"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "rabbitmq works" {
@@ -86,7 +86,7 @@ wait_service () {
 
     run sudo rabbitmqctl cluster_status
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "elasticsearch works" {
@@ -98,13 +98,21 @@ wait_service () {
 
     run curl http://localhost:$port
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
 }
 
 @test "beanstalkd works" {
     sudo service beanstalkd start
 
-    run echo -e "stats\r\n" | nc localhost 11300
+    run bash -c "echo -e 'stats\r\n' | nc localhost 11300"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
+}
+
+# We just run `docker version` without running actual daemon
+# because docker can't run inside docker (DIND)
+@test "circleci docker is installed" {
+    run bash -c 'docker version | grep Version | grep circleci'
+
+    [ "$status" -eq 0 ]
 }
