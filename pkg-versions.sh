@@ -94,7 +94,10 @@ cat<<EOF
     "gradle": "$(gradle --version | grep Gradle | col 2)",
     "phantomjs": "$(phantomjs --version)",
     "docker": "$(docker --version | col 3)",
-    "docker-compose": "$(docker-compose --version | col 3 | sed 's/,//g')"
+    "docker-compose": "$(docker-compose --version | col 3 | sed 's/,//g')",
+    "heroku-toolbelt": "$(heroku version | grep toolbelt | col 1 | sed 's|.*/||')",
+    "gcloud": "$(gcloud version  | grep "Google Cloud SDK" | col 4)",
+    "aws-cli": "$(aws --version 2>&1  | col 1 | sed 's|.*/||')"
   },
   "all": {
     $(dpkg -l | grep -e '^ii' | awk '{printf "\"%s\": \"%s\",\n", $2,$3}' | trailing_last_comma)
