@@ -39,8 +39,9 @@ function install_java() {
 
     install_$VERSION
 
-    [[ -e /usr/local/apache-maven/bin/mvn ]] || install_maven
-    [[ -e /usr/local/gradle-1.10 ]] || install_gradle
+    type mvn &>/dev/null || install_maven
+    type gradle &>/dev/null || install_gradle
+    type ant &>/dev/null || apt-get install ant
 }
 
 
