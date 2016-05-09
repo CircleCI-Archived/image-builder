@@ -71,6 +71,10 @@ RUN circleci-install awscli
 ADD circleci-provision-scripts/gcloud.sh /opt/circleci-provision-scripts/gcloud.sh
 RUN circleci-install gcloud
 
+# heroku
+ADD circleci-provision-scripts/heroku.sh /opt/circleci-provision-scripts/heroku.sh
+RUN circleci-install heroku
+
 # Languages
 ARG use_precompile=true
 ENV USE_PRECOMPILE $use_precompile
