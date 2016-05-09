@@ -8,5 +8,5 @@ sudo bash -c 'curl "https://sdk.cloud.google.com" | CLOUDSDK_CORE_DISABLE_PROMPT
 EOF
 	) | as_user bash
 	chown -R $CIRCLECI_USER:$CIRCLECI_USER "/opt/google-cloud-sdk"
-	chown -R $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.config/gcloud
+	chown -R $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.config
 }
