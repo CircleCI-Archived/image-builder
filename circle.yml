@@ -4,6 +4,7 @@ machine:
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
+    - echo 'docker-push-with-retry() { for i in 1 2 3; do docker push $1; if [ $? -eq 0 ]; then return 0; fi; echo "Retrying...."; done; return 1; }' >> ~/.circlerc
 
   post:
     - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
@@ -30,10 +31,10 @@ dependencies:
 
     - docker tag circleci/build-image:scratch circleci/build-image:trusty-${IMAGE_TAG}
 
-    - docker push circleci/build-image:scratch:
+    - docker-push-with-retry circleci/build-image:scratch:
         timeout: 3600
 
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}
+    - docker-push-with-retry circleci/build-image:trusty-${IMAGE_TAG}
 
     # Build a slightly modified image for unprivileged lxc
     - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true -t circleci/build-image:scratch-unprivileged .:
@@ -41,10 +42,10 @@ dependencies:
 
     - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-${IMAGE_TAG}-unprivileged
 
-    - docker push circleci/build-image:scratch-unprivileged:
+    - docker-push-with-retry circleci/build-image:scratch-unprivileged:
         timeout: 3600
 
-    - docker push circleci/build-image:trusty-${IMAGE_TAG}-unprivileged:
+    - docker-push-with-retry circleci/build-image:trusty-${IMAGE_TAG}-unprivileged:
         timeout: 3600
 
 test:
@@ -61,7 +62,7 @@ deployment:
     commands:
       - docker tag circleci/build-image:scratch circleci/build-image:trusty-enterprise-${CIRCLE_TAG}
       - docker tag circleci/build-image:scratch-unprivileged circleci/build-image:trusty-dotcom-${CIRCLE_TAG}
-      - docker push circleci/build-image:trusty-enterprise-${CIRCLE_TAG}
-      - docker push circleci/build-image:trusty-dotcom-${CIRCLE_TAG}
+      - docker-push-with-retry circleci/build-image:trusty-enterprise-${CIRCLE_TAG}
+      - docker-push-with-retry circleci/build-image:trusty-dotcom-${CIRCLE_TAG}
       - ./docker-export circleci/build-image:trusty-dotcom-${CIRCLE_TAG} | aws s3 cp - s3://circle-downloads/trusty-dotcom-${CIRCLE_TAG}.tar.gz --acl public-read:
           timeout: 3600
