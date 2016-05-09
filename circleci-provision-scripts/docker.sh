@@ -3,8 +3,10 @@
 function install_docker() {
     echo '>>>> Installing Docker'
 
-    # Install Docker
-    curl -L -s https://get.docker.io/ | sh
+    # Pin Docker version to 10.x since 11 brings breaking changes
+    echo "deb [arch=amd64] https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+    apt-get update
+    apt-get install docker-engine=1.10.3-0~trusty
 
     # Devicemapper files are huge if got created - we don't use device mapper anyway
     rm -rf /var/lib/docker/devicemapper/devicemapper/data

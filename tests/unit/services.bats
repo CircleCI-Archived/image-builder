@@ -108,3 +108,11 @@ wait_service () {
 
     [ "$status" -eq 0 ]
 }
+
+# We just run `docker version` without running actual daemon
+# because docker can't run inside docker (DIND)
+@test "circleci docker is installed" {
+    run bash -c 'docker version | grep Version | grep circleci'
+
+    [ "$status" -eq 0 ]
+}
