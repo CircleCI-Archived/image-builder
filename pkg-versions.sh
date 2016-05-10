@@ -41,6 +41,7 @@ cat<<EOF
 {
   "summary": {
     "google-chrome": "$(google-chrome --version | col 3)",
+    "chromedriver": "$(chromedriver --version | col 2)",
     "firefox": "$(firefox --version | col 3)",
     "mongod": "$(mongod --version | grep 'db version' | col 3 | sed 's/^v//')",
     "psql": "$(psql --version | grep psql | col 3)",
@@ -96,7 +97,7 @@ cat<<EOF
     "docker": "$(docker --version | col 3)",
     "docker-compose": "$(docker-compose --version | col 3 | sed 's/,//g')",
     "heroku-toolbelt": "$(heroku version | grep toolbelt | col 1 | sed 's|.*/||')",
-    "gcloud": "$(gcloud version  | grep "Google Cloud SDK" | col 4)",
+    "gcloud": "$(pyenv local 2.7.11 && gcloud version  | grep "Google Cloud SDK" | col 4)",
     "aws-cli": "$(aws --version 2>&1  | col 1 | sed 's|.*/||')"
   },
   "all": {

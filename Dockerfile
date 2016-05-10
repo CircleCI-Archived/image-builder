@@ -164,6 +164,6 @@ ADD circleci-provision-scripts /opt/circleci-provision-scripts
 ADD Dockerfile /opt/circleci/Dockerfile
 
 ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
-RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; /opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"
+RUN sudo -H -i -u ubuntu bash -c "/opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"
 
 LABEL circleci.user="ubuntu"
