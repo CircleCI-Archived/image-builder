@@ -41,6 +41,7 @@ cat<<EOF
 {
   "summary": {
     "google-chrome": "$(google-chrome --version | col 3)",
+    "chromedriver": "$(chromedriver --version | col 2)",
     "firefox": "$(firefox --version | col 3)",
     "mongod": "$(mongod --version | grep 'db version' | col 3 | sed 's/^v//')",
     "psql": "$(psql --version | grep psql | col 3)",

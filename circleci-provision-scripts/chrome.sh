@@ -17,7 +17,7 @@ function install_chrome_browser() {
 # Chrome Driver
 
 function install_chromedriver() {
-    CHROME_DRIVER_VERSION=2.12
+    CHROME_DRIVER_VERSION=2.21
     curl -L -o /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
     unzip -p /tmp/chromedriver.zip > /usr/local/bin/chromedriver
     chmod +x /usr/local/bin/chromedriver
