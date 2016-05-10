@@ -68,7 +68,8 @@ cat<<EOF
       "all": [
         $(all_nodejs)
       ],
-      "npm": "$(npm --version)"
+      "npm": "$(npm --version)",
+      "nvm": "$(. /opt/circleci/.nvm/nvm.sh && nvm --version)"
     },
     "php": {
       "default": "$(php --version | head -1 | col 2)",
