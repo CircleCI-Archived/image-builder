@@ -87,6 +87,10 @@ nodejs_test_npm () {
     test_nodejs 5.7.0
 }
 
+@test "nodejs: 6.1.0 works" {
+    test_nodejs 6.1.0
+}
+
 # We are not testing the behavior of nvm here...
 # There was a bug that implicit versioning of nvm is broken
 # because we use $CIRCLECI_PKG_DIR to store installed nodejs.
