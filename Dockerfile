@@ -12,18 +12,14 @@ ADD circleci-install /usr/local/bin/circleci-install
 
 ADD circleci-provision-scripts/base.sh /opt/circleci-provision-scripts/base.sh
 ADD circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/circleci-specific.sh
-RUN circleci-install base_requirements  && circleci-install circleci_specific
+RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Databases
 ADD circleci-provision-scripts/mysql.sh /opt/circleci-provision-scripts/mysql.sh
-RUN circleci-install mysql_56
-
 ADD circleci-provision-scripts/mongo.sh /opt/circleci-provision-scripts/mongo.sh
-RUN circleci-install mongo
-
 ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
-RUN circleci-install postgres
-RUN circleci-install postgres_ext_postgis
+RUN circleci-install mysql_56 && circleci-install mongo
+RUN circleci-install postgres && circleci-install postgres_ext_postgis
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
@@ -38,13 +34,9 @@ RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service 
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
-RUN circleci-install firefox
-
 ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
-RUN circleci-install chrome
-
 ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
-RUN circleci-install phantomjs
+RUN circleci-install firefox && circleci-install chrome && circleci-install phantomjs
 
 # Android
 ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
@@ -147,8 +139,7 @@ RUN circleci-install scala
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
-RUN circleci-install docker
-RUN circleci-install docker_compose
+RUN circleci-install docker && circleci-install docker_compose
 
 # When running in unprivileged containers, need to use CircleCI Docker fork
 ARG TARGET_UNPRIVILEGED_LXC
