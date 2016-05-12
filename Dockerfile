@@ -113,12 +113,12 @@ ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
 RUN circleci-install golang 1.6.2
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
-RUN circleci-install ruby 2.0.0-p647
-RUN circleci-install ruby 2.1.7
 RUN circleci-install ruby 2.1.8
-RUN circleci-install ruby 2.2.3
+RUN circleci-install ruby 2.1.9
 RUN circleci-install ruby 2.2.4
+RUN circleci-install ruby 2.2.5
 RUN circleci-install ruby 2.3.0
+RUN circleci-install ruby 2.3.1
 # TODO: make this more robust
 RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; rvm use 2.2.4 --default"
 
