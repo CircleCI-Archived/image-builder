@@ -51,7 +51,8 @@ dependencies:
     # Dump versions to artifact which is useful for image releae
     - docker run ${IMAGE_REPO}:scratch-unprivileged cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
 
-    - "parallel ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - {} --acl public-read ::: s3://lxc-images/build-image-$IMAGE_TAG.tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_TAG.tar.gz"
+    - "parallel ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - {} --acl public-read ::: s3://lxc-images/build-image-$IMAGE_TAG.tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_TAG.tar.gz":
+        timeout: 3600
 
 test:
   override:
