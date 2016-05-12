@@ -29,8 +29,6 @@ dependencies:
       :
         timeout: 3600
 
-    - docker run ${IMAGE_REPO}:scratch cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
-
     - docker tag ${IMAGE_REPO}:scratch ${IMAGE_REPO}:${IMAGE_TAG}
 
     - docker-push-with-retry ${IMAGE_REPO}:scratch:
@@ -49,6 +47,9 @@ dependencies:
 
     - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
         timeout: 3600
+
+    # Dump versions to artifact which is useful for image releae
+    - docker run ${IMAGE_REPO}:scratch-unprivileged cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
 
 test:
   override:
