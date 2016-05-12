@@ -42,22 +42,26 @@ ruby_test_bundler () {
     [ "$status" -eq 0 ]
 }
 
-@test "ruby: 2.1.7 works" {
-    test_ruby 2.1.7
-}
-
 @test "ruby: 2.1.8 works" {
     test_ruby 2.1.8
 }
 
-@test "ruby: 2.2.3 works" {
-    test_ruby 2.2.3
+@test "ruby: 2.1.9 works" {
+    test_ruby 2.1.9
 }
 
 @test "ruby: 2.2.4 works" {
     test_ruby 2.2.4
 }
 
+@test "ruby: 2.2.5 works" {
+    test_ruby 2.2.5
+}
+
 @test "ruby: 2.3.0 works" {
     test_ruby 2.3.0
+}
+
+@test "ruby: 2.3.1 works" {
+    test_ruby 2.3.1
 }
