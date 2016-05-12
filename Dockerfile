@@ -142,9 +142,18 @@ RUN circleci-install scala
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
 
+ADD Dockerfile /opt/circleci/Dockerfile
+
+ARG IMAGE_TAG
+RUN echo $IMAGE_TAG > /opt/circleci/image_version
+
 # When running in unprivileged containers, need to use CircleCI Docker fork
 ARG TARGET_UNPRIVILEGED_LXC
 RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
+
+# When running in unprivileged containers, dump versions.json
+ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
+RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then sudo -H -i -u ubuntu bash -c "/opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"; fi
 
 # Undivert upstart
 # You shouldn't change the line unless you understad the consequence
@@ -152,13 +161,5 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 
 # Add rest of provisioning files -- add at end to avoid cache invalidation
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
-
-ADD Dockerfile /opt/circleci/Dockerfile
-
-ARG IMAGE_TAG
-RUN echo $IMAGE_TAG > /opt/circleci/image_version
-
-ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
-RUN sudo -H -i -u ubuntu bash -c "/opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"
 
 LABEL circleci.user="ubuntu"
