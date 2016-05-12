@@ -71,6 +71,7 @@ EOF
 function install_nodejs_version_precompile() {
     local NODEJS_VERSION=$1
 
+    curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | bash
     apt-get install circleci-nodejs-$NODEJS_VERSION
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/nodejs
     set_nodejs_default $NODEJS_VERSION
