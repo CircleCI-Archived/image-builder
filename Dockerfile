@@ -18,13 +18,11 @@ RUN circleci-install base_requirements && circleci-install circleci_specific
 ADD circleci-provision-scripts/mysql.sh /opt/circleci-provision-scripts/mysql.sh
 ADD circleci-provision-scripts/mongo.sh /opt/circleci-provision-scripts/mongo.sh
 ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
-RUN circleci-install mysql_56 && circleci-install mongo
-RUN circleci-install postgres && circleci-install postgres_ext_postgis
+RUN for package in mysql_56 mongo postgres postgres_ext_postgis; do circleci-install $package; done
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
-RUN circleci-install java oraclejdk8
-RUN circleci-install java openjdk8
+RUN circleci-install java oraclejdk8 && circleci-install java openjdk8
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak; do circleci-install $package; done
@@ -50,6 +48,8 @@ RUN circleci-install android_sdk build-tools-22.0.1
 RUN circleci-install android_sdk extra-android-m2repository
 RUN circleci-install android_sdk extra-google-m2repository
 RUN circleci-install android_sdk extra-google-google_play_services
+RUN circleci-install android_sdk addon-google_apis-google-23
+RUN circleci-install android_sdk addon-google_apis-google-22
 
 # Qt
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
@@ -153,6 +153,7 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 # Add rest of provisioning files -- add at end to avoid cache invalidation
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
+# We need Dockerfile because unit test parses Dockerfile to make sure all versions are installed
 ADD Dockerfile /opt/circleci/Dockerfile
 
 ARG IMAGE_TAG

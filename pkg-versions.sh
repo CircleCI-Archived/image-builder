@@ -100,7 +100,28 @@ cat<<EOF
     "docker-compose": "$(docker-compose --version | col 3 | sed 's/,//g')",
     "heroku-toolbelt": "$(heroku version | grep toolbelt | col 1 | sed 's|.*/||')",
     "gcloud": "$(pyenv local 2.7.11 && gcloud version  | grep "Google Cloud SDK" | col 4)",
-    "aws-cli": "$(aws --version 2>&1  | col 1 | sed 's|.*/||')"
+    "aws-cli": "$(aws --version 2>&1  | col 1 | sed 's|.*/||')",
+    "android": {
+      "build-tool": "$(grep 'Pkg.Revision=' $ANDROID_HOME/tools/source.properties | sed 's/Pkg.Revision=//')",
+      "build-tools": [
+        $(ls $ANDROID_HOME/build-tools | quotify | commatize | trailing_last_comma)
+      ],
+      "platforms": [
+        $(ls $ANDROID_HOME/platforms | quotify | commatize | trailing_last_comma)
+      ],
+      "emulator-images": [
+        $(ls $ANDROID_HOME/system-images/ | sed 's/android/sys-img-armeabi-v7-android/g' | quotify | commatize | trailing_last_comma)
+      ],
+      "add-ons": [
+        $(ls $ANDROID_HOME/add-ons | quotify | commatize | trailing_last_comma)
+      ],
+      "android-extra": [
+        $(ls $ANDROID_HOME/extras/android | quotify | commatize | trailing_last_comma)
+      ],
+      "google-extra": [
+        $(ls $ANDROID_HOME/extras/google | quotify | commatize | trailing_last_comma)
+      ]
+    }
   },
   "all": {
     $(dpkg -l | grep -e '^ii' | awk '{printf "\"%s\": \"%s\",\n", $2,$3}' | trailing_last_comma)
