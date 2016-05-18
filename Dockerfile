@@ -54,7 +54,4 @@ ADD Dockerfile /opt/circleci/Dockerfile
 ARG IMAGE_TAG
 RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
-ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
-RUN sudo -H -i -u ubuntu bash -c "/opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"
-
 LABEL circleci.user="ubuntu"
