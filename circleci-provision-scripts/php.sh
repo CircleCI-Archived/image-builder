@@ -91,3 +91,4 @@ function install_php() {
     type phpunit &>/dev/null || install_phpunit
     install_php_version $VERSION
 }
+
