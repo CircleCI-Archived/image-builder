@@ -6,6 +6,8 @@ machine:
 dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+   
+    - docker pull circleci/build-image:enterprise-base
 
     - docker build -t circleci/build-image:enterprise-base .
 
