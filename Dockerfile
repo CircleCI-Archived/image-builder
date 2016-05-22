@@ -88,8 +88,7 @@ RUN circleci-install python 3.5.1
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1
-# TODO: make this more robust
-RUN sudo -H -u ubuntu bash -c "source ~/.circlerc; pyenv global 2.7.11"
+RUN sudo -H -i -u ubuntu bash -c "pyenv global 2.7.11"
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
 RUN circleci-install nodejs 0.12.9
@@ -160,6 +159,5 @@ ARG IMAGE_TAG
 RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
 ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
-RUN sudo -H -i -u ubuntu bash -c "/opt/circleci/bin/pkg-versions.sh | jq . > /opt/circleci/versions.json"
 
 LABEL circleci.user="ubuntu"
