@@ -1,67 +1,15 @@
 machine:
-  environment:
-    IMAGE_TAG: trusty-${CIRCLE_BUILD_NUM}-$(cd $CIRCLE_PROJECT_REPONAME && git rev-parse --short HEAD)
-    IMAGE_REPO: "circleci/build-image"
-
   pre:
-    - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
-    - echo 'docker-push-with-retry() { for i in 1 2 3; do docker push $1; if [ $? -eq 0 ]; then return 0; fi; echo "Retrying...."; done; return 1; }' >> ~/.circlerc
-
-  post:
     - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
     - sudo service docker start
 
 dependencies:
   override:
-    - echo "Building Docker image $IMAGE_REPO:$IMAGE_TAG"
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-    # Scratch is the latest cache
-    - docker pull ${IMAGE_REPO}:scratch || true:
-        timeout: 3600
-
-    - ? |
-        if $(no_cache); then
-          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
-        else
-          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch .;
-        fi
-      :
-        timeout: 3600
-
-    - docker tag ${IMAGE_REPO}:scratch ${IMAGE_REPO}:${IMAGE_TAG}
-
-    - docker-push-with-retry ${IMAGE_REPO}:scratch:
-        timeout: 3600
-
-    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}
-
-    # Build a slightly modified image for unprivileged lxc
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch-unprivileged .:
-        timeout: 3600
-
-    - docker tag ${IMAGE_REPO}:scratch-unprivileged ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged
-
-    - docker-push-with-retry ${IMAGE_REPO}:scratch-unprivileged:
-        timeout: 3600
-
-    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
-        timeout: 3600
-
-    # Dump versions to artifact which is useful for image releae
-    - docker run ${IMAGE_REPO}:scratch-unprivileged cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
+    - docker build -t circleci/build-image:enterprise-base
 
 test:
   override:
-    - docker build -t test-image tests/
+    - docker push circleci/build-image:enterprise-base
 
-    - docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
-
-    - sleep 10; chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
-
-deployment:
-  production:
-    branch: master
-    commands:
-      - ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_TAG.tar.gz --acl public-read:
-          timeout: 3600
