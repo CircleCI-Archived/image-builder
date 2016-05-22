@@ -1,5 +1,5 @@
 machine:
-  pre:
+  post:
     - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
     - sudo service docker start
 
@@ -7,7 +7,7 @@ dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-    - docker build -t circleci/build-image:enterprise-base
+    - docker build -t circleci/build-image:enterprise-base .
 
 test:
   override:
