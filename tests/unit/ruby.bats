@@ -42,6 +42,13 @@ ruby_test_bundler () {
     [ "$status" -eq 0 ]
 }
 
+# Run this test first before version is changed by subsequent tests
+@test "ruby: default is 2.2.4" {
+    run ruby_test_version 2.2.4
+
+    [ "$status" -eq 0 ]
+}
+
 @test "ruby: 2.1.8 works" {
     test_ruby 2.1.8
 }

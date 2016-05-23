@@ -56,6 +56,13 @@ python_test_pyenv_global () {
     [ "$status" -eq 0 ]
 }
 
+# Run this test first before version is changed by subsequent tests
+@test "python: default is 2.7.11" {
+    run python_test_version 2.7.11
+
+    [ "$status" -eq 0 ]
+}
+
 @test "python: 2.7.10 works" {
     test_python 2.7.10
 }

@@ -68,6 +68,13 @@ php_test_libphp_exists () {
     [ "$status" -eq 0 ]
 }
 
+# Run this test first before version is changed by subsequent tests
+@test "php: default is 5.6.17" {
+    run php_test_version 5.6.17
+
+    [ "$status" -eq 0 ]
+}
+
 @test "php: 5.5.31 works" {
     test_php 5.5.31
 }

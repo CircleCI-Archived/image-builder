@@ -32,7 +32,14 @@ nodejs_test_npm () {
 
     run test "$expected" = "$actual"
 
-    [[ "$status" -eq 0 ]]
+    [ "$status" -eq 0 ]
+}
+
+# Run this test first before version is changed by subsequent tests
+@test "nodejs: default is 4.2.6" {
+    run nodejs_test_version 4.2.6
+
+    [ "$status" -eq 0 ]
 }
 
 @test "nodejs: 0.12.9 works" {
