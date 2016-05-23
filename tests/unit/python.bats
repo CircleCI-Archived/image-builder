@@ -40,8 +40,9 @@ python_test_pip () {
 }
 
 python_test_pyenv_global () {
+    rm .python-version
     local current_version=$(pyenv global)
-    local new_version=3.5.11
+    local new_version=3.5.1
 
     pyenv global $new_version
     python_test_version $new_version
