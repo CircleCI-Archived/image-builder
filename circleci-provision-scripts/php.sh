@@ -19,7 +19,7 @@ set -ex
 # Because of https://github.com/phpenv/phpenv/issues/43 I can't install from git directly
 curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 mv ~/.phpenv $CIRCLECI_PKG_DIR
-git clone git://github.com/php-build/php-build.git $CIRCLECI_PKG_DIR/.phpenv/plugins/php-build
+git clone https://github.com/php-build/php-build.git $CIRCLECI_PKG_DIR/.phpenv/plugins/php-build
 echo "export PHPENV_ROOT=$CIRCLECI_PKG_DIR/.phpenv" >> ~/.circlerc
 echo 'export PATH=$PHPENV_ROOT/bin:$PATH' >> ~/.circlerc
 echo 'eval "$(phpenv init -)"' >> ~/.circlerc
@@ -91,4 +91,3 @@ function install_php() {
     type phpunit &>/dev/null || install_phpunit
     install_php_version $VERSION
 }
-
