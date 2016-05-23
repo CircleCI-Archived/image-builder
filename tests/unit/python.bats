@@ -3,7 +3,7 @@
 test_python () {
     local version=$1
 
-    pyenv local $version
+    pyenv global $version
 
     if echo $version | grep pypy; then
 	run pypy_test_version $version
@@ -40,9 +40,6 @@ python_test_pip () {
 }
 
 python_test_pyenv_global () {
-    # We need to remove the file otherwise pyenv uses
-    # the version set via pyenv local
-    rm .python-version
     local current_version=$(pyenv global)
     local new_version=3.5.1
 
@@ -55,6 +52,13 @@ python_test_pyenv_global () {
     local actual=$(ls /opt/circleci/python/ | sort)
 
     run test "$expected" = "$actual"
+
+    [ "$status" -eq 0 ]
+}
+
+# Run this test first before version is changed by subsequent tests
+@test "python: default is 2.7.11" {
+    run python_test_version 2.7.11
 
     [ "$status" -eq 0 ]
 }
