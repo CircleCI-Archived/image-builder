@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function install_base_requirements() {
-    echo "Setting Timezone & Locale to $3 & C.UTF-8"
+    echo "Setting Timezone & Locale to Etc/UTC & C.UTF-8"
 
-    ln -sf /usr/share/zoneinfo/$3 /etc/localtime
+    ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
     locale-gen C.UTF-8 || true
     update-locale LANG=en_US.UTF-8
     export LANG=C.UTF-8
