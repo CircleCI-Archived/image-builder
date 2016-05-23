@@ -3,7 +3,7 @@
 test_python () {
     local version=$1
 
-    pyenv local $version
+    pyenv global $version
 
     if echo $version | grep pypy; then
 	run pypy_test_version $version
@@ -40,9 +40,6 @@ python_test_pip () {
 }
 
 python_test_pyenv_global () {
-    # We need to remove the file otherwise pyenv uses
-    # the version set via pyenv local
-    rm .python-version
     local current_version=$(pyenv global)
     local new_version=3.5.1
 
