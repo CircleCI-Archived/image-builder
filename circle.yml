@@ -49,7 +49,7 @@ dependencies:
         timeout: 3600
 
     # Dump versions to artifact which is useful for image releae
-    - docker run ${IMAGE_REPO}:scratch-unprivileged cat /opt/circleci/versions.json > $CIRCLE_ARTIFACTS/versions.json
+    - docker run ${IMAGE_REPO}:scratch-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
 
 test:
   override:

@@ -39,6 +39,17 @@ python_test_pip () {
     pip --version
 }
 
+python_test_pyenv_global () {
+    # We need to remove the file otherwise pyenv uses
+    # the version set via pyenv local
+    rm .python-version
+    local current_version=$(pyenv global)
+    local new_version=3.5.1
+
+    pyenv global $new_version
+    python_test_version $new_version
+}
+
 @test "python: all versions are installed" {
     local expected=$(grep "circleci-install python" /opt/circleci/Dockerfile | awk '{print $4}' | sort)
     local actual=$(ls /opt/circleci/python/ | sort)
@@ -106,4 +117,14 @@ python_test_pip () {
 
 @test "python: pypy-4.0.1 works" {
     test_python pypy-4.0.1
+}
+
+# We had a regression that changing python version with 'pyenv global' is broken
+# because we accidentally run 'pyenv local' during image build.
+# This breaks the version switching because CircleCI use 'pyenv global' but global
+# doesn't override version set with local.
+@test "python: switching version with 'pyenv global' works" {
+    run python_test_pyenv_global
+
+    [ "$status" -eq 0 ]
 }

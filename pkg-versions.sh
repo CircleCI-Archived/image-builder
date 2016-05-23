@@ -114,7 +114,7 @@ cat<<EOF
     "docker": "$(docker --version | col 3 | sed 's/-circleci.*//')",
     "docker-compose": "$(docker-compose --version | col 3 | sed 's/,//g')",
     "heroku-toolbelt": "$(heroku version | grep toolbelt | col 1 | sed 's|.*/||')",
-    "gcloud": "$(pyenv local 2.7.11 && gcloud version  | grep "Google Cloud SDK" | col 4)",
+    "gcloud": "$(/opt/google-cloud-sdk/bin/gcloud version | grep "Google Cloud SDK" | col 4)",
     "aws-cli": "$(aws --version 2>&1  | col 1 | sed 's|.*/||')",
     "android": {
       "build-tool": "$(grep 'Pkg.Revision=' $ANDROID_HOME/tools/source.properties | sed 's/Pkg.Revision=//')",
