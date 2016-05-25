@@ -51,6 +51,10 @@ dependencies:
     # Dump versions to artifact which is useful for image releae
     - docker run ${IMAGE_REPO}:scratch-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
 
+    - curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+
+    - diff -uw versions.json.before $CIRCLE_ARTIFACTS/versions.json > $CIRCLE_ARTIFACTS/versions.diff; true
+
 test:
   override:
     - docker build -t test-image tests/
