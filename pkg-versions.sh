@@ -50,7 +50,7 @@ cat<<EOF
     "chromedriver": "$(chromedriver --version | col 2)",
     "firefox": "$(firefox --version | col 3)",
     "mongod": "$(mongod --version | grep 'db version' | col 3 | sed 's/^v//')",
-    "psql": "$(psql --version | grep psql | col 3)",
+    "psql": "$(/usr/lib/postgresql/9.4/bin/postgres --version | col 3)",
     "mysqld": "$(mysql --version | col 6 | sed 's/,//')",
     "ruby": {
       "default": "$(ruby --version | cut -d " " -f 2)",
