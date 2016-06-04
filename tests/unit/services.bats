@@ -21,6 +21,20 @@ wait_service () {
     exit 1
 }
 
+create_postgis_extention () {
+    local extentions=(postgis postgis_topology fuzzystrmatch postgis_tiger_geocoder)
+
+    # Drop extentions in case it's already created by previous test run.
+    # You need to delete extentions in reverse order because of dependencies.
+    for (( i=${#extentions[@]}-1 ; i>=0 ; i-- )) ; do
+	psql -c "DROP EXTENSION ${extentions[i]};" || true
+    done
+
+    for ((i = 0; i < ${#extentions[@]}; i++)) ; do
+	psql -c "CREATE EXTENSION ${extentions[i]};" || return 1
+    done
+}
+
 @test "mysql is enabled by default" {
     run test_enabled_default "mysql"
 
@@ -33,14 +47,32 @@ wait_service () {
     [ "$status" -eq 0 ]
 }
 
-@test "postgresql is enabled by default" {
+@test "postgresql: enabled by default" {
     run sudo service postgresql status
 
     [ "$status" -eq 0 ]
 }
 
-@test "postgresql works" {
+@test "postgresql: query works" {
     run psql -c "SELECT version();"
+
+    [ "$status" -eq 0 ]
+}
+
+@test "postgresql: version is 9.5" {
+    run bash -c 'psql -c "SELECT version();" | grep 9.5'
+
+    [ "$status" -eq 0 ]
+}
+
+@test "postgresql: postgis extention is enabled" {
+    run create_postgis_extention
+
+    [ "$status" -eq 0 ]
+}
+
+@test "postgresql: circle_test DB is created" {
+    run bash -c "psql -l | grep circle_test"
 
     [ "$status" -eq 0 ]
 }
