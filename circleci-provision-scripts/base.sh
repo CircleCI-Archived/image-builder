@@ -57,6 +57,7 @@ bsdtar
 build-essential
 cmake
 curl
+dpkg-repack
 gfortran
 git
 imagemagick
