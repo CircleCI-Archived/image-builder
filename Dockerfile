@@ -122,10 +122,13 @@ RUN sudo -H -i -u ubuntu rvm use 2.2.4 --default
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.5.31
 RUN circleci-install php 5.5.32
+RUN circleci-install php 5.5.36
 RUN circleci-install php 5.6.17
 RUN circleci-install php 5.6.18
+RUN circleci-install php 5.6.21
 RUN circleci-install php 7.0.3
 RUN circleci-install php 7.0.4
+RUN circleci-install php 7.0.7
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
