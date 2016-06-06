@@ -6,7 +6,7 @@ function install_postgres_ext_postgis() {
     local DIR=geos-${VERSION}
     local URL=http://download.osgeo.org/geos/${FILE}
 
-    apt-get install ruby-dev swig swig2.0 postgis postgresql-9.4-postgis-2.1
+    apt-get install ruby-dev swig swig2.0 postgis postgresql-9.5-postgis-2.2
 
     # Install GEOS
     pushd /tmp
@@ -27,7 +27,7 @@ function install_postgres_ext_postgis() {
 }
 
 function install_postgres() {
-    POSTGRES_VERSION=9.4
+    POSTGRES_VERSION=9.5
 
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
