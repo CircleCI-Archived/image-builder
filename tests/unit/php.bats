@@ -83,6 +83,10 @@ php_test_libphp_exists () {
     test_php 5.5.32
 }
 
+@test "php: 5.5.36 works" {
+    test_php 5.5.36
+}
+
 @test "php: 5.6.17 works" {
     test_php 5.6.17
 }
@@ -91,10 +95,18 @@ php_test_libphp_exists () {
     test_php 5.6.18
 }
 
+@test "php: 5.6.22 works" {
+    test_php 5.6.22
+}
+
 @test "php: 7.0.3 works" {
     test_php 7.0.3
 }
 
 @test "php: 7.0.4 works" {
     test_php 7.0.4
+}
+
+@test "php: 7.0.7 works" {
+    test_php 7.0.7
 }
