@@ -66,11 +66,9 @@ function install_riak() {
 }
 
 function install_couchdb() {
-    local VERSION=1.6.1
-
     add-apt-repository ppa:couchdb/stable
     apt-get update
-    apt-get install couchdb=$VERSION
+    apt-get install couchdb
 }
 
 function install_sysadmin() {
