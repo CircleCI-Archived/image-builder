@@ -42,6 +42,14 @@ all_java() {
     ls -l /usr/lib/jvm | grep -v -- "->" | grep -v total | awk '{print $9}' | quotify | commatize | flatten | trailing_last_comma
 }
 
+all_ghc() {
+     ls /opt/ghc/ | quotify | commatize | flatten | trailing_last_comma
+}
+
+all_sbt() {
+    ls /home/ubuntu/.sbt/.lib/ | quotify | commatize | flatten | trailing_last_comma
+}
+
 cat<<EOF
 {
   "summary": {
@@ -89,6 +97,22 @@ cat<<EOF
         $(all_java)
       ]
     },
+    "clojure": {
+      "lein": "$(lein --version | col 2)"
+    },
+    "haskell": {
+      "all": [
+        $(all_ghc)
+      ],
+      "cabal": "$(cabal --version | head -1 | col 3)",
+      "alex": "$(alex --version | col 3 | trailing_last_comma)",
+      "happy": "$(happy --version | head -1 | col 3)"
+    },
+    "scala": {
+      "all": [
+        $(all_sbt)
+      ]
+    },
     "redis": "$(redis-server --version | col 3 | sed 's/^v=//')",
     "memcached": "$(memcached -h | head -1 | col 2)",
     "git": "$(git --version | col 3)",
@@ -97,7 +121,6 @@ cat<<EOF
     "cc": "$(cc --version | head -1 | col 4)",
     "c++": "$(c++ --version | head -1 | col 4)",
     "make": "$(make --version | head -1 | col 3)",
-    "lein": "$(lein --version | col 2)",
     "maven": "$(mvn --version | head -1 | col 3)",
     "ant": "$(ant -version | col 4)",
     "apache2": "$(apache2 -version | grep 'Server version' | col 3 | cut -d '/' -f 2)",
