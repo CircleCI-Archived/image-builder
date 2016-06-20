@@ -137,6 +137,10 @@ RUN circleci-install clojure
 ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
 
+ADD circleci-provision-scripts/haskell.sh /opt/circleci-provision-scripts/haskell.sh
+RUN circleci-install ghc 7.10.2
+RUN circleci-install ghc 8.0.1
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
