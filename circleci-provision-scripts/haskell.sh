@@ -2,6 +2,7 @@
 
 function install_ghc() {
     local version=$1
+    local install_path="/opt/ghc/$version"
 
     local ppa="ppa:hvr/ghc"
     local ppa_file="/etc/apt/sources.list.d/hvr-ghc-trusty.list"
@@ -20,6 +21,8 @@ function install_ghc() {
     install_cabal $cabal_version
 
     apt-get install ghc-$version
+
+    echo "export PATH=$install_path/bin"':$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }
 
 function install_ghc_tool() {
