@@ -55,17 +55,11 @@ RUN circleci-install android_sdk addon-google_apis-google-22
 ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
 RUN circleci-install qt
 
-# awscli
+# Install deployment tools
 ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
-RUN circleci-install awscli
-
-# gcloud
 ADD circleci-provision-scripts/gcloud.sh /opt/circleci-provision-scripts/gcloud.sh
-RUN circleci-install gcloud
-
-# heroku
 ADD circleci-provision-scripts/heroku.sh /opt/circleci-provision-scripts/heroku.sh
-RUN circleci-install heroku
+RUN for package in awscli gcloud heroku; do circleci-install $package; done
 
 # Languages
 ARG use_precompile=true
@@ -136,6 +130,9 @@ RUN circleci-install clojure
 
 ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
+
+ADD circleci-provision-scripts/haskell.sh /opt/circleci-provision-scripts/haskell.sh
+RUN circleci-install ghc 8.0.1
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
