@@ -65,6 +65,13 @@ function install_riak() {
     sudo apt-get install riak=${VERSION}-1
 }
 
+function install_couchdb() {
+    local VERSION=1.6.1
+
+    add-apt-repository ppa:couchdb/stable
+    apt-get update
+    apt-get install couchdb=$VERSION
+}
 
 function install_sysadmin() {
     apt-get install htop
