@@ -130,6 +130,7 @@ cat<<EOF
     "neo4j": "$(neo4j-shell --version | col 4)",
     "riak": "$(riak version)",
     "memcached": "$(memcached -h | head -1 | col 2)",
+    "couchdb": "$(couchdb -V | head -1 | col 5)",
     "geos": "$(geos-config --version)",
     "go": "$(go version | col 3 | sed 's/^go//')",
     "gradle": "$(gradle --version | grep Gradle | col 2)",

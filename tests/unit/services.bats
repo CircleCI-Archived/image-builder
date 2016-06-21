@@ -141,6 +141,18 @@ create_postgis_extention () {
     [ "$status" -eq 0 ]
 }
 
+@test "couchdb works" {
+    local port=5984
+
+    sudo service couchdb start
+
+    wait_service $port
+
+    run curl http://localhost:$port
+
+    [ "$status" -eq 0 ]
+}
+
 # We just run `docker version` without running actual daemon
 # because docker can't run inside docker (DIND)
 @test "circleci docker is installed" {
