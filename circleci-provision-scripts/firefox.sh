@@ -3,7 +3,12 @@
 function install_firefox() {
     echo '>>> Installing Firefox'
 
-    apt-get install -y firefox
+    local url="https://s3.amazonaws.com/circle-downloads/firefox_46.0.1%2Bbuild1-0ubuntu0.14.04.3_amd64.deb"
+    local deb_path="/tmp/firefox.deb"
+
+    curl --output $deb_path $url
+
+    dpkg -i $deb_path || apt-get -f install
 }
 
 function install_firefox_version() {

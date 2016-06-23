@@ -35,14 +35,20 @@ create_postgis_extention () {
     done
 }
 
-@test "mysql is enabled by default" {
-    run test_enabled_default "mysql"
+@test "mysql: enabled by default" {
+    run bash -c "sudo service mysql status | grep 'is running'"
 
     [ "$status" -eq 0 ]
 }
 
-@test "mysql works" {
+@test "mysql: query works" {
     run mysql -e "STATUS;"
+
+    [ "$status" -eq 0 ]
+}
+
+@test "mysql: test database is created" {
+    run bash -c "mysql -e 'show databases;' | grep circle_test"
 
     [ "$status" -eq 0 ]
 }

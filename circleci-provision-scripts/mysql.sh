@@ -1,15 +1,6 @@
 #!/bin/bash
 
-function install_mysql_56() {
-    {
-            echo mysql-community-server mysql-community-server/data-dir select '';
-            echo mysql-community-server mysql-community-server/root-pass password '';
-            echo mysql-community-server mysql-community-server/re-root-pass password '';
-            echo mysql-community-server mysql-community-server/remove-test-db select false;
-    } | debconf-set-selections
-
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.6 libmysqld-dev
-
+function configure_mysql() {
     cat <<EOF >> /etc/mysql/my.cnf
 [client]
 default-character-set=utf8
@@ -38,4 +29,43 @@ EOF
     echo "GRANT ALL PRIVILEGES ON *.* TO 'circle'@'localhost' WITH GRANT OPTION" | mysql -u root
     echo "FLUSH PRIVILEGES" | mysql -u root
     echo "CREATE DATABASE circle_test" | mysql -u root
+}
+
+function install_mysql_56() {
+    {
+            echo mysql-community-server mysql-community-server/data-dir select '';
+            echo mysql-community-server mysql-community-server/root-pass password '';
+            echo mysql-community-server mysql-community-server/re-root-pass password '';
+            echo mysql-community-server mysql-community-server/remove-test-db select false;
+    } | debconf-set-selections
+
+    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.6 libmysqld-dev
+
+    configure_mysql
+}
+
+function install_mysql_57() {
+    curl -LO http://dev.mysql.com/get/mysql-apt-config_0.6.0-1_all.deb
+
+    {
+        echo mysql-apt-config mysql-apt-config/unsupported-platform select abort
+        echo mysql-apt-config mysql-apt-config/repo-codename   select trusty
+        echo mysql-apt-config mysql-apt-config/select-tools select
+        echo mysql-apt-config mysql-apt-config/repo-distro select ubuntu
+        echo mysql-apt-config mysql-apt-config/select-server select mysql-5.7
+        echo mysql-apt-config mysql-apt-config/select-product select Apply
+
+        echo mysql-community-server mysql-community-server/data-dir select '';
+        echo mysql-community-server mysql-community-server/remove-test-db select false;
+	echo mysql-community-server mysql-community-server/re-root-pass password ""
+	echo mysql-community-server mysql-community-server/root-pass    password ""
+    } | debconf-set-selections
+
+    DEBIAN_FRONTEND=noninteractive dpkg -i mysql-apt-config_0.6.0-1_all.deb
+
+    apt-get update
+
+    apt-get -y install mysql-server-5.7 libmysqld-dev
+
+    configure_mysql
 }
