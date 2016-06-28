@@ -53,6 +53,10 @@ create_postgis_extention () {
     [ "$status" -eq 0 ]
 }
 
+@test "mysql: root password is empty" {
+    run mysql -u root -e 'STATUS;'
+}
+
 @test "postgresql: enabled by default" {
     run sudo service postgresql status
 
