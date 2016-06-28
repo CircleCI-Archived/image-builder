@@ -67,5 +67,13 @@ function install_mysql_57() {
 
     apt-get -y install mysql-server-5.7 libmysqld-dev
 
+    # root password is set only for socket but not for network during the installation.
+    # See: https://www.percona.com/blog/2016/03/16/change-user-password-in-mysql-5-7-with-plugin-auth_socket/
+    mysqld &
+    sleep 5
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
+    sleep 5
+    pkill -9 mysqld
+
     configure_mysql
 }
