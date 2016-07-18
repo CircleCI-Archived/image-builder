@@ -2,6 +2,13 @@
 
 function install_redis() {
     apt-get install redis-server
+    # disable init.d script for redis
+    update-rc.d redis-server disable
+    rm /etc/init.d/redis-server
+    # manage redis with upsatart. needs to be explicitly started with 'sudo start redis-server'
+    printf 'description "redis server"\nstop on shutdown\nexec sudo -u redis /usr/bin/redis-server /etc/redis/redis.conf\nrespawn' > /etc/init/redis-server.conf
+    # prevent redis-server from forking and daemonizing itself so upstart can respawn it
+    sed -i "s|daemonize yes|daemonize no|g" /etc/redis/redis.conf
 }
 
 function install_memcached() {
