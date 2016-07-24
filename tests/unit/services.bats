@@ -100,7 +100,7 @@ create_postgis_extention () {
 }
 
 @test "redis works" {
-    sudo start redis-server
+    sudo service redis-server start
 
     run bash -c "echo 'SET hoge bar' | redis-cli"
 
