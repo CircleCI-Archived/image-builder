@@ -77,7 +77,7 @@ function install_ruby_version_precompile() {
     local INSTALL_RUBY_VERSION=$1
     echo ">>> Installing Ruby $INSTALL_RUBY_VERSION"
 
-    curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | bash
+    maybe_run_apt_update
     apt-get install circleci-ruby-$INSTALL_RUBY_VERSION
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/
 
