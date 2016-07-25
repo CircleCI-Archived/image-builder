@@ -64,8 +64,8 @@ RUN for package in awscli gcloud heroku; do circleci-install $package; done
 # Languages
 ARG use_precompile=true
 ENV USE_PRECOMPILE $use_precompile
+ENV RUN_APT_UPDATE=true
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
-
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
 RUN circleci-install python 2.7.10
 RUN circleci-install python 2.7.11

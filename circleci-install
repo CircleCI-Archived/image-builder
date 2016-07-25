@@ -1,6 +1,8 @@
 #!/bin/bash
 
 [ -n "$CIRCLECI_USER" ] || export CIRCLECI_USER=ubuntu
+[ -n "$RUN_APT_UPDATE" ] || export RUN_APT_UPDATE=false
+
 export CIRCLECI_HOME=/home/${CIRCLECI_USER}
 export CIRCLECI_PKG_DIR=/opt/circleci
 
@@ -15,6 +17,12 @@ function as_user() {
 }
 export -f as_user
 
+function maybe_run_apt_update() {
+    if [ $RUN_APT_UPDATE = "true" ]; then
+	apt-get update
+    fi
+}
+export -f maybe_run_apt_update
 
 [[ $SCRIPTS_PATH ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
 
