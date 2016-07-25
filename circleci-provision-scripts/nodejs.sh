@@ -7,8 +7,6 @@ function install_nvm() {
 
     echo 'Install NVM'
     (cat <<'EOF'
-set -ex
-
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | NVM_DIR=$CIRCLECI_PKG_DIR/.nvm bash
 echo "export NVM_DIR=$CIRCLECI_PKG_DIR/.nvm" >> ~/.circlerc
 echo 'source $NVM_DIR/nvm.sh' >> ~/.circlerc
@@ -20,7 +18,6 @@ EOF
 
         # Preparing for hooking up packaged NodeJS into nvm directories
         (cat <<'EOF'
-set -ex
 mkdir $CIRCLECI_PKG_DIR/nodejs
 EOF
         ) | as_user CIRCLECI_PKG_DIR=$CIRCLECI_PKG_DIR bash
@@ -44,7 +41,6 @@ function patch_nvm() {
 function install_nodejs_version_nvm() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 nvm install $NODEJS_VERSION
 rm -rf ~/nvm/src
@@ -91,7 +87,6 @@ function set_nodejs_default() {
     local NODEJS_VERSION=$1
 
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 nvm alias default $NODEJS_VERSION
 EOF

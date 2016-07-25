@@ -1,5 +1,4 @@
 #!/bin/bash
-set -ex
 
 function install_circle_android_helper() {
     cat <<'EOF' > /usr/local/bin/circle-android

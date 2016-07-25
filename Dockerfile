@@ -1,5 +1,7 @@
 FROM circleci/ubuntu-server:trusty-latest
 
+ENV VERBOSE true
+
 # Avoid any installation scripts interact with upstart
 # So divert now, but undivert at the end
 # You shouldn't change the line unless you understand the consequence

@@ -19,10 +19,18 @@ export -f as_user
 [[ $SCRIPTS_PATH ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
 
 set -a
+set -e
+
+if [ "$VERBOSE" = "true" ]; then
+  echo "enabling debug mode...."
+  set -x
+fi
+
+export SHELLOPTS
+
 for n in $SCRIPTS_PATH/*.sh
 do
     source $n
 done
 
-set -ex
 install_$@
