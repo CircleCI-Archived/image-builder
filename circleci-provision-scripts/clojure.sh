@@ -10,8 +10,7 @@ function install_clojure() {
 
     (cat <<'EOF'
 # Force dependencies to download
-set -ex
 lein -v
 EOF
-    ) | as_user bash    
+    ) | as_user bash
 }

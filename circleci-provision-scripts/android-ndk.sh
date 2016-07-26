@@ -1,5 +1,4 @@
 #!/bin/bash
-set -ex
 
 function install_ndk() {
     NDK_VERSION=r10d

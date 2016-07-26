@@ -14,8 +14,6 @@ function install_phpenv(){
 
     echo '>>> Installing php-env and php-build'
     (cat <<'EOF'
-set -ex
-
 # Because of https://github.com/phpenv/phpenv/issues/43 I can't install from git directly
 curl -L https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 mv ~/.phpenv $CIRCLECI_PKG_DIR
@@ -29,7 +27,6 @@ EOF
     if [ -n "$USE_PRECOMPILE" ]; then
         # Preparing for hooking up packaged Python into pyenv directories
         (cat <<'EOF'
-set -ex
 mkdir $CIRCLECI_PKG_DIR/php
 ln -s $CIRCLECI_PKG_DIR/php $CIRCLECI_PKG_DIR/.phpenv/versions
 EOF
@@ -57,7 +54,6 @@ function install_php_version_phpenv() {
     echo ">>> Installing php $PHP_VERSION"
 
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 phpenv install $PHP_VERSION
 EOF

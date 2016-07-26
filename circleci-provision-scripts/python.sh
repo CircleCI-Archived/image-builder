@@ -12,7 +12,6 @@ function install_pyenv() {
 
     echo 'Installing pyenv'
     (cat <<'EOF'
-set -ex
 git clone https://github.com/yyuu/pyenv.git $CIRCLECI_PKG_DIR/.pyenv
 echo "export PYENV_ROOT=$CIRCLECI_PKG_DIR/.pyenv" >> ~/.circlerc
 echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> ~/.circlerc
@@ -23,7 +22,6 @@ EOF
     if [ -n "$USE_PRECOMPILE" ]; then
     # Preparing for hooking up packaged Python into pyenv directories
         (cat <<'EOF'
-set -ex
 mkdir $CIRCLECI_PKG_DIR/python
 ln -s $CIRCLECI_PKG_DIR/python $CIRCLECI_PKG_DIR/.pyenv/versions
 EOF
@@ -34,7 +32,6 @@ EOF
 function install_python_version_pyenv() {
     PYTHON_VERSION=$1
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 pyenv install $PYTHON_VERSION
 pyenv global $PYTHON_VERSION
@@ -57,7 +54,6 @@ function install_python_version_precompile() {
 function set_python_default() {
     local PYTHON_VERSION=$1
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 pyenv global $PYTHON_VERSION
 pyenv rehash

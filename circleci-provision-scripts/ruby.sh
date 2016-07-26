@@ -30,7 +30,6 @@ EOF
     ) | as_user tee ${CIRCLECI_HOME}/.gemrc
 
     (cat <<'EOF'
-set -ex
 source ~/.circlerc
 rvm rvmrc warning ignore allGemfiles
 EOF
@@ -40,7 +39,6 @@ EOF
     # Preparing for hooking up packaged Ruby into rvm directories
 
     (cat <<'EOF'
-set -ex
 mkdir $CIRCLECI_PKG_DIR/ruby
 rm -r $CIRCLECI_PKG_DIR/.rvm/rubies
 ln -s $CIRCLECI_PKG_DIR/ruby $CIRCLECI_PKG_DIR/.rvm/rubies
@@ -60,7 +58,6 @@ function install_ruby_version_rvm() {
     INSTALL_RUBY_VERSION=$1
     RUBYGEMS_MAJOR_RUBY_VERSION=${2:-2}
     (cat <<'EOF'
-set -ex
 echo Installing Ruby version: $INSTALL_RUBY_VERSION
 source ~/.circlerc
 rvm use $INSTALL_RUBY_VERSION
@@ -82,7 +79,6 @@ function install_ruby_version_precompile() {
     chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/
 
     (cat <<'EOF'
-set -ex
 echo Installing Ruby version: $INSTALL_RUBY_VERSION
 source ~/.circlerc
 rvm use $INSTALL_RUBY_VERSION
