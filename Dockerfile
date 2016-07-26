@@ -30,7 +30,7 @@ ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak couchdb; do circleci-install $package; done
 
 # Dislabe services by default
-RUN for s in apache2 redis-server memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
+RUN for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
 
 # Browsers
 ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
