@@ -10,7 +10,8 @@ RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
         && dpkg-divert --local --rename --add /sbin/initctl \
         && ln -s /bin/true /sbin/initctl
 
-ADD circleci-install circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
+ADD circleci-install /usr/local/bin/circleci-install
+ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
 RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Databases
