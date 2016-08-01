@@ -11,15 +11,11 @@ RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
         && ln -s /bin/true /sbin/initctl
 
 ADD circleci-install /usr/local/bin/circleci-install
-
-ADD circleci-provision-scripts/base.sh /opt/circleci-provision-scripts/base.sh
-ADD circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/circleci-specific.sh
+ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
 RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Databases
-ADD circleci-provision-scripts/mysql.sh /opt/circleci-provision-scripts/mysql.sh
-ADD circleci-provision-scripts/mongo.sh /opt/circleci-provision-scripts/mongo.sh
-ADD circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/postgres.sh
+ADD circleci-provision-scripts/mysql.sh circleci-provision-scripts/mongo.sh circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/
 RUN for package in mysql_57 mongo postgres postgres_ext_postgis; do circleci-install $package; done
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
@@ -33,9 +29,7 @@ RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticse
 RUN for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
 
 # Browsers
-ADD circleci-provision-scripts/firefox.sh /opt/circleci-provision-scripts/firefox.sh
-ADD circleci-provision-scripts/chrome.sh /opt/circleci-provision-scripts/chrome.sh
-ADD circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/phantomjs.sh
+ADD circleci-provision-scripts/firefox.sh circleci-provision-scripts/chrome.sh circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/
 RUN circleci-install firefox && circleci-install chrome && circleci-install phantomjs
 
 # Android
@@ -58,15 +52,12 @@ ADD circleci-provision-scripts/qt.sh /opt/circleci-provision-scripts/qt.sh
 RUN circleci-install qt
 
 # Install deployment tools
-ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/awscli.sh
-ADD circleci-provision-scripts/gcloud.sh /opt/circleci-provision-scripts/gcloud.sh
-ADD circleci-provision-scripts/heroku.sh /opt/circleci-provision-scripts/heroku.sh
+ADD circleci-provision-scripts/awscli.sh circleci-provision-scripts/gcloud.sh circleci-provision-scripts/heroku.sh /opt/circleci-provision-scripts/
 RUN for package in awscli gcloud heroku; do circleci-install $package; done
 
 # Languages
 ARG use_precompile=true
-ENV USE_PRECOMPILE $use_precompile
-ENV RUN_APT_UPDATE=true
+ENV USE_PRECOMPILE=$use_precompile RUN_APT_UPDATE=true
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
 RUN circleci-install python 2.7.10
