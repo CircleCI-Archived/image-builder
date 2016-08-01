@@ -15,7 +15,7 @@ ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-speci
 RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Databases
-ADD circleci-provision-scripts/mysql.sh circlecsi-provision-scripts/mongo.sh circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/
+ADD circleci-provision-scripts/mysql.sh circleci-provision-scripts/mongo.sh circleci-provision-scripts/postgres.sh /opt/circleci-provision-scripts/
 RUN for package in mysql_57 mongo postgres postgres_ext_postgis; do circleci-install $package; done
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
