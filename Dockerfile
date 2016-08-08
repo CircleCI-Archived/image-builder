@@ -2,6 +2,7 @@ FROM circleci/ubuntu-server:trusty-latest
 
 ENV VERBOSE true
 
+ARG IMAGE_TAG
 RUN echo $IMAGE_TAG
 ## Avoid any installation scripts interact with upstart
 ## So divert now, but undivert at the end
