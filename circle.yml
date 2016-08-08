@@ -17,7 +17,6 @@ dependencies:
     - echo "Building Docker image $IMAGE_REPO:$IMAGE_TAG"
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-    # Scratch is the latest cache
     - docker-cache-shim pull ${IMAGE_REPO}:
         timeout: 3600
 
@@ -37,36 +36,36 @@ dependencies:
 
     - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}
 
-    ## Build a slightly modified image for unprivileged lxc
-    #- docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch-unprivileged .:
-    #    timeout: 3600
-    #
-    #- docker tag ${IMAGE_REPO}:scratch-unprivileged ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged
-    #
-    #- docker-push-with-retry ${IMAGE_REPO}:scratch-unprivileged:
-    #    timeout: 3600
-    #
-    #- docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
-    #    timeout: 3600
-    #
-    ## Dump versions to artifact which is useful for image releae
-    #- docker run ${IMAGE_REPO}:scratch-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
-    #
-    #- curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
-    #
-    #- diff -uw versions.json.before $CIRCLE_ARTIFACTS/versions.json > $CIRCLE_ARTIFACTS/versions.diff; true
+    # Build a slightly modified image for unprivileged lxc
+    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:scratch-unprivileged .:
+        timeout: 3600
 
-#test:
-#  override:
-#    - docker build -t test-image tests/
-#
-#    - docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
-#
-#    - sleep 10; chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
+    - docker tag ${IMAGE_REPO}:scratch-unprivileged ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged
 
-#deployment:
-#  production:
-#    branch: master
-#    commands:
-#      - ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_TAG.tar.gz --acl public-read:
-#          timeout: 3600
+    - docker-push-with-retry ${IMAGE_REPO}:scratch-unprivileged:
+        timeout: 3600
+
+    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
+        timeout: 3600
+
+    # Dump versions to artifact which is useful for image releae
+    - docker run ${IMAGE_REPO}:scratch-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
+
+    - curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+
+    - diff -uw versions.json.before $CIRCLE_ARTIFACTS/versions.json > $CIRCLE_ARTIFACTS/versions.diff; true
+
+test:
+  override:
+    - docker build -t test-image tests/
+
+    - docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container test-image
+
+    - sleep 10; chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_TAG.tar.gz --acl public-read:
+          timeout: 3600
