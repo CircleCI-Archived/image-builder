@@ -37,7 +37,7 @@ function install_circleci_docker() {
     sudo dpkg-divert --add --rename --divert /usr/bin/docker.plain /usr/bin/docker
 
     # Replace with CircleCI's patched docker
-    sudo curl -L -o /usr/bin/docker.circleci 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
+    sudo curl -L -o /usr/bin/docker.circleci 'https://s3.amazonaws.com/circle-downloads/docker-1.8.3-circleci'
     sudo chmod 0755 /usr/bin/docker.circleci
 
     # --userland-proxy=false: Docker's userland proxy is broken. Don't use it.
