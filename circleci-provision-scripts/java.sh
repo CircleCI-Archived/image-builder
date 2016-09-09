@@ -5,9 +5,10 @@ function install_oraclejdk8() {
 
     # We could install java8 with PPA but our inference code expects java to be installed under /usr/lib/jvm
     # so taking old approach here.
-    FILE=jdk-8u40-linux-x64.gz
-    URL="https://circle-downloads.s3.amazonaws.com/jdk-8u40-linux-x64.gz"
-    JAVA_TMP=/tmp/java
+    local VERSION=102
+    local FILE=jdk-8u$VERSION-linux-x64.tar.gz
+    local URL="https://circle-downloads.s3.amazonaws.com/$FILE"
+    local JAVA_TMP=/tmp/java
 
     mkdir -p $JAVA_TMP
     pushd $JAVA_TMP
@@ -15,13 +16,17 @@ function install_oraclejdk8() {
     curl -L -O $URL
     tar zxf $FILE
     mkdir -p /usr/lib/jvm
-    mv ./jdk1.8.0_40 /usr/lib/jvm/jdk1.8.0
+    mv ./jdk1.8.0_$VERSION /usr/lib/jvm/jdk1.8.0
 
+    # Add jdk1.8.0 to alternative
     update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0/bin/java" 1
     update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac" 1
     update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws" 1
 
-    echo 'export PATH=/usr/lib/jvm/jdk1.8.0/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
+    # Set jdk1.8.0 to the default version
+    update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"
+    update-alternatives --set  "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac"
+    update-alternatives --set  "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws"
 
     popd
 

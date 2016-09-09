@@ -3,7 +3,7 @@
 function install_chrome_browser() {
     echo '>>> Installing Chrome'
 
-    local url="https://s3.amazonaws.com/circle-downloads/google-chrome-stable_50.0.2661.102-1_amd64.deb"
+    local url="https://s3.amazonaws.com/circle-downloads/google-chrome-stable_53.0.2785.101-1_amd64.deb"
     local deb_path="/tmp/google-chrome.deb"
 
     curl --output $deb_path $url
@@ -19,7 +19,7 @@ function install_chrome_browser() {
 # Chrome Driver
 
 function install_chromedriver() {
-    CHROME_DRIVER_VERSION=2.21
+    CHROME_DRIVER_VERSION=2.23
     curl -L -o /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
     unzip -p /tmp/chromedriver.zip > /usr/local/bin/chromedriver
     chmod +x /usr/local/bin/chromedriver

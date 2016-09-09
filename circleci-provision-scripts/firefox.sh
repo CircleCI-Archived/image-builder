@@ -3,7 +3,9 @@
 function install_firefox() {
     echo '>>> Installing Firefox'
 
-    local url="https://s3.amazonaws.com/circle-downloads/firefox_46.0.1%2Bbuild1-0ubuntu0.14.04.3_amd64.deb"
+    # If you are upgrading to any version newer than 47.0.1, you must check the compatibility with
+    # selenium. See https://github.com/SeleniumHQ/selenium/issues/2559#issuecomment-237079591
+    local url="https://s3.amazonaws.com/circle-downloads/firefox-mozilla-build_47.0.1-0ubuntu1_amd64.deb"
     local deb_path="/tmp/firefox.deb"
 
     curl --output $deb_path $url

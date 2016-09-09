@@ -62,6 +62,10 @@ nodejs_test_npm () {
     test_nodejs 4.3.0
 }
 
+@test "nodejs: 4.5.0 works" {
+    test_nodejs 4.5.0
+}
+
 @test "nodejs: 5.0.0 works" {
     test_nodejs 5.0.0
 }

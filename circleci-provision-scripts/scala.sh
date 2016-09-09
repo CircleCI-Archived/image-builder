@@ -7,7 +7,7 @@ function install_scala() {
     (cat <<'EOF'
 # Run sbt once to download dependencies.
 # SBT_OPTS="-XX:MaxMetaspaceSize=384M" sbt -v
-SBT_LAUNCH_VERSIONS="0.13.5 0.13.6 0.13.7 0.13.8 0.13.9"
+SBT_LAUNCH_VERSIONS="0.13.5 0.13.6 0.13.7 0.13.8 0.13.9 0.13.10 0.13.11 0.13.12"
 for VER in $(echo $SBT_LAUNCH_VERSIONS); do
 
 SBT_DIR=~/.sbt/.lib/${VER}

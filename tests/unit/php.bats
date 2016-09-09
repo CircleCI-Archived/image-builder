@@ -99,14 +99,14 @@ php_test_libphp_exists () {
     test_php 5.6.22
 }
 
-@test "php: 7.0.3 works" {
-    test_php 7.0.3
-}
-
 @test "php: 7.0.4 works" {
     test_php 7.0.4
 }
 
 @test "php: 7.0.7 works" {
     test_php 7.0.7
+}
+
+@test "php: 7.0.11 works" {
+    test_php 7.0.11
 }

@@ -71,6 +71,10 @@ python_test_pyenv_global () {
     test_python 2.7.11
 }
 
+@test "python: 2.7.12 works" {
+    test_python 2.7.12
+}
+
 @test "python: 3.1.4 works" {
     test_python 3.1.4
 }
@@ -103,12 +107,12 @@ python_test_pyenv_global () {
     test_python 3.4.4
 }
 
-@test "python: 3.5.0 works" {
-    test_python 3.5.0
-}
-
 @test "python: 3.5.1 works" {
     test_python 3.5.1
+}
+
+@test "python: 3.5.2 works" {
+    test_python 3.5.2
 }
 
 @test "python: pypy-1.9 works" {
