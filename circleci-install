@@ -2,8 +2,8 @@
 
 INSTALL=$1
 INSTALL_VERSION=$2
-INSTALL_IF_NEEDED=$3
 
+[[ '--needed' = "$3" ]] && INSTALL_IF_NEEDED=$3
 [[ -n "${CIRCLECI_USER}" ]] || export CIRCLECI_USER=ubuntu
 [[ -n "${RUN_APT_UPDATE}" ]] || export RUN_APT_UPDATE=false
 [[ -n "${SCRIPTS_PATH}" ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
