@@ -29,7 +29,7 @@ export -f maybe_run_apt_update
 
 if [[ -z "${CIRCLECI_PKG_DIR_EXISTS}" ]]; then
 	mkdir -p "${CIRCLECI_PKG_DIR}"
-elif [[ -n "${INSTALL_IF_NEEDED}" && -d "${CIRCLECI_PKG_DIR}/${INSTALL}/${INSTALL_VERSION}" ]]; then
+elif [[ -n "${INSTALL_IF_NEEDED}" && -d "${CIRCLECI_PKG_DIR}/${INSTALL}/v${INSTALL_VERSION}" ]]; then
 	exit 0
 fi
 
