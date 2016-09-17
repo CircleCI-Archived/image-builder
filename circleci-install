@@ -1,19 +1,21 @@
 #!/bin/bash
 
-[ -n "$CIRCLECI_USER" ] || export CIRCLECI_USER=ubuntu
-[ -n "$RUN_APT_UPDATE" ] || export RUN_APT_UPDATE=false
+INSTALL=$1
+INSTALL_VERSION=$2
+INSTALL_IF_NEEDED=$3
+
+[[ -n "${CIRCLECI_USER}" ]] || export CIRCLECI_USER=ubuntu
+[[ -n "${RUN_APT_UPDATE}" ]] || export RUN_APT_UPDATE=false
+[[ -n "${SCRIPTS_PATH}" ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
 
 export CIRCLECI_HOME=/home/${CIRCLECI_USER}
 export CIRCLECI_PKG_DIR=/opt/circleci
 
-if ! [ -d $CIRCLECI_PKG_DIR ]; then
-    mkdir -p $CIRCLECI_PKG_DIR
-fi
+[[ -d "${CIRCLECI_PKG_DIR}" ]] && CIRCLECI_PKG_DIR_EXISTS=true
 
-chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR
 
 function as_user() {
-    sudo -H -u ${CIRCLECI_USER} $@
+    sudo -H -u "${CIRCLECI_USER}" "$@"
 }
 export -f as_user
 
@@ -24,7 +26,14 @@ function maybe_run_apt_update() {
 }
 export -f maybe_run_apt_update
 
-[[ $SCRIPTS_PATH ]] || export SCRIPTS_PATH=/opt/circleci-provision-scripts
+
+if [[ -z "${CIRCLECI_PKG_DIR_EXISTS}" ]]; then
+	mkdir -p "${CIRCLECI_PKG_DIR}"
+elif [[ -n "${INSTALL_IF_NEEDED}" && -d "${CIRCLECI_PKG_DIR}/${INSTALL}/${INSTALL_VERSION}" ]]; then
+	exit 0
+fi
+
+chown -R "${CIRCLECI_USER}:${CIRCLECI_USER}" "${CIRCLECI_PKG_DIR}"
 
 set -a
 set -e
