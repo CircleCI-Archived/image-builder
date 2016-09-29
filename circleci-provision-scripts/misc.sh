@@ -25,7 +25,7 @@ function install_beanstalkd() {
 
 function install_neo4j() {
     # 2.3.3 is the last version that works with Java7 and later release needs Java8
-    local version="2.3.3"
+    local version="3.0.4"
     wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
     echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
     apt-get update
