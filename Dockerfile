@@ -62,6 +62,7 @@ RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
 RUN circleci-install python 2.7.10
 RUN circleci-install python 2.7.11
+RUN circleci-install python 2.7.12
 RUN circleci-install python 3.1.4
 RUN circleci-install python 3.1.5
 RUN circleci-install python 3.2.5
@@ -70,8 +71,8 @@ RUN circleci-install python 3.3.5
 RUN circleci-install python 3.3.6
 RUN circleci-install python 3.4.3
 RUN circleci-install python 3.4.4
-RUN circleci-install python 3.5.0
 RUN circleci-install python 3.5.1
+RUN circleci-install python 3.5.2
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1
@@ -83,6 +84,7 @@ RUN circleci-install nodejs 4.0.0
 RUN circleci-install nodejs 4.1.2
 RUN circleci-install nodejs 4.2.6
 RUN circleci-install nodejs 4.3.0
+RUN circleci-install nodejs 4.5.0
 RUN circleci-install nodejs 5.0.0
 RUN circleci-install nodejs 5.1.1
 RUN circleci-install nodejs 5.2.0
@@ -113,9 +115,9 @@ RUN circleci-install php 5.5.36
 RUN circleci-install php 5.6.17
 RUN circleci-install php 5.6.18
 RUN circleci-install php 5.6.22
-RUN circleci-install php 7.0.3
 RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
+RUN circleci-install php 7.0.11
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
