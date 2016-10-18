@@ -22,9 +22,9 @@ dependencies:
 
     - ? |
         if $(no_cache); then
-          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .;
+          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} -f Dockerfile.Picard-Ubuntu-14.04 .;
         else
-          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .;
+          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} -f Dockerfile.Picard-Ubuntu-14.04 .;
         fi
       :
         timeout: 3600
