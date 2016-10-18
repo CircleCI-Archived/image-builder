@@ -34,11 +34,11 @@ dependencies:
 
     - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}
 
-    - docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .:
-        timeout: 3600
+    #- docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .:
+    #    timeout: 3600
 
-    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}:
-        timeout: 3600
+    #- docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}:
+    #    timeout: 3600
 
 #    # Dump versions to artifact which is useful for image releae
 #    - docker run ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
