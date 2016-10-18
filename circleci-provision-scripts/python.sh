@@ -48,7 +48,7 @@ function install_python_version_precompile() {
 
     maybe_run_apt_update
     apt-get install circleci-python-$PYTHON_VERSION
-    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/python
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/python/$PYTHON_VERSION
 }
 
 function set_python_default() {
