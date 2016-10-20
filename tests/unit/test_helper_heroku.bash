@@ -1,12 +1,10 @@
-#!/usr/bin/env bats
-
-@test "heroku: heroku-cli works" {
+heroku_test_heroku_cli () {
     run heroku --version
 
     [ "$status" -eq 0 ]
 }
 
-@test "heroku: config dir is writable by user" {
+heroku_test_config_writable () {
     run touch ~/.config/heroku/foo
 
     [ "$status" -eq 0 ]
