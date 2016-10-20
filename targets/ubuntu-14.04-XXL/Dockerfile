@@ -133,9 +133,8 @@ RUN circleci-install ghc 8.0.1
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
 
-# When running in unprivileged containers, need to use CircleCI Docker fork
-ARG TARGET_UNPRIVILEGED_LXC
-RUN if [ "$TARGET_UNPRIVILEGED_LXC" = "true" ]; then circleci-install circleci_docker; fi
+# Install CircleCI patched Docker that runs in unpriv container
+RUN circleci-install circleci_docker
 
 # Undivert upstart
 # You shouldn't change the line unless you understad the consequence
@@ -145,11 +144,11 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
 # We need Dockerfile because unit test parses Dockerfile to make sure all versions are installed
-ADD Dockerfile /opt/circleci/Dockerfile
+ADD targets/ubuntu-14.04-XXL/Dockerfile /opt/circleci/Dockerfile
 
 ARG IMAGE_TAG
 RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
-ADD pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
+ADD targets/ubuntu-14.04-XXL/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
 
 LABEL circleci.user="ubuntu"
