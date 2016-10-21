@@ -73,3 +73,38 @@ export-s3-ubuntu-14.04-XXL-enterprise:
 	aws s3 cp ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
 
 ubuntu-14.04-XXL-enterprise: build-ubuntu-14.04-XXL-enterprise push-ubuntu-14.04-XXL-enterprise dump-version-ubuntu-14.04-XXL-enterprise
+
+### ubuntu-14.04-XL
+# This image is designed to be used on Picard, our alpha build environment with network services
+# provided through the docker composing mechanism.
+# The images matches the content of Ubuntu 14.04 XXL except network services.
+###
+build-ubuntu-14.04-XL:
+	docker-cache-shim pull ${IMAGE_REPO}
+	echo "Building Docker image ubuntu-14.04-XL-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XL-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) \
+	-f targets/ubuntu-14.04-XL/Dockerfile \
+	.
+
+push-ubuntu-14.04-XL:
+	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XL-$(VERSION)
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION))
+
+dump-version-ubuntu-14.04-XL:
+	docker run $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XL.json; true
+	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XL.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XL.diff; true
+
+test-ubuntu-14.04-XL:
+	docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name ubuntu-14.04-XL-test $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION)
+	sleep 10
+	docker cp tests/insecure-ssh-key.pub ubuntu-14.04-XL-test:/home/ubuntu/.ssh/authorized_keys
+	sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XL-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
+	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XL
+
+export-s3-ubuntu-14.04-XL:
+	./docker-export $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) > build-image-ubuntu-14.04-XL-$(VERSION).tar.gz
+	aws s3 cp ./build-image-ubuntu-14.04-XL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XL-$(VERSION).tar.gz --acl public-read
+
+ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
