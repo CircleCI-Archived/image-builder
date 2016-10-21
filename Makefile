@@ -42,8 +42,8 @@ test-ubuntu-14.04-XXL:
 	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XXL
 
 export-s3-ubuntu-14.04-XXL:
-	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) > $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION).tar.gz
-	aws s3 cp ./$(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
+	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) > build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz
+	aws s3 cp ./build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
 
 ubuntu-14.04-XXL: build-ubuntu-14.04-XXL push-ubuntu-14.04-XXL dump-version-ubuntu-14.04-XXL test-ubuntu-14.04-XXL
 
@@ -69,7 +69,7 @@ dump-version-ubuntu-14.04-XXL-enterprise:
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-enterprise.diff; true
 
 export-s3-ubuntu-14.04-XXL-enterprise:
-	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
-	aws s3 cp ./$(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
+	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
+	aws s3 cp ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
 
 ubuntu-14.04-XXL-enterprise: build-ubuntu-14.04-XXL-enterprise push-ubuntu-14.04-XXL-enterprise dump-version-ubuntu-14.04-XXL-enterprise
