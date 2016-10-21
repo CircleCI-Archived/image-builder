@@ -21,9 +21,6 @@ dependencies:
 
 test:
   override:
-    - docker-cache-shim pull ${IMAGE_REPO}:
-        timeout: 3600
-
     - ? |
         if $(no_cache); then
           make no_cache=true $BUILD_TARGETS
@@ -32,9 +29,6 @@ test:
         fi
       :
         timeout: 7200
-
-    - docker-cache-shim push ${IMAGE_REPO}:${IMAGE_TAG}:
-        timeout: 3600
 
 deployment:
   production:
