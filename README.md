@@ -8,7 +8,7 @@ Docker. [Docker docs](https://docs.docker.com/) is a good resource to get starte
 
 The following are brief explanations of build images that CircleCI builds by using image-builder.
 
-#### Ubuntu 14.04 XXL
+### Ubuntu 14.04 XXL
 
 **Description**
 
@@ -22,7 +22,7 @@ https://circleci.com/docs/build-image-trusty/
 
 `circleci/build-image:ubuntu-14.04-XXL`
 
-#### Ubuntu 14.04 XXL Enterprise
+### Ubuntu 14.04 XXL Enterprise
 
 **Description**
 
