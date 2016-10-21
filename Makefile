@@ -18,7 +18,7 @@ endif
 # and services such as MySQL or Redis are installed.
 ###
 build-ubuntu-14.04-XXL:
-	/opt/circleci/bin/docker-cache-shim pull ${IMAGE_REPO}
+	docker-cache-shim pull ${IMAGE_REPO}
 	echo "Building Docker image ubuntu-14.04-XXL-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) \
@@ -26,7 +26,7 @@ build-ubuntu-14.04-XXL:
 	.
 
 push-ubuntu-14.04-XXL:
-	/opt/circleci/bin/docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XXL-$(VERSION)
+	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XXL-$(VERSION)
 	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION))
 
 dump-version-ubuntu-14.04-XXL:
@@ -52,7 +52,7 @@ ubuntu-14.04-XXL: build-ubuntu-14.04-XXL push-ubuntu-14.04-XXL dump-version-ubun
 # The only difference is that this image has official Docker installed.
 ###
 build-ubuntu-14.04-XXL-enterprise:
-	/opt/circleci/bin/docker-cache-shim pull ${IMAGE_REPO}
+	docker-cache-shim pull ${IMAGE_REPO}
 	echo "Building Docker image ubuntu-14.04-XXL-enterprise-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-enterprise-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) \
@@ -60,7 +60,7 @@ build-ubuntu-14.04-XXL-enterprise:
 	.
 
 push-ubuntu-14.04-XXL-enterprise:
-	/opt/circleci/bin/docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XXL-enterprise-$(VERSION)
+	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XXL-enterprise-$(VERSION)
 	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION))
 
 dump-version-ubuntu-14.04-XXL-enterprise:
