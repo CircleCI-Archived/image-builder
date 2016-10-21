@@ -27,11 +27,11 @@ test:
           make $BUILD_TARGETS
         fi
       :
-        timeout: 7200
+        timeout: 10800
 
 deployment:
   production:
     branch: master
     commands:
-      - for TARGET in $(echo $BUILD_TARGETS); do make export-s3-${TARGET}; done:
+      - for TARGET in $(echo $BUILD_TARGETS); do make deploy-${TARGET}; done:
           timeout: 3600
