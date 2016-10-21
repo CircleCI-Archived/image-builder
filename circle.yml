@@ -1,11 +1,10 @@
 machine:
   environment:
-    IMAGE_TAG: trusty-${CIRCLE_BUILD_NUM}-$(cd $CIRCLE_PROJECT_REPONAME && git rev-parse --short HEAD)
     IMAGE_REPO: "circleci/build-image"
+    BUILD_TARGETS: $(cd $CIRCLE_PROJECT_REPONAME && git log --format=%B -n 1 | grep build-targets | sed 's/build-targets//')
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
-    - echo 'docker-push-with-retry() { for i in 1 2 3; do docker push $1; if [ $? -eq 0 ]; then return 0; fi; echo "Retrying...."; done; return 1; }' >> ~/.circlerc
     - git clone git@github.com:kimh/docker-cache-shim.git && cd docker-cache-shim && sudo ./install.sh
 
   post:
@@ -14,55 +13,31 @@ machine:
 
 dependencies:
   override:
-    - echo "Building Docker image $IMAGE_REPO:$IMAGE_TAG"
+    # Fail early if no build targets
+    - make --dry-run ${BUILD_TARGETS:-notarget}
+
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
+test:
+  override:
     - docker-cache-shim pull ${IMAGE_REPO}:
         timeout: 3600
 
     - ? |
         if $(no_cache); then
-          docker build --no-cache --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .;
+          make no_cache=true $BUILD_TARGETS:
         else
-          docker build --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG} .;
+          make $BUILD_TARGETS:
         fi
       :
-        timeout: 3600
+        timeout: 7200
 
     - docker-cache-shim push ${IMAGE_REPO}:${IMAGE_TAG}:
         timeout: 3600
-
-    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}
-
-    # Build a slightly modified image for unprivileged lxc
-    - docker build --build-arg TARGET_UNPRIVILEGED_LXC=true --build-arg IMAGE_TAG=${IMAGE_TAG} -t ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged .:
-        timeout: 3600
-
-    - docker-push-with-retry ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged:
-        timeout: 3600
-
-    # Dump versions to artifact which is useful for image releae
-    - docker run ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $CIRCLE_ARTIFACTS/versions.json
-
-    - curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
-
-    - diff -uw versions.json.before $CIRCLE_ARTIFACTS/versions.json > $CIRCLE_ARTIFACTS/versions.diff; true
-
-test:
-  override:
-    - docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name test-container ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged
-
-    - sleep 10
-
-    - docker cp tests/insecure-ssh-key.pub test-container:/home/ubuntu/.ssh/authorized_keys
-
-    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" test-container)" -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
-
-    - chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-dotcom
 
 deployment:
   production:
     branch: master
     commands:
-      - ./docker-export ${IMAGE_REPO}:${IMAGE_TAG}-unprivileged | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_TAG.tar.gz --acl public-read:
+      - for TARGET in $(echo $BUILD_TARGETS); do make export-s3-${TARGET}; done:
           timeout: 3600
