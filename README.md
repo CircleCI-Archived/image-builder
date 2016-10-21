@@ -6,7 +6,7 @@ is also for customers of CircleCI Enterprise to build custom build images.
 The repo uses Docker for building containers.  The instructions assumes basic familiarity with
 Docker. [Docker docs](https://docs.docker.com/) is a good resource to get started
 
-The following is  brief explanations of build images that CircleCI is building by using image-builder.
+The following are brief explanations of build images that CircleCI builds by using image-builder.
 
 #### Ubuntu 14.04 XXL
 
