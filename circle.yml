@@ -1,8 +1,7 @@
 machine:
   environment:
     IMAGE_REPO: "circleci/build-image"
-    #BUILD_TARGETS: $(cd $CIRCLE_PROJECT_REPONAME && git log --format=%B -n 1 | grep build-targets | sed 's/build-targets//')
-    BUILD_TARGETS: ubuntu-14.04-XXL
+    BUILD_TARGETS: $(cd $CIRCLE_PROJECT_REPONAME && git log --format=%B -n 1 | grep build-targets | sed 's/build-targets//')
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
@@ -21,20 +20,14 @@ dependencies:
 
 test:
   override:
-    - docker-cache-shim pull ${IMAGE_REPO}:
-        timeout: 3600
-
     - ? |
         if $(no_cache); then
-          make no_cache=true $BUILD_TARGETS:
+          make no_cache=true $BUILD_TARGETS
         else
-          make $BUILD_TARGETS:
+          make $BUILD_TARGETS
         fi
       :
         timeout: 7200
-
-    - docker-cache-shim push ${IMAGE_REPO}:${IMAGE_TAG}:
-        timeout: 3600
 
 deployment:
   production:
