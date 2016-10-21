@@ -1,7 +1,8 @@
 machine:
   environment:
     IMAGE_REPO: "circleci/build-image"
-    BUILD_TARGETS: $(cd $CIRCLE_PROJECT_REPONAME && git log --format=%B -n 1 | grep build-targets | sed 's/build-targets//')
+    #BUILD_TARGETS: $(cd $CIRCLE_PROJECT_REPONAME && git log --format=%B -n 1 | grep build-targets | sed 's/build-targets//')
+    BUILD_TARGETS: ubuntu-14.04-XXL
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
