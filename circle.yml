@@ -26,9 +26,9 @@ test:
 
     - ? |
         if $(no_cache); then
-          make no_cache=true $BUILD_TARGETS:
+          make no_cache=true $BUILD_TARGETS
         else
-          make $BUILD_TARGETS:
+          make $BUILD_TARGETS
         fi
       :
         timeout: 7200
