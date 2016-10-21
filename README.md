@@ -1,16 +1,52 @@
 # CircleCI Image Builder
 
-This demos a process to build CircleCI compatible containers for use in CircleCI Enterprise.
-We love feedback - please reach out!
+`image-builder` is a repo that CircleCI is using to build various build images. This repo
+is also for customers of CircleCI Enterprise to build custom build images.
 
 The repo uses Docker for building containers.  The instructions assumes basic familiarity with
 Docker. [Docker docs](https://docs.docker.com/) is a good resource to get started
 
-# 1. Building a container
+The following is  brief explanations of build images that CircleCI is building by using image-builder.
+
+#### Ubuntu 14.04 XXL
+
+**Description**
+
+This image is used to provide Ubuntu Trusty build container support on [circleci.com](https://circleci.com). The image is the fattest image: many versions of popular programming languages as well as services are pre-installed.
+
+**List of installed software**
+
+https://circleci.com/docs/build-image-trusty/
+
+**Docker image tag**
+
+`circleci/build-image:ubuntu-14.04-XXL`
+
+#### Ubuntu 14.04 XXL Enterprise
+
+**Description**
+
+This image is maintained for customers of [CircleCI Enterprise](https://circleci.com/enterprise/). The image is very similar to Ubuntu 14.04 XXL image but one difference: vanilla Docker is preinstalled in the image while patched version of Docker is installed in Ubuntu 14.04 XXL. This is because customers of CircleCI Enterprise can run build containers in privileged mode.
+
+**List of installed software**
+
+https://circleci.com/docs/build-image-trusty/
+
+Note: only Docker version is different. We install the latest version of Docker.
+
+**Docker image tag**
+
+`circleci/build-image:ubuntu-14.04-XXL-enterprise`
+
+# Building custom image
+
+This section is written for customers of [CircleCI Enterprise](https://circleci.com/enterprise/) who wants to build a custom image by using image-builder. Although Enterprise customers can use any tools in the wild to build a custom image, we highly recommend to using image-builder. This makes sure that Enterprise customers run builds on build images that CircleCI has a better support.
+
+## Building a container
 
 There are multiple workflow for building a container, and it depends on the level of customizations:
 
-## Building a container image with minor tweak, e.g. adding a new package, python version
+### Building a container image with minor tweak, e.g. adding a new package, python version
 
 If you want to tweak containers to simply add new package or new customizations, you can
 use our published containers as your base.
@@ -40,7 +76,7 @@ With this workflow, you will be basing your container on CircleCI published cont
 speeding up creation process.  When CircleCI publishes new container image, you can rebuild
 your image and Docker will pick up the latest published version.
 
-## Building a container with substantial changes
+### Building a container with substantial changes
 
 If you need to customize the image by starting from a clean slate, and/or
 require significant changes, e.g. different MySQL version, or MariaDB rather
@@ -58,7 +94,7 @@ It's recommended that you fork this repo rather than start from scratch for the 
 * Reuse the custom provisioning framework that we are building to ease installation
 * Have a mechanism to push your changes/tweaks back to us
 
-## Super advanced mode: Using Chef/Ansible/etc
+### Super advanced mode: Using Chef/Ansible/etc
 
 If you have a significant infrastructure using custom provisioners, e.g.
 Chef/Ansible/SaltStack, please reach out to us private.  The exact instructions
@@ -67,7 +103,7 @@ are beyond the scope of this documentation.
 In a very high level, we would recommend using [Packer](https://www.packer.io)
 and [Packer's Docker Builder](https://www.packer.io/docs/builders/docker.html).
 
-# 2. Testing the container
+## Testing the container
 
 So you built the container successfully!  Congrats.  How can you test it?
 
@@ -109,43 +145,7 @@ ubuntu=# ;; psql is running
 ubuntu=# ;; psql is running
 ubuntu-# \quit
 ```
-
-### Unit tests
-We also have unit tests written in [bats](https://github.com/sstephenson/bats). The tests are written to make sure tools/services installed in Dockerfile works correctly.
-
-If you write a Dockerfile to customize the container image, you can easily add/remove test bats files under `tests/unit` directory.
-
-Here is how you can run the unit tests.
-
-```
-# Pull the latest circleci/build-image:scratch (only necessary when you want to test against the latest build image)
-docker pull circleci/build-image:scratch
-
-# Build a test image.
-docker build -t test-image tests/
-
-# Run a test container with ssh port-forwarding
-docker run -d -v <path-to-image-builder>/tests:/home/ubuntu/tests -p 13939:22 --name test-container test-image
-
-# Get the IP address of docker-machine VM
-export CONTAINER_SSH_HOST=$(docker-machine ip <your-docker-vm>)
-
-# Run tests via ssh
-ssh -i tests/insecure-ssh-key -p 13939 ubuntu@$CONTAINER_SSH_HOST bats tests/unit
-
-1..55
-ok 1 nodejs: all versions are installed
-ok 2 nodejs: 0.12.9 works
-ok 3 nodejs: 4.0.0 works
-ok 4 nodejs: 4.1.2 works
-ok 5 nodejs: 4.2.6 works
-ok 6 nodejs: 4.3.0 works
-ok 7 nodejs: 5.0.0 works
-ok 8 nodejs: 5.1.1 works
-.....
-```
-
-# 3. Hooking up CircleCI to use the container
+## Hooking up CircleCI to use the container
 
 Once you gain confidence in the image you just created, you can start pushing it to new builds.
 You must configure CircleCI Enterprise builders to point to the container
