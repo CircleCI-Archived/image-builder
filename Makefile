@@ -41,7 +41,7 @@ test-ubuntu-14.04-XXL:
 	sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XXL-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
 	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XXL
 
-export-s3-ubuntu-14.04-XX:
+export-s3-ubuntu-14.04-XXL:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) > $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION).tar.gz
 	aws s3 cp ./$(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
 
@@ -68,7 +68,7 @@ dump-version-ubuntu-14.04-XXL-enterprise:
 	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-enterprise.diff; true
 
-export-s3-ubuntu-14.04-XX-enterprise:
+export-s3-ubuntu-14.04-XXL-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
 	aws s3 cp ./$(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
 
