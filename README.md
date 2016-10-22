@@ -38,6 +38,21 @@ Note: only Docker version is different. We install the latest version of Docker.
 
 `circleci/build-image:ubuntu-14.04-XXL-enterprise`
 
+### Ubuntu 14.04 XL
+
+**Description**
+
+This image is the slimmer version of Ubuntu 14.04 XXL build image. The same versions of languages and tools as Ubuntu 14.04 XXL are pre-installed but services such as PostgreSQL
+or Redis aren't installed. The build image is designed to be used with network services provided through the docker composing mechanism.
+
+**List of installed software**
+
+https://circleci.com/docs/environments/ubuntu-14.04-XL.json
+
+**Docker image tag**
+
+`circleci/build-image:ubuntu-14.04-XL`
+
 # Building custom image
 
 This section is written for customers of [CircleCI Enterprise](https://circleci.com/enterprise/) who wants to build a custom image by using image-builder. Although Enterprise customers can use any tools in the wild to build a custom image, we highly recommend to using image-builder. This makes sure that Enterprise customers run builds on build images that CircleCI has a better support.
