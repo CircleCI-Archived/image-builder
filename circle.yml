@@ -27,7 +27,7 @@ test:
           make $BUILD_TARGETS
         fi
       :
-        timeout: 7200
+        timeout: 10800
 
 deployment:
   production:
