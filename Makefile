@@ -104,8 +104,6 @@ test-ubuntu-14.04-XL:
 	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XL
 
 deploy-ubuntu-14.04-XL:
-	./docker-export $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) > build-image-ubuntu-14.04-XL-$(VERSION).tar.gz
-	aws s3 cp ./build-image-ubuntu-14.04-XL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XL-$(VERSION).tar.gz --acl public-read
 	docker tag ${IMAGE_REPO}:ubuntu-14.04-XL-$(VERSION) ${IMAGE_REPO}:ubuntu-14.04-XL
 	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL)
 
