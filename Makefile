@@ -90,7 +90,7 @@ build-ubuntu-14.04-XL:
 push-ubuntu-14.04-XL:
 	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-XL-$(VERSION)
 	docker tag ${IMAGE_REPO}:ubuntu-14.04-XL-$(VERSION) ${IMAGE_REPO}:ubuntu-14.04-XL
-	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL)
 	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION))
 
 dump-version-ubuntu-14.04-XL:
