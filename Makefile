@@ -104,7 +104,6 @@ test-ubuntu-14.04-XL:
 	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XL
 
 deploy-ubuntu-14.04-XL:
-	docker tag ${IMAGE_REPO}:ubuntu-14.04-XL-$(VERSION) ${IMAGE_REPO}:ubuntu-14.04-XL
-	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XL)
+	exit 0
 
 ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
