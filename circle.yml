@@ -18,16 +18,22 @@ dependencies:
 
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-test:
-  override:
     - ? |
         if $(no_cache); then
           make no_cache=true $BUILD_TARGETS
+          for TARGET in $(echo $BUILD_TARGETS); do make no_cache=true build-${TARGET}; done
         else
-          make $BUILD_TARGETS
+          for TARGET in $(echo $BUILD_TARGETS); do make build-${TARGET}; done
         fi
       :
-        timeout: 10800
+        timeout: 7200
+
+test:
+  override:
+    - for TARGET in $(echo $BUILD_TARGETS); do make test-${TARGET}; done
+
+    - for TARGET in $(echo $BUILD_TARGETS); do make push-${TARGET}; done:
+        timeout: 7200
 
 deployment:
   production:
