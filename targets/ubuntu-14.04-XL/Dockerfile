@@ -122,4 +122,6 @@ RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
 ADD targets/ubuntu-14.04-XL/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
 
+USER ubuntu
+
 LABEL circleci.user="ubuntu"
