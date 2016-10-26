@@ -124,4 +124,6 @@ ADD targets/ubuntu-14.04-XL/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
 
 USER ubuntu
 
+CMD ["/bin/bash"]
+
 LABEL circleci.user="ubuntu"
