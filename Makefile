@@ -103,3 +103,32 @@ deploy-ubuntu-14.04-XL:
 	exit 0
 
 ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
+
+### ubuntu-14.04-XXL-upstart
+# This image behaves like a VM, with upstart being PID 1. Actions default to running as root
+# and services (e.g. postgres, redis) are allowed without requiring to use another images.
+# The images matches the content of Ubuntu 14.04 XXL.
+###
+build-ubuntu-14.04-XXL-upstart:
+	echo "Building Docker image ubuntu-14.04-XXL-upstart-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-upstart-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION) \
+	-f targets/ubuntu-14.04-XXL-upstart/Dockerfile \
+	.
+
+push-ubuntu-14.04-XXL-upstart:
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION))
+
+dump-version-ubuntu-14.04-XXL-upstart:
+	docker run $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.json; true
+	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.diff; true
+
+test-ubuntu-14.04-XXL-upstart:
+	# Tests are done when building ubuntu-14.04-XXL base image
+	exit 0
+
+deploy-ubuntu-14.04-XXL-upstart:
+	exit 0
+
+ubuntu-14.04-XXL-upstart: build-ubuntu-14.04-XXL-upstart push-ubuntu-14.04-XXL-upstart dump-version-ubuntu-14.04-XXL-upstart test-ubuntu-14.04-XXL-upstart
