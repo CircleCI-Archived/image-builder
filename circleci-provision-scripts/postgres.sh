@@ -23,7 +23,7 @@ function install_postgres_ext_postgis() {
 
     popd
 
-    rm -rf /tmp/*
+    rm -rf /tmp/$FILE /tmp/$DIR
 
     export VERSION=3.5.0
     export FILE=geos-${VERSION}.tar.bz2
