@@ -125,11 +125,7 @@ dump-version-ubuntu-14.04-XXL-upstart:
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.diff; true
 
 test-ubuntu-14.04-XXL-upstart:
-	#docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name ubuntu-14.04-XXL-upstart-test $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION)
-	#sleep 10
-	#docker cp tests/insecure-ssh-key.pub ubuntu-14.04-XXL-upstart-test:/home/ubuntu/.ssh/authorized_keys
-	#sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XXL-upstart-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
-	#chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XXL-upstart
+	# Tests are done when building ubuntu-14.04-XXL base image
 	exit 0
 
 deploy-ubuntu-14.04-XXL-upstart:
