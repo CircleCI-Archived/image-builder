@@ -35,6 +35,8 @@ test:
     - for TARGET in $(echo $BUILD_TARGETS); do make push-${TARGET}; done:
         timeout: 7200
 
+    - for TARGET in $(echo $BUILD_TARGETS); do make dump-version-${TARGET}; done
+
 deployment:
   production:
     branch: master
