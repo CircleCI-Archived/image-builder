@@ -20,7 +20,7 @@ https://circleci.com/docs/build-image-trusty/
 
 **Docker image tag**
 
-`circleci/build-image:ubuntu-14.04-XXL`
+`circleci/build-image:ubuntu-14.04-XXL-<VERSION>`
 
 ### Ubuntu 14.04 XXL Enterprise
 
@@ -36,7 +36,7 @@ Note: only Docker version is different. We install the latest version of Docker.
 
 **Docker image tag**
 
-`circleci/build-image:ubuntu-14.04-XXL-enterprise`
+`circleci/build-image:ubuntu-14.04-XXL-enterprise-<VERSION>`
 
 ### Ubuntu 14.04 XL
 
@@ -51,7 +51,23 @@ https://circleci.com/docs/environments/ubuntu-14.04-XL.json
 
 **Docker image tag**
 
-`circleci/build-image:ubuntu-14.04-XL`
+`circleci/build-image:ubuntu-14.04-XL-<VERSION>`
+
+### Ubuntu 14.04 XXL-upstart
+
+**Description**
+
+This image behaves like a VM, with upstart being PID 1. Actions default to running as root
+and services (e.g. postgres, redis) are allowed without requiring to use another images.
+The images matches the content of Ubuntu 14.04 XXL.
+
+**List of installed software**
+
+https://circleci.com/docs/environments/ubuntu-14.04-XXL-upstart.json
+
+**Docker image tag**
+
+`circleci/build-image:ubuntu-14.04-XXL-upstart-<VERSION>`
 
 # Building custom image
 
