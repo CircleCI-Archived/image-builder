@@ -103,3 +103,36 @@ deploy-ubuntu-14.04-XL:
 	exit 0
 
 ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
+
+### ubuntu-14.04-XXL-upstart
+# This image behaves like a VM, with upstart being PID 1. Actions default to running as root
+# and services (e.g. postgres, redis) are allowed without requiring to use another images.
+# The images matches the content of Ubuntu 14.04 XXL.
+###
+build-ubuntu-14.04-XXL-upstart:
+	echo "Building Docker image ubuntu-14.04-XXL-upstart-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-upstart-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION) \
+	-f targets/ubuntu-14.04-XXL-upstart/Dockerfile \
+	.
+
+push-ubuntu-14.04-XXL-upstart:
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION))
+
+dump-version-ubuntu-14.04-XXL-upstart:
+	docker run $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.json; true
+	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-upstart.diff; true
+
+test-ubuntu-14.04-XXL-upstart:
+	#docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name ubuntu-14.04-XXL-upstart-test $(IMAGE_REPO):ubuntu-14.04-XXL-upstart-$(VERSION)
+	#sleep 10
+	#docker cp tests/insecure-ssh-key.pub ubuntu-14.04-XXL-upstart-test:/home/ubuntu/.ssh/authorized_keys
+	#sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XXL-upstart-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
+	#chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XXL-upstart
+	exit 0
+
+deploy-ubuntu-14.04-XXL-upstart:
+	exit 0
+
+ubuntu-14.04-XXL-upstart: build-ubuntu-14.04-XXL-upstart push-ubuntu-14.04-XXL-upstart dump-version-ubuntu-14.04-XXL-upstart test-ubuntu-14.04-XXL-upstart
