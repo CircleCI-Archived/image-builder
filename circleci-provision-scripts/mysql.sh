@@ -20,6 +20,7 @@ EOF
 
     # start MySQL manually
     sudo -u mysql mysqld &
+    MYSQL_PID=$!
     sleep 5
 
     ## Add users and such
@@ -29,6 +30,8 @@ EOF
     echo "GRANT ALL PRIVILEGES ON *.* TO 'circle'@'localhost' WITH GRANT OPTION" | mysql -u root
     echo "FLUSH PRIVILEGES" | mysql -u root
     echo "CREATE DATABASE circle_test" | mysql -u root
+
+    kill $MYSQL_PID
 }
 
 function install_mysql_56() {
