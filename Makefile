@@ -97,11 +97,7 @@ dump-version-ubuntu-14.04-XL:
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XL.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XL.diff; true
 
 test-ubuntu-14.04-XL:
-	docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name ubuntu-14.04-XL-test $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION)
-	sleep 10
-	docker cp tests/insecure-ssh-key.pub ubuntu-14.04-XL-test:/home/ubuntu/.ssh/authorized_keys
-	sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XL-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
-	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XL
+	docker run -w /home/ubuntu -v ~/image-builder/tests:/home/ubuntu/tests --name ubuntu-14.04-XL-test  $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) bash -l -c "bats /home/ubuntu/tests/unit/ubuntu-14.04-XL"
 
 deploy-ubuntu-14.04-XL:
 	exit 0
