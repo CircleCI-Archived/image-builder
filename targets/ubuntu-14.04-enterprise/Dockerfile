@@ -107,11 +107,11 @@ RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remov
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
 
 # We need Dockerfile because unit test parses Dockerfile to make sure all versions are installed
-ADD targets/ubuntu-14.04-standard-enterprise/Dockerfile /opt/circleci/Dockerfile
+ADD targets/ubuntu-14.04-enterprise/Dockerfile /opt/circleci/Dockerfile
 
 ARG IMAGE_TAG
 RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
-ADD targets/ubuntu-14.04-standard-enterprise/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
+ADD targets/ubuntu-14.04-enterprise/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
 
 LABEL circleci.user="ubuntu"

@@ -8,6 +8,16 @@ Docker. [Docker docs](https://docs.docker.com/) is a good resource to get starte
 
 The following are brief explanations of build images that CircleCI builds by using image-builder.
 
+### Ubuntu 14.04 Enterprise
+
+**Description**
+
+This image is used as the default Trusty image on new installations of [CircleCI Enterprise](https://circleci.com/enterprise/). If you launch your builders with our `init-trusty-builder` script, or use the docker based installation, this is the default image you use.
+
+**Docker image tag**
+
+`circleci/build-image:ubuntu-14.04-enterprise-<VERSION>`
+
 ### Ubuntu 14.04 XXL
 
 **Description**
