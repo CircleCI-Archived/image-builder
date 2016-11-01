@@ -104,6 +104,33 @@ deploy-ubuntu-14.04-XL:
 
 ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
 
+### ubuntu-14.04-standard-enterprise
+# This is the standard ubuntu-14.04 image for use on enterprise. It is similar to the 14.04-XXL-enterprise image,
+# but has fewer things installed to make installing CCIE faster.
+###
+build-ubuntu-14.04-standard-enterprise:
+	docker-cache-shim pull ${IMAGE_REPO}
+	echo "Building Docker image ubuntu-14.04-standard-enterprise-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-standard-enterprise-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-standard-enterprise-$(VERSION) \
+	-f targets/ubuntu-14.04-standard-enterprise/Dockerfile \
+	.
+
+push-ubuntu-14.04-standard-enterprise:
+	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-standard-enterprise-$(VERSION)
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-standard-enterprise-$(VERSION))
+
+dump-version-ubuntu-14.04-standard-enterprise:
+	docker run $(IMAGE_REPO):ubuntu-14.04-standard-enterprise-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-enterprise.json; true
+	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-standard-enterprise.diff; true
+
+deploy-ubuntu-14.04-standard-enterprise:
+	./docker-export $(IMAGE_REPO):ubuntu-14.04-standard-enterprise-$(VERSION) > build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
+	aws s3 cp ./build-image-ubuntu-14.04-standard-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
+
+ubuntu-14.04-standard-enterprise: build-ubuntu-14.04-XXL-enterprise push-ubuntu-14.04-XXL-enterprise dump-version-ubuntu-14.04-XXL-enterprise
+
 ### ubuntu-14.04-XXL-upstart
 # This image behaves like a VM, with upstart being PID 1. Actions default to running as root
 # and services (e.g. postgres, redis) are allowed without requiring to use another images.
