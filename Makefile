@@ -68,6 +68,9 @@ dump-version-ubuntu-14.04-XXL-enterprise:
 	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-enterprise.diff; true
 
+test-ubuntu-14.04-XXL-enterprise:
+	exit 0
+
 deploy-ubuntu-14.04-XXL-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
 	aws s3 cp ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
@@ -124,6 +127,9 @@ dump-version-ubuntu-14.04-enterprise:
 	docker run $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-enterprise.json; true
 	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-enterprise.diff; true
+
+test-ubuntu-14.04-enterprise:
+	exit 0
 
 deploy-ubuntu-14.04-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) > build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz
