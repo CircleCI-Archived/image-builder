@@ -1,0 +1,76 @@
+#!/bin/sh
+circleci-install base_requirements && circleci-install circleci_specific
+
+# Databases
+for package in mysql_57 mongo postgres postgres_ext_postgis; do circleci-install $package; done
+
+# Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
+circleci-install java oraclejdk8 && circleci-install java openjdk8
+
+for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak couchdb; do circleci-install $package; done
+
+# Dislabe services by default
+for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
+
+# Browsers
+circleci-install firefox && circleci-install chrome && circleci-install phantomjs
+
+# Qt
+circleci-install qt
+
+# Install deployment tools
+for package in awscli gcloud heroku; do circleci-install $package; done
+
+# Languages
+curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
+circleci-install python 2.7.6
+circleci-install python 2.7.3
+circleci-install python 2.7.9
+circleci-install python 2.7.10
+circleci-install python 2.7.11
+circleci-install python 3.4.3
+circleci-install python 3.5.0
+circleci-install python 3.5.1
+sudo -H -i -u ubuntu pyenv global 2.7.11
+
+circleci-install nodejs 4.2.2
+circleci-install nodejs 4.2.6
+circleci-install nodejs 4.4.7
+circleci-install nodejs 5.1.0
+circleci-install nodejs 5.5.0
+circleci-install nodejs 6.1.0
+circleci-install nodejs 6.2.0
+circleci-install nodejs 6.2.2
+circleci-install nodejs 6.3.0
+circleci-install nodejs 6.3.1
+sudo -H -i -u ubuntu nvm alias default 4.2.6
+
+circleci-install golang 1.6.2
+
+circleci-install ruby 2.1.2
+circleci-install ruby 2.1.5
+circleci-install ruby 2.2.0
+circleci-install ruby 2.2.2
+circleci-install ruby 2.2.3
+circleci-install ruby 2.2.4
+circleci-install ruby 2.3.0
+circleci-install ruby 2.3.1
+sudo -H -i -u ubuntu rvm use 2.2.4 --default
+
+circleci-install php 5.5.9
+circleci-install php 5.5.11
+circleci-install php 5.6.5
+circleci-install php 5.6.14
+circleci-install php 5.6.17
+circleci-install php 7.0.4
+sudo -H -i -u ubuntu phpenv global 5.6.17
+
+circleci-install clojure
+
+circleci-install scala
+
+circleci-install docker && circleci-install docker_compose
+
+# Undivert upstart
+# You shouldn't change the line unless you understad the consequence
+rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
