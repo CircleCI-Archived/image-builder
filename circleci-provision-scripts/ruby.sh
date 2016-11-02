@@ -76,7 +76,7 @@ function install_ruby_version_precompile() {
 
     maybe_run_apt_update
     apt-get install circleci-ruby-$INSTALL_RUBY_VERSION
-    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/ruby/ruby-$INSTALL_RUBY_VERSION
 
     (cat <<'EOF'
 echo Installing Ruby version: $INSTALL_RUBY_VERSION
