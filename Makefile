@@ -68,6 +68,9 @@ dump-version-ubuntu-14.04-XXL-enterprise:
 	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
 	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-XXL-enterprise.diff; true
 
+test-ubuntu-14.04-XXL-enterprise:
+	exit 0
+
 deploy-ubuntu-14.04-XXL-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
 	aws s3 cp ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
@@ -103,6 +106,36 @@ deploy-ubuntu-14.04-XL:
 	exit 0
 
 ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-14.04-XL test-ubuntu-14.04-XL
+
+### ubuntu-14.04-enterprise
+# This is the standard ubuntu-14.04 image for use on enterprise. It is similar to the 14.04-enterprise image,
+# but has fewer things installed to make installing CCIE faster.
+###
+build-ubuntu-14.04-enterprise:
+	docker-cache-shim pull ${IMAGE_REPO}
+	echo "Building Docker image ubuntu-14.04-enterprise-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-enterprise-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) \
+	-f targets/ubuntu-14.04-enterprise/Dockerfile \
+	.
+
+push-ubuntu-14.04-enterprise:
+	docker-cache-shim push ${IMAGE_REPO}:ubuntu-14.04-enterprise-$(VERSION)
+	$(call docker-push-with-retry,$(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION))
+
+dump-version-ubuntu-14.04-enterprise:
+	docker run $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-enterprise.json; true
+	curl -o versions.json.before https://circleci.com/docs/environments/trusty.json
+	diff -uw versions.json.before $(CIRCLE_ARTIFACTS)/versions-enterprise.json > $(CIRCLE_ARTIFACTS)/versions-ubuntu-14.04-enterprise.diff; true
+
+test-ubuntu-14.04-enterprise:
+	exit 0
+
+deploy-ubuntu-14.04-enterprise:
+	./docker-export $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) > build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz
+	aws s3 cp ./build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
+
+ubuntu-14.04-enterprise: build-ubuntu-14.04-enterprise push-ubuntu-14.04-enterprise dump-version-ubuntu-14.04-enterprise
 
 ### ubuntu-14.04-XXL-upstart
 # This image behaves like a VM, with upstart being PID 1. Actions default to running as root
