@@ -1,14 +1,15 @@
 FROM ubuntu:trusty
 
 ENV VERBOSE true
+ENV CIRCLECI_USER root
+ENV CIRCLECI_HOME /root
 
-# Avoid any installation scripts interact with upstart
-# So divert now, but undivert at the end
-# You shouldn't change the line unless you understand the consequence
-RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
-	&& chmod +x /usr/sbin/policy-rc.d \
-        && dpkg-divert --local --rename --add /sbin/initctl \
-        && ln -s /bin/true /sbin/initctl
+# Set the locale
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8 
+
 
 ADD circleci-install /usr/local/bin/circleci-install
 ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
@@ -44,4 +45,4 @@ RUN echo $IMAGE_TAG > /opt/circleci/image_version
 
 ADD targets/ubuntu-14.04-enterprise-minimal/pkg-versions.sh /opt/circleci/bin/pkg-versions.sh
 
-LABEL circleci.user="ubuntu"
+LABEL circleci.user="root"
