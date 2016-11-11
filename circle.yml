@@ -27,16 +27,11 @@ dependencies:
 
 test:
   override:
-    - for TARGET in $(echo $BUILD_TARGETS); do make test-${TARGET}; done
+    - echo "No tests."
 
-    - for TARGET in $(echo $BUILD_TARGETS); do make push-${TARGET}; done:
-        timeout: 7200
-
-    - for TARGET in $(echo $BUILD_TARGETS); do make dump-version-${TARGET}; done
-
-# deployment:
-#   production:
-#     branch: master
-#     commands:
-#       - for TARGET in $(echo $BUILD_TARGETS); do make deploy-${TARGET}; done:
-#           timeout: 3600
+deployment:
+  production:
+    branch: master
+    commands:
+      - for TARGET in $(echo $BUILD_TARGETS); do make deploy-${TARGET}; done:
+          timeout: 3600
