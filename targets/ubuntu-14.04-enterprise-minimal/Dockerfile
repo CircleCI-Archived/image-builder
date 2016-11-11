@@ -18,8 +18,8 @@ ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-speci
 RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Install deployment tools
-ADD circleci-provision-scripts/awscli.sh
-RUN for package in awscli; do circleci-install $package; done
+ADD circleci-provision-scripts/awscli.sh /opt/circleci-provision-scripts/
+RUN circleci-install awscli
 
 # Languages
 ARG use_precompile=true
@@ -27,14 +27,10 @@ ENV USE_PRECOMPILE=$use_precompile RUN_APT_UPDATE=true
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
 RUN circleci-install python 2.7.11
-RUN sudo -H -i -u ubuntu pyenv global 2.7.11
+RUN sudo -H -i -u $CIRCLECI_USER pyenv global 2.7.11
 
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
-
-# Undivert upstart
-# You shouldn't change the line unless you understad the consequence
-RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
 
 # Add rest of provisioning files -- add at end to avoid cache invalidation
 ADD circleci-provision-scripts /opt/circleci-provision-scripts
