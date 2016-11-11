@@ -15,9 +15,6 @@ dependencies:
   override:
     # Fail early if no build targets
     - make --dry-run ${BUILD_TARGETS:-notarget}
-
-    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-
     - ? |
         if $(no_cache); then
           make no_cache=true $BUILD_TARGETS
@@ -37,9 +34,9 @@ test:
 
     - for TARGET in $(echo $BUILD_TARGETS); do make dump-version-${TARGET}; done
 
-deployment:
-  production:
-    branch: master
-    commands:
-      - for TARGET in $(echo $BUILD_TARGETS); do make deploy-${TARGET}; done:
-          timeout: 3600
+# deployment:
+#   production:
+#     branch: master
+#     commands:
+#       - for TARGET in $(echo $BUILD_TARGETS); do make deploy-${TARGET}; done:
+#           timeout: 3600
