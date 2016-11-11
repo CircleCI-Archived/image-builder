@@ -41,3 +41,13 @@ deploy-ubuntu-14.04-enterprise:
 	aws s3 cp ./build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
 
 ubuntu-14.04-enterprise: build-ubuntu-14.04-enterprise push-ubuntu-14.04-enterprise dump-version-ubuntu-14.04-enterprise
+
+
+build-ubuntu-14.04-enterprise-minimal:
+	docker-cache-shim pull ${IMAGE_REPO}
+	echo "Building Docker image ubuntu-14.04-enterprise-minimal-$(VERSION)"
+	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-enterprise-minimal-$(VERSION) \
+	-t $(IMAGE_REPO):ubuntu-14.04-enterprise-minimal-$(VERSION) \
+	-f targets/ubuntu-14.04-enterprise-minimal/Dockerfile \
+
+ubuntu-14.04-enterprise-minimal: build-ubuntu-14.04-enterprise-minimal

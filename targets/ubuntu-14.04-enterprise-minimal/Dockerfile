@@ -1,4 +1,4 @@
-FROM circleci/ubuntu-server:trusty-latest
+FROM ubuntu:trusty
 
 ENV VERBOSE true
 
