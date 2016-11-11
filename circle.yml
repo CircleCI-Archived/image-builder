@@ -1,7 +1,7 @@
 machine:
   environment:
     IMAGE_REPO: "circleci/build-image"
-    BUILD_TARGETS: "ubuntu-14.04-enterprise"
+    BUILD_TARGETS: "ubuntu-14.04-enterprise-minimal"
 
   pre:
     - echo 'no_cache() { git log --format=%B -n 1 | grep -q "no cache"; }' >> ~/.circlerc
