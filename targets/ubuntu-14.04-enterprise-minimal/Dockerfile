@@ -10,6 +10,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8 
 
+# Install sshd
+RUN apt-get update && apt-get install -y openssh-server
 
 ADD circleci-install /usr/local/bin/circleci-install
 ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
