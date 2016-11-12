@@ -10,7 +10,6 @@ function install_circleci_specific() {
 
     chown $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.bash_profile
     chown $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.bashrc
-    chown $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.circlerc
 
     (cat <<'EOF'
 export GIT_ASKPASS=echo
