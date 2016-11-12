@@ -20,5 +20,4 @@ deploy-ubuntu-14.04-enterprise-minimal:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-enterprise-minimal-$(VERSION) > build-image-ubuntu-14.04-enterprise-minimal-$(VERSION).tar.gz
 	aws s3 cp ./build-image-ubuntu-14.04-enterprise-minimal-$(VERSION).tar.gz ${ASSETS_BUCKET}/ubuntu-14.04-enterprise-minimal-$(VERSION).tar.gz --acl public-read
 
-
 ubuntu-14.04-enterprise-minimal: build-ubuntu-14.04-enterprise-minimal
