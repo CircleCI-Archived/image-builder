@@ -28,6 +28,10 @@ ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.
 RUN circleci-install python 2.7.11
 RUN sudo -H -i -u ubuntu pyenv global 2.7.11
 
+ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
+RUN circleci-install nodejs 6.9
+RUN sudo -H -i -u ubuntu nvm alias default 6.9
+
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
 
