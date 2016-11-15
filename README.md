@@ -135,6 +135,8 @@ It's recommended that you fork this repo rather than start from scratch for the 
 * Reuse the custom provisioning framework that we are building to ease installation
 * Have a mechanism to push your changes/tweaks back to us
 
+**Please note, our infrastructure currently assumes that `mysql` and `postgres` are installed. Even if you do not use them, please include them in your image**
+
 ### Super advanced mode: Using Chef/Ansible/etc
 
 If you have a significant infrastructure using custom provisioners, e.g.
