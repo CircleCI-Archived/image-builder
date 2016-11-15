@@ -1,0 +1,63 @@
+#!/bin/bash
+## This is an internal script for releasing an image created with image-builder
+## as an LXC images for customers using the LXC based version of CCIE.
+## If you are building a custom image, you can simple use docker-export and
+## upload the image to any url accessible from your builder machine.
+
+function usage {
+    echo "Usage: $0 <image-name> <image-file> [--region <region>]"
+    exit 1
+}
+
+if ! [ $# -eq 2 ]
+then
+  if ! ([ $# -eq 4 ] && [ $3 == "--region" ])
+  then
+    usage
+    exit 1
+  fi
+fi
+
+NAME=$1
+FILE=$2
+REGION=$4
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+
+SUPPORTED_REGIONS=(
+    ap-northeast-1
+    ap-northeast-2
+    ap-southeast-1
+    ap-southeast-2
+    eu-central-1
+    eu-west-1
+    sa-east-1
+    us-east-1
+    us-west-1
+    us-west-2
+)
+
+function publish_container {
+    REGION=$1
+    S3_URL="s3://circleci-enterprise-assets-$REGION/containers/$NAME.tar.gz"
+    aws --region $REGION s3 cp --acl public-read $FILE $S3_URL
+    echo Finished publishing to $REGION at $S3_URL
+}
+
+if [[ -n $REGION ]]
+then
+  echo publishing container to $REGION only
+  publish_container $REGION
+else
+  echo publishing container to the following regions:
+  for REGION in ${SUPPORTED_REGIONS[@]}
+  do
+    echo $REGION
+    publish_container $REGION &
+    sleep 0.1
+  done
+
+  echo waiting on all containers
+  wait
+  echo done copying all containers
+fi
