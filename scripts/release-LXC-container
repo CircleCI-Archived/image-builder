@@ -41,7 +41,17 @@ function publish_container {
     REGION=$1
     S3_URL="s3://circleci-enterprise-assets-$REGION/containers/$NAME.tar.gz"
     aws --region $REGION s3 cp --acl public-read $FILE $S3_URL
-    echo Finished publishing to $REGION at $S3_URL
+}
+
+function retry_publish_container {
+  for i in 1 2 3; do
+    publish_container $1;
+    if [ $? -eq 0 ]; then
+      exit 0;
+    fi;
+    echo "Retrying....";
+  done;
+  exit 1;
 }
 
 if [[ -n $REGION ]]
