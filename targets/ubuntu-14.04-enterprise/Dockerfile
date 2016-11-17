@@ -67,10 +67,6 @@ RUN circleci-install nodejs 6.3.0
 RUN circleci-install nodejs 6.3.1
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
 
-ADD circleci-provision-scripts/yarn.sh /opt/circleci-provision-scripts/yarn.sh
-RUN circleci-install yarn 4.4.7
-RUN circleci-install yarn 6.3.1
-
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
 RUN circleci-install golang 1.6.2
 
