@@ -69,7 +69,7 @@ function install_nodejs_version_precompile() {
 
     maybe_run_apt_update
     apt-get install circleci-nodejs-$NODEJS_VERSION
-    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/nodejs
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR/nodejs/v$NODEJS_VERSION
     set_nodejs_default $NODEJS_VERSION
 }
 

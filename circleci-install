@@ -8,9 +8,8 @@ export CIRCLECI_PKG_DIR=/opt/circleci
 
 if ! [ -d $CIRCLECI_PKG_DIR ]; then
     mkdir -p $CIRCLECI_PKG_DIR
+    chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR
 fi
-
-chown -R $CIRCLECI_USER:$CIRCLECI_USER $CIRCLECI_PKG_DIR
 
 function as_user() {
     sudo -H -u ${CIRCLECI_USER} $@
