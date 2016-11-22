@@ -41,66 +41,77 @@ android_test_sdk_addons_installed() {
 }
 
 @test "android: correct version of sdk tool is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_tool_version "24.4.1"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: build-tools-23.0.3 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_build_tool_installed "23.0.3"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: build-tools-23.0.2 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_build_tool_installed "23.0.2"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: build-tools-22.0.1 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_build_tool_installed "22.0.1"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: android-23 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_platform_installed "23"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: android-22 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_platform_installed "22"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: extra-android-m2repository is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_extra_installed "m2repository" "android"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: extra-google-m2repository is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_extra_installed "m2repository" "google"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: extra-google-google_play_services is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_extra_installed "google_play_services" "google"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: addon-google_apis-google-23 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_addons_installed "addon-google_apis-google-23"
 
     [ "$status" -eq 0 ]
 }
 
 @test "android: addon-google_apis-google-22 is installed" {
+    skip "Android disabled, test skipped"
     run android_test_sdk_addons_installed "addon-google_apis-google-22"
 
     [ "$status" -eq 0 ]
