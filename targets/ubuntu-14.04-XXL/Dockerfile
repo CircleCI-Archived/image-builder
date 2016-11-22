@@ -35,7 +35,7 @@ RUN for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch
 ADD circleci-provision-scripts/firefox.sh circleci-provision-scripts/chrome.sh circleci-provision-scripts/phantomjs.sh /opt/circleci-provision-scripts/
 RUN circleci-install firefox && circleci-install chrome && circleci-install phantomjs
 
-# Commented out for Procore fleet as the Google packages have errors
+# Commented out as the Google packages have errors
 # Kim has referenced http://stackoverflow.com/questions/36466682/android-sys-img-armeabi-v7a-android-xx-not-found
 # and also filed a bug with Google
 ## Android
