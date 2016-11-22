@@ -16,8 +16,6 @@ cd docker-cache-shim
 sudo ./install.sh
 cd ../image-builder
 
-
-
 Ensure you remove all images if you stop/cancel a build to ensure they are all current:
 
     docker images
