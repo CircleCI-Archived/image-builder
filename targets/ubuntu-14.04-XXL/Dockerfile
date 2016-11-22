@@ -23,9 +23,12 @@ ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
 RUN circleci-install java oraclejdk8 && circleci-install java openjdk8
 
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
-RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak couchdb; do circleci-install $package; done
+RUN for package in sysadmin devtools jq redis rabbitmq neo4j elasticsearch beanstalkd cassandra riak couchdb; do circleci-install $package; done
 
-# Dislabe services by default
+ADD circleci-provision-scripts/memcached.sh /opt/circleci-provision-scripts/memcached.sh
+RUN circleci-install memcached
+
+# Disable services by default
 RUN for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
 
 # Browsers
