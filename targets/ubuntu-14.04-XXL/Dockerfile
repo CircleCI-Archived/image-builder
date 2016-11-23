@@ -35,7 +35,7 @@ RUN circleci-install firefox && circleci-install chrome && circleci-install phan
 # Commented out as the Google packages have errors
 # Kim has referenced http://stackoverflow.com/questions/36466682/android-sys-img-armeabi-v7a-android-xx-not-found
 # and also filed a bug with Google
-## Android
+## Android 
 #ADD circleci-provision-scripts/android-sdk.sh /opt/circleci-provision-scripts/android-sdk.sh
 #RUN circleci-install android_sdk platform-tools
 #RUN circleci-install android_sdk extra-android-support
