@@ -38,6 +38,7 @@ RUN circleci-install android_sdk platform-tools
 RUN circleci-install android_sdk extra-android-support
 RUN circleci-install android_sdk android-23
 RUN circleci-install android_sdk android-22
+RUN circleci-install android_sdk sys-img-armeabi-v7a-android-22
 RUN circleci-install android_sdk build-tools-23.0.3
 RUN circleci-install android_sdk build-tools-23.0.2
 RUN circleci-install android_sdk build-tools-22.0.1
