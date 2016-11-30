@@ -20,11 +20,13 @@ fi
 
 NAME=$1
 FILE=$2
-REGION=$4
+CHOSEN_REGION=$4
 
 ROOT_DIR="$(git rev-parse --show-toplevel)"
 
-SUPPORTED_REGIONS=(
+MAIN_REGION=us-east-1
+
+OTHER_SUPPORTED_REGIONS=(
     ap-northeast-1
     ap-northeast-2
     ap-southeast-1
@@ -32,38 +34,43 @@ SUPPORTED_REGIONS=(
     eu-central-1
     eu-west-1
     sa-east-1
-    us-east-1
     us-west-1
     us-west-2
 )
 
+function s3_url {
+    REGION=$1
+    echo "s3://circleci-enterprise-assets-$REGION/containers/$NAME.tar.gz"
+}
+
 function publish_container {
     REGION=$1
-    S3_URL="s3://circleci-enterprise-assets-$REGION/containers/$NAME.tar.gz"
-    aws --region $REGION s3 cp --acl public-read $FILE $S3_URL
+    echo publishing container to $REGION
+    aws s3 cp $FILE $(s3_url $REGION) \
+      --acl public-read \
+      --region $REGION
+    echo done publishing container to $REGION
 }
 
-function retry_publish_container {
-  for i in 1 2 3; do
-    publish_container $1;
-    if [ $? -eq 0 ]; then
-      exit 0;
-    fi;
-    echo "Retrying....";
-  done;
-  exit 1;
+function copy_container {
+    SRC_REGION=$1
+    DEST_REGION=$2
+    aws s3 cp $(s3_url $SRC_REGION) $(s3_url $DEST_REGION) \
+     --acl public-read \
+     --source-region $SRC_REGION \
+     --region $DEST_REGION
 }
 
-if [[ -n $REGION ]]
+if [[ -n $CHOSEN_REGION ]]
 then
-  echo publishing container to $REGION only
-  publish_container $REGION
+  publish_container $CHOSEN_REGION
 else
-  echo publishing container to the following regions:
-  for REGION in ${SUPPORTED_REGIONS[@]}
+  publish_container $MAIN_REGION
+  echo copying container to the following regions:
+  for REGION in ${OTHER_SUPPORTED_REGIONS[@]}
   do
     echo $REGION
-    publish_container $REGION &
+    copy_container $MAIN_REGION $REGION &
     sleep 0.1
   done
 
