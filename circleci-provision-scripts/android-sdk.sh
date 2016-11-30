@@ -56,8 +56,8 @@ echo "y" | android update sdk --no-ui --all --filter $PACKAGE
 EOF
     ) | as_user PACKAGE=$PACKAGE bash
 
-    if [[ "$PACKAGE" =~ ^android-[0-9][0-9]$ ]]; then
-       AVD_VERSION=$(echo $PACKAGE | sed 's/android-//')
+    if [[ "$PACKAGE" =~ ^sys-img-armeabi-v7a-android-[0-9][0-9]$ ]]; then
+       AVD_VERSION=$(echo $PACKAGE | sed 's/sys-img-armeabi-v7a-android-//')
        create_avd $AVD_VERSION
     fi
 }
@@ -97,7 +97,7 @@ function install_sdk(){
 
 function install_android_sdk() {
     SDK_PACKAGE=$1
-    [[ -e /usr/local/android-sdk ]] || install_sdk
+    [[ -e /usr/local/android-sdk-linux ]] || install_sdk
     [[ -e /usr/local/bin/circle-android ]] || install_circle_android_helper
 
     install_sdk_package $SDK_PACKAGE
