@@ -73,7 +73,7 @@ test-ubuntu-14.04-XXL-enterprise:
 
 deploy-ubuntu-14.04-XXL-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) > build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
-	aws s3 cp ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
+	./scripts/release-LXC-container ubuntu-14.04-XXL-enterprise-$(VERSION) ./build-image-ubuntu-14.04-XXL-enterprise-$(VERSION).tar.gz
 
 ubuntu-14.04-XXL-enterprise: build-ubuntu-14.04-XXL-enterprise push-ubuntu-14.04-XXL-enterprise dump-version-ubuntu-14.04-XXL-enterprise
 
@@ -133,7 +133,7 @@ test-ubuntu-14.04-enterprise:
 
 deploy-ubuntu-14.04-enterprise:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) > build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz
-	aws s3 cp ./build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz s3://circleci-enterprise-assets-us-east-1/containers/circleci-trusty-container-$(VERSION).tar.gz --acl public-read
+	./scripts/release-LXC-container ubuntu-14.04-enterprise-$(VERSION) ./build-image-ubuntu-14.04-enterprise-$(VERSION).tar.gz
 
 ubuntu-14.04-enterprise: build-ubuntu-14.04-enterprise push-ubuntu-14.04-enterprise dump-version-ubuntu-14.04-enterprise
 
