@@ -48,3 +48,7 @@ load ../test_helper_php
 @test "php: 7.0.11 works" {
     test_php 7.0.11
 }
+
+@test "php: 7.1.0 works" {
+    test_php 7.1.0
+}
