@@ -39,7 +39,7 @@ function patch_nvm() {
 }
 
 function install_yarn() {
-    local version="0.18.1"
+    local version=$1
 
     (cat <<EOF
 source ~/.circlerc
@@ -108,7 +108,4 @@ function install_nodejs() {
 
     [[ -e $CIRCLECI_PKG_DIR/.nvm ]] || install_nvm
     install_nodejs_version $NODEJS_VERSION
-
-    # Yarn needs nodejs v4 or above so we do this after installing nodejs
-    hash yarn 2>/dev/null || install_yarn
 }
