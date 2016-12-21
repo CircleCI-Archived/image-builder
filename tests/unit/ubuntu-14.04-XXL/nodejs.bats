@@ -73,6 +73,10 @@ load ../test_helper_nodejs
     test_nodejs 6.1.0
 }
 
+@test "nodejs: yarn 0.18.1 is installed" {
+    test_yarn_version 0.18.1
+}
+
 # We are not testing the behavior of nvm here...
 # There was a bug that implicit versioning of nvm is broken
 # because we use $CIRCLECI_PKG_DIR to store installed nodejs.

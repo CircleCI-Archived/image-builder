@@ -38,6 +38,16 @@ function patch_nvm() {
     sed -i 's|\(s#^$NVM_DIR/##;\)|\1\ns#^\$CIRCLECI_PKG_DIR/nodejs/##;|' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
 }
 
+function install_yarn() {
+    local version="0.18.1"
+
+    (cat <<EOF
+source ~/.circlerc
+curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $version
+EOF
+    ) | as_user version=$version bash
+}
+
 function install_nodejs_version_nvm() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
@@ -98,4 +108,7 @@ function install_nodejs() {
 
     [[ -e $CIRCLECI_PKG_DIR/.nvm ]] || install_nvm
     install_nodejs_version $NODEJS_VERSION
+
+    # Yarn needs nodejs v4 or above so we do this after installing nodejs
+    hash yarn 2>/dev/null || install_yarn
 }
