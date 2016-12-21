@@ -38,6 +38,16 @@ function patch_nvm() {
     sed -i 's|\(s#^$NVM_DIR/##;\)|\1\ns#^\$CIRCLECI_PKG_DIR/nodejs/##;|' $CIRCLECI_PKG_DIR/.nvm/nvm.sh
 }
 
+function install_yarn() {
+    local version=$1
+
+    (cat <<EOF
+source ~/.circlerc
+curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $version
+EOF
+    ) | as_user version=$version bash
+}
+
 function install_nodejs_version_nvm() {
     NODEJS_VERSION=$1
     (cat <<'EOF'
