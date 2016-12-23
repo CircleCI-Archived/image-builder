@@ -54,4 +54,8 @@ EOF
     gpg --export --armor 749D6EEC0353B12C | sudo apt-key add -
     gpg --keyserver pgp.mit.edu --recv-keys F76221572C52609D
     gpg --export --armor F76221572C52609D | sudo apt-key add -
+
+    # A tweak to make selenium tests stable
+    # https://github.com/SeleniumHQ/docker-selenium/issues/87
+    echo 'export DBUS_SESSION_BUS_ADDRESS=/dev/null' >> $CIRCLECI_HOME/.circlerc
 }
