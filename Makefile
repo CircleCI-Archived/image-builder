@@ -18,7 +18,9 @@ endif
 # and services such as MySQL or Redis are installed.
 ###
 build-ubuntu-14.04-XXL:
+ifndef NO_CACHE
 	docker-cache-shim pull ${IMAGE_REPO} || true
+endif
 	echo "Building Docker image ubuntu-14.04-XXL-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) \
@@ -52,7 +54,9 @@ ubuntu-14.04-XXL: build-ubuntu-14.04-XXL push-ubuntu-14.04-XXL dump-version-ubun
 # The only difference is that this image has official Docker installed.
 ###
 build-ubuntu-14.04-XXL-enterprise:
+ifndef NO_CACHE
 	docker-cache-shim pull ${IMAGE_REPO} || true
+endif
 	echo "Building Docker image ubuntu-14.04-XXL-enterprise-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XXL-enterprise-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-XXL-enterprise-$(VERSION) \
@@ -83,7 +87,9 @@ ubuntu-14.04-XXL-enterprise: build-ubuntu-14.04-XXL-enterprise push-ubuntu-14.04
 # The images matches the content of Ubuntu 14.04 XXL except network services.
 ###
 build-ubuntu-14.04-XL:
+ifndef NO_CACHE
 	docker-cache-shim pull ${IMAGE_REPO} || true
+endif
 	echo "Building Docker image ubuntu-14.04-XL-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-XL-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-XL-$(VERSION) \
@@ -112,7 +118,9 @@ ubuntu-14.04-XL: build-ubuntu-14.04-XL push-ubuntu-14.04-XL dump-version-ubuntu-
 # but has fewer things installed to make installing CCIE faster.
 ###
 build-ubuntu-14.04-enterprise:
+ifndef NO_CACHE
 	docker-cache-shim pull ${IMAGE_REPO}
+endif
 	echo "Building Docker image ubuntu-14.04-enterprise-$(VERSION)"
 	docker build $(NO_CACHE) --build-arg IMAGE_TAG=ubuntu-14.04-enterprise-$(VERSION) \
 	-t $(IMAGE_REPO):ubuntu-14.04-enterprise-$(VERSION) \
