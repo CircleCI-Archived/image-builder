@@ -29,10 +29,14 @@ load ../test_helper_ruby
     test_ruby 2.2.5
 }
 
-@test "ruby: 2.3.0 works" {
-    test_ruby 2.3.0
-}
-
 @test "ruby: 2.3.1 works" {
     test_ruby 2.3.1
+}
+
+@test "ruby: 2.3.3 works" {
+    test_ruby 2.3.1
+}
+
+@test "ruby: 2.4.0 works" {
+    test_ruby 2.4.0
 }
