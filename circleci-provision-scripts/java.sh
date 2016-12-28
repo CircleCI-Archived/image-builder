@@ -1,14 +1,14 @@
 #!/bin/bash
 
-function install_oraclejdk8() {
-    echo '>>> Installing Java 8'
+function _install_oraclejdk() {
+    local VERSION=$1
+    local RELEASE=$2
 
-    # We could install java8 with PPA but our inference code expects java to be installed under /usr/lib/jvm
-    # so taking old approach here.
-    local VERSION=102
-    local FILE=jdk-8u$VERSION-linux-x64.tar.gz
+    local FILE="jdk-${VERSION}u${RELEASE}-linux-x64.tar.gz"
     local URL="https://circle-downloads.s3.amazonaws.com/$FILE"
     local JAVA_TMP=/tmp/java
+    local JDK="jdk1.${VERSION}.0_${RELEASE}"
+    local INSTALL_PATH="/usr/lib/jvm/jdk1.${VERSION}.0"
 
     mkdir -p $JAVA_TMP
     pushd $JAVA_TMP
@@ -16,27 +16,52 @@ function install_oraclejdk8() {
     curl -L -O $URL
     tar zxf $FILE
     mkdir -p /usr/lib/jvm
-    mv ./jdk1.8.0_$VERSION /usr/lib/jvm/jdk1.8.0
+    mv ./$JDK $INSTALL_PATH
 
-    # Add jdk1.8.0 to alternative
-    update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0/bin/java" 1
-    update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac" 1
-    update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws" 1
-
-    # Set jdk1.8.0 to the default version
-    update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"
-    update-alternatives --set  "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac"
-    update-alternatives --set  "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws"
+    update-alternatives --install "/usr/bin/java" "java" "${INSTALL_PATH}/bin/java" $VERSION
+    update-alternatives --install "/usr/bin/javac" "javac" "${INSTALL_PATH}/bin/javac" $VERSION
+    update-alternatives --install "/usr/bin/javaws" "javaws" "${INSTALL_PATH}/bin/javaws" $VERSION
+    update-alternatives --install "/usr/bin/javadoc" "javadoc" "${INSTALL_PATH}/bin/javadoc" $VERSION
 
     popd
 
     rm -rf $JAVA_TMP
 }
 
-function install_openjdk8() {
+function install_oraclejdk7() {
+    echo '>>> Installing Oracle Java 7'
+
+    _install_oraclejdk 7 80
+}
+
+function install_oraclejdk8() {
+    echo '>>> Installing Oracle Java 8'
+
+    _install_oraclejdk 8 102
+
+    # Set jdk1.8.0 to the default version
+    update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"
+    update-alternatives --set  "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac"
+    update-alternatives --set  "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws"
+    update-alternatives --set  "javadoc" "/usr/lib/jvm/jdk1.8.0/bin/javadoc"
+}
+
+function _install_openjdk() {
+
+    local version=$1
+    local package="openjdk-$version-jdk"
+
     add-apt-repository -y ppa:openjdk-r/ppa
     apt-get update
-    apt-get install openjdk-8-jdk
+    apt-get install $package
+}
+
+function install_openjdk7() {
+    _install_openjdk 7
+}
+
+function install_openjdk8() {
+    _install_openjdk 8
 }
 
 function install_java() {
