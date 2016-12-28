@@ -21,7 +21,6 @@ EOF
     ) | as_user tee ${CIRCLECI_HOME}/.rvmrc
 
     # Setting up default gemrc
-
     (cat <<'EOF'
 :sources:
 - https://rubygems.org

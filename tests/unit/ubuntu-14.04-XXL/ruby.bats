@@ -7,8 +7,8 @@ load ../test_helper_ruby
 }
 
 # Run this test first before version is changed by subsequent tests
-@test "ruby: default is 2.2.4" {
-    run ruby_test_version 2.2.4
+@test "ruby: default is 2.2.6" {
+    run ruby_test_version 2.2.6
 
     [ "$status" -eq 0 ]
 }
@@ -21,12 +21,12 @@ load ../test_helper_ruby
     test_ruby 2.1.9
 }
 
-@test "ruby: 2.2.4 works" {
-    test_ruby 2.2.4
-}
-
 @test "ruby: 2.2.5 works" {
     test_ruby 2.2.5
+}
+
+@test "ruby: 2.2.6 works" {
+    test_ruby 2.2.6
 }
 
 @test "ruby: 2.3.1 works" {
