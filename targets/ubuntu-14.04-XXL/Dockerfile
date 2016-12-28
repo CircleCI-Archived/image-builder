@@ -98,8 +98,8 @@ RUN circleci-install golang 1.7.4
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.1.9
-RUN circleci-install ruby 2.2.4
 RUN circleci-install ruby 2.2.5
+RUN circleci-install ruby 2.2.6
 RUN circleci-install ruby 2.3.1
 RUN circleci-install ruby 2.3.3
 RUN circleci-install ruby 2.4.0
