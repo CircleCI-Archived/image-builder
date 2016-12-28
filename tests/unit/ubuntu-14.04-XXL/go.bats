@@ -2,8 +2,8 @@
 
 load ../test_helper_go
 
-@test "go: 1.7.3 works" {
-    run go_test_version 1.7.3
+@test "go: 1.7.4 works" {
+    run go_test_version 1.7.4
 
     [ "$status" -eq 0 ]
 }
