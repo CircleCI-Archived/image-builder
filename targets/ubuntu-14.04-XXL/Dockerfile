@@ -103,7 +103,7 @@ RUN circleci-install ruby 2.2.6
 RUN circleci-install ruby 2.3.1
 RUN circleci-install ruby 2.3.3
 RUN circleci-install ruby 2.4.0
-RUN sudo -H -i -u ubuntu rvm use 2.2.4 --default
+RUN sudo -H -i -u ubuntu rvm use 2.2.6 --default
 
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
 RUN circleci-install php 5.5.31
