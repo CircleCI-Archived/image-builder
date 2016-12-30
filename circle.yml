@@ -1,21 +1,31 @@
 version: 2.0
 jobs:
   build:
-    executorType: machine
+    executorType: docker
     containerInfo:
-      - image: docker:1.9
+      - image: golang:1.7
     environment:
       IMAGE_REPO: "circleci/build-image"
       BUILD_TARGET: ubuntu-14.04-XXL
     workDir: ~/image-builder
     steps:
       - type: checkout
-      - shell: git clone git@github.com:kimh/docker-cache-shim.git && cd docker-cache-shim && sudo ./install.sh
+      - shell: git clone git@github.com:kimh/docker-cache-shim.git && cd docker-cache-shim && ./install.sh
       # Fail early if no build targets
       - shell: make --dry-run ${BUILD_TARGET:-notarget}
       - type: shell
+        name: Install docker 1.12
+        command: |
+          set -ex
+          curl -L -o /tmp/docker-1.12.3.tgz https://get.docker.com/builds/Linux/x86_64/docker-1.12.3.tgz
+          tar -xz -C /tmp -f /tmp/docker-1.12.3.tgz
+          mv /tmp/docker/* /usr/bin
+
+      - type: setup-docker-engine
+      - type: shell
         name: build image
-        noOutputTimeout: 7200
+        # 720 seconds in nanoseconds
+        noOutputTimeout: 7200000000000
         command: |
           if $(no_cache); then
             make no_cache=true build-$BUILD_TARGET

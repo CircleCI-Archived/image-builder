@@ -40,7 +40,8 @@ test-ubuntu-14.04-XXL:
 	docker run -d -v ~/image-builder/tests:/home/ubuntu/tests -p 12345:22 --name ubuntu-14.04-XXL-test $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION)
 	sleep 10
 	docker cp tests/insecure-ssh-key.pub ubuntu-14.04-XXL-test:/home/ubuntu/.ssh/authorized_keys
-	sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XXL-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
+	#sudo lxc-attach -n $$(docker inspect --format "{{.Id}}" ubuntu-14.04-XXL-test) -- bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
+	docker exec ubuntu-14.04-XXL-test chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys
 	chmod 600 tests/insecure-ssh-key; ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats tests/unit/ubuntu-14.04-XXL
 
 deploy-ubuntu-14.04-XXL:
