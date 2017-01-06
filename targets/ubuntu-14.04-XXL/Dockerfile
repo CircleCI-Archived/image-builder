@@ -68,6 +68,7 @@ RUN circleci-install python 3.4.3
 RUN circleci-install python 3.4.4
 RUN circleci-install python 3.5.1
 RUN circleci-install python 3.5.2
+RUN circleci-install python 3.6.0
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1

@@ -65,6 +65,10 @@ load ../test_helper_python
     test_python 3.5.2
 }
 
+@test "python: 3.6.0 works" {
+    test_python 3.6.0
+}
+
 @test "python: pypy-1.9 works" {
     test_python pypy-1.9
 }
