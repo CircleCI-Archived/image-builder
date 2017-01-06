@@ -128,6 +128,9 @@ RUN circleci-install scala
 ADD circleci-provision-scripts/haskell.sh /opt/circleci-provision-scripts/haskell.sh
 RUN circleci-install ghc 8.0.1
 
+ADD circleci-provision-scripts/git-lfs.sh /opt/circleci-provision-scripts/git-lfs.sh
+RUN circleci-install git-lfs 1.5.4
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
