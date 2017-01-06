@@ -16,7 +16,7 @@ RUN circleci-install base_requirements && circleci-install circleci_specific
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
-RUN for package in oraclejdk7 oraclejdk8 openjdk7 openjdk8; do circleci-install $package; done
+RUN for package in oraclejdk7 oraclejdk8 openjdk7 openjdk8; do circleci-install java $package; done
 
 # Databases
 ADD circleci-provision-scripts/mysql.sh circleci-provision-scripts/mongo.sh circleci-provision-scripts/postgres.sh circleci-provision-scripts/sqlite.sh /opt/circleci-provision-scripts/
