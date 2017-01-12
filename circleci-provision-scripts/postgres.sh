@@ -10,8 +10,14 @@ function disable_96() {
     # Running two versions of Postgresql made customers confused but we can't simply remove
     # 9.6 because some customers already depend on it.
     # So, we disable 9.6 by default but can be easilby enabled if necessary.
-    mv /usr/lib/postgresql/9.6 /usr/lib/postgresql/_9.6
-    mv /etc/postgresql/9.6 /etc/postgresql/_9.6
+
+    # Postgresql startup script detects all version under it's directory, so we need to
+    # mv all 9.6 related stuff to different directories
+    mkdir /usr/lib/postgresql-9.6
+    mkdir /etc/postgresql-9.6
+
+    mv /usr/lib/postgresql/9.6 /usr/lib/postgresql-9.6/9.6
+    mv /etc/postgresql/9.6 /etc/postgresql-9.6/9.6
 }
 
 function install_postgres_ext_postgis() {
