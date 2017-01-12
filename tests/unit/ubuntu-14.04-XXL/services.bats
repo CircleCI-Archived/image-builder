@@ -107,12 +107,6 @@ create_postgis_extention () {
     [ "$status" -eq 0 ]
 }
 
-@test "redis 3.2 is installed" {
-    run bash -c "redis-server --version | grep 3.2"
-
-    [ "$status" -eq 0 ]
-}
-
 @test "memcached works" {
     sudo service memcached start
 

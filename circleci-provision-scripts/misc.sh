@@ -1,8 +1,6 @@
 #/bin/bash
 
 function install_redis() {
-    local version=3.2.6
-
     apt-get install redis-server
     # disable init.d script for redis
     update-rc.d redis-server disable
@@ -11,14 +9,6 @@ function install_redis() {
     printf 'description "redis server"\nstop on shutdown\nexec sudo -u redis /usr/bin/redis-server /etc/redis/redis.conf\nrespawn' > /etc/init/redis-server.conf
     # prevent redis-server from forking and daemonizing itself so upstart can respawn it
     sed -i "s|daemonize yes|daemonize no|g" /etc/redis/redis.conf
-
-    # Now we will manually install newer redis
-    rm $(dirname $(which redis-server))/redis-*
-    pushd /tmp
-    wget http://download.redis.io/releases/redis-${version}.tar.gz
-    tar xzf redis-${version}.tar.gz
-    cd redis-${version}
-    make && make install
 }
 
 function install_memcached() {
