@@ -45,8 +45,8 @@ ARG use_precompile=true
 ENV USE_PRECOMPILE=$use_precompile RUN_APT_UPDATE=true
 RUN curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 ADD circleci-provision-scripts/python.sh /opt/circleci-provision-scripts/python.sh
-RUN circleci-install python 2.7.6
 RUN circleci-install python 2.7.3
+RUN circleci-install python 2.7.6
 RUN circleci-install python 2.7.9
 RUN circleci-install python 2.7.10
 RUN circleci-install python 2.7.11
@@ -57,6 +57,7 @@ RUN sudo -H -i -u ubuntu pyenv global 2.7.11
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
 RUN circleci-install nodejs 4.2.2
+RUN circleci-install nodejs 4.2.6
 RUN circleci-install nodejs 4.4.7
 RUN circleci-install nodejs 5.1.0
 RUN circleci-install nodejs 5.5.0
@@ -66,6 +67,7 @@ RUN circleci-install nodejs 6.2.2
 RUN circleci-install nodejs 6.3.0
 RUN circleci-install nodejs 6.3.1
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
+RUN circleci-install yarn 0.18.1
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
 RUN circleci-install golang 1.6.2
