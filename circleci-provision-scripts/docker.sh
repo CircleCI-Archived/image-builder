@@ -3,25 +3,9 @@
 function install_docker() {
     echo '>>>> Installing Docker'
 
-    # Pin Docker version to 10.x since 11 brings breaking changes
-    echo "deb [arch=amd64] https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
-    apt-get update
-    apt-get install docker-engine=1.10.3-0~trusty
-
-    # Devicemapper files are huge if got created - we don't use device mapper anyway
-    rm -rf /var/lib/docker/devicemapper/devicemapper/data
-    rm -rf /var/lib/docker/devicemapper/devicemapper/metadata
-
-    # CirclecI Docker customizations
-    sed -i 's|^limit|#limit|g' /etc/init/docker.conf
-    usermod -a -G docker ${CIRCLECI_USER}
-
-    # Docker will be running inside a container (lxc or privileged docker)
-    # Internally, docker checks container env-var to condition some apparmor profile activities that don't work within lxc
-    echo 'env container=yes' >> /etc/init/docker.conf
-
-    # Don't start Docker by default
-    echo manual >> /etc/init/docker.conf
+    curl https://get.docker.com/ | sh
+    useradd -m -s /bin/bash circleci
+    sudo usermod -aG docker circleci
 }
 
 function install_circleci_docker() {
@@ -49,6 +33,11 @@ function install_circleci_docker() {
 function install_docker_compose() {
     echo '>>>> Installing Docker compose'
 
-    curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    VERSION=1.9.0
+    CHECKSUM=eeca988428d29534fecdff2768fa2e8c293b812b1c77da8ab5daf7f441c92e5b
+
+    curl -L -o /tmp/docker-compose https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-Linux-x86_64
+    echo "$CHECKSUM /tmp/docker-compose" | sha256sum -c
+    chmod +x /tmp/docker-compose
+    sudo mv /tmp/docker-compose /usr/local/bin/docker-compose
 }
