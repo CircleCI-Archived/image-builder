@@ -1,0 +1,39 @@
+{
+    "builders" : [
+        {
+            "type": "googlecompute",
+	    "account_file": "./prototype-credentials.json",
+            "project_id": "notnoopci-prototype",
+            "source_image": "ubuntu-1404-trusty-v20161213",
+            "zone": "us-east1-c",
+	    "image_name": "ubuntu-1404-circleci-image-{{timestamp}}",
+	    "ssh_username": "circleci",
+            "disk_size": 100
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "inline" : [
+                "sleep 30",
+	        "mkdir -p /tmp/circleci-provisioner"
+	    ]
+        },
+        {
+            "type": "file",
+            "source": "./",
+            "destination": "/tmp/circleci-provisioner"
+        },
+        {
+            "type" : "shell",
+            "inline" : [
+                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh' &&  echo done",
+
+                "sudo apt-get purge sshguard",
+                "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
+                "echo after done",
+	        "exit 0"
+	    ]
+        }
+    ]
+}
