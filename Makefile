@@ -46,6 +46,9 @@ test-ubuntu-14.04-XXL:
 deploy-ubuntu-14.04-XXL:
 	./docker-export $(IMAGE_REPO):ubuntu-14.04-XXL-$(VERSION) > build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz
 	aws s3 cp ./build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
+	aws s3 cp s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz s3://lxc-images/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
+	aws s3 cp s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz s3://lxc-images-us-east-2/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
+	aws s3 cp s3://circle-downloads/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz s3://lxc-images-us-west-2/build-image-ubuntu-14.04-XXL-$(VERSION).tar.gz --acl public-read
 
 ubuntu-14.04-XXL: build-ubuntu-14.04-XXL push-ubuntu-14.04-XXL dump-version-ubuntu-14.04-XXL test-ubuntu-14.04-XXL
 
