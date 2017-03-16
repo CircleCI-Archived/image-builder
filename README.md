@@ -48,36 +48,19 @@ Note: only Docker version is different. We install the latest version of Docker.
 
 `circleci/build-image:ubuntu-14.04-XXL-enterprise-<VERSION>`
 
-### Ubuntu 14.04 XL
+# How to trigger a builders
 
-**Description**
+`image-builder` builds are currently running on [CircleCI 2.0!!](https://circleci.com/beta-access/)
 
-This image is the slimmer version of Ubuntu 14.04 XXL build image. The same versions of languages and tools as Ubuntu 14.04 XXL are pre-installed but services such as PostgreSQL
-or Redis aren't installed. The build image is designed to be used with network services provided through the docker composing mechanism.
+If you have the permission to trigger `image-build` build, then you can trigger a build by using `trigger-job.sh`
 
-**List of installed software**
+```
+Example:
 
-https://circleci.com/docs/environments/ubuntu-14.04-XL.json
+./trigger-job.sh ubuntu-14.04-XXL 2.0
+```
 
-**Docker image tag**
-
-`circleci/build-image:ubuntu-14.04-XL-<VERSION>`
-
-### Ubuntu 14.04 XXL-upstart
-
-**Description**
-
-This image behaves like a VM, with upstart being PID 1. Actions default to running as root
-and services (e.g. postgres, redis) are allowed without requiring to use another images.
-The images matches the content of Ubuntu 14.04 XXL.
-
-**List of installed software**
-
-https://circleci.com/docs/environments/ubuntu-14.04-XXL-upstart.json
-
-**Docker image tag**
-
-`circleci/build-image:ubuntu-14.04-XXL-upstart-<VERSION>`
+Run `./trigger-job.sh --help` for more information.
 
 # Building custom image
 

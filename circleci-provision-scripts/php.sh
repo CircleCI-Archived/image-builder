@@ -43,6 +43,10 @@ function install_composer() {
     echo 'export PATH=~/.composer/vendor/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }
 
+# Most PHP projects should use Composer and phpunit is installed under vendor/ directory
+# so, this global phpunit shouldn't be needed but just in case.
+# Note: the current version of phpunit only supports PHP 7, so if you are using PHP 5
+# this phpunit doesn't work
 function install_phpunit() {
     wget https://phar.phpunit.de/phpunit.phar
     chmod +x phpunit.phar
