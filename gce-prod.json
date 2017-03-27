@@ -2,7 +2,7 @@
     "builders" : [
         {
             "type": "googlecompute",
-	    "account_file": "/tmp/notnoopci-prototype-254c7d319a22.json",
+	    "account_file": "./prod-credentials.json",
             "project_id": "circleci-picard-mahmood",
             "source_image": "ubuntu-1404-trusty-v20161213",
             "zone": "us-east1-c",
