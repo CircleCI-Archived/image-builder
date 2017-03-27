@@ -83,7 +83,8 @@ cat<<EOF
         $(all_nodejs)
       ],
       "npm": "$(npm --version)",
-      "nvm": "$(. $CIRCLECI_PKG_DIR/.nvm/nvm.sh && nvm --version)"
+      "nvm": "$(. $CIRCLECI_PKG_DIR/.nvm/nvm.sh && nvm --version)",
+      "yarn": "$(yarn --version)"
     },
     "php": {
       "default": "$(php --version | head -1 | col 2)",
@@ -106,7 +107,8 @@ cat<<EOF
       ],
       "cabal": "$(cabal --version | head -1 | col 3)",
       "alex": "$(alex --version | col 3 | trailing_last_comma)",
-      "happy": "$(happy --version | head -1 | col 3)"
+      "happy": "$(happy --version | head -1 | col 3)",
+      "stack": "$(stack --version | col 2 | trailing_last_comma)"
     },
     "scala": {
       "all": [

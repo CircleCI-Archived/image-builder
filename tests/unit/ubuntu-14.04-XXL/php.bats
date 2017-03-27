@@ -39,10 +39,6 @@ load ../bats-assert/load
     test_php 5.6.22
 }
 
-@test "php: 7.0.4 works" {
-    test_php 7.0.4
-}
-
 @test "php: 7.0.7 works" {
     test_php 7.0.7
 }
@@ -51,6 +47,14 @@ load ../bats-assert/load
     test_php 7.0.11
 }
 
+@test "php: 7.0.17 works" {
+    test_php 7.0.17
+}
+
 @test "php: 7.1.0 works" {
     test_php 7.1.0
+}
+
+@test "php: 7.1.3 works" {
+    test_php 7.1.3
 }
