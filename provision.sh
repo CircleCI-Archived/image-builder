@@ -17,7 +17,8 @@ circleci-install java oraclejdk8 && circleci-install java openjdk8
 for package in sysadmin devtools jq redis memcached rabbitmq ; do circleci-install $package; done
 
 # Dislabe services by default
-for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
+for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb mysql postgresql; do sysv-rc-conf $s off; done
+echo manual | tee /etc/init/mongod.override
 
 # Browsers
 circleci-install firefox && circleci-install chrome && circleci-install phantomjs
