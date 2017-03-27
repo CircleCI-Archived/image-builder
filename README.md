@@ -48,16 +48,17 @@ Note: only Docker version is different. We install the latest version of Docker.
 
 `circleci/build-image:ubuntu-14.04-XXL-enterprise-<VERSION>`
 
-# How to trigger a builders
+## How to trigger a build/job
 
-`image-builder` builds are currently running on [CircleCI 2.0!!](https://circleci.com/beta-access/)
+`image-builder` builds are currently running on [CircleCI 2.0!!](https://circleci.com/beta-access/) and each build image can be
+built by running a corresponding job.
 
 If you have the permission to trigger `image-build` build, then you can trigger a build by using `trigger-job.sh`
 
 ```
 Example:
 
-./trigger-job.sh ubuntu-14.04-XXL 2.0
+./trigger-job.sh ubuntu-14.04-XXL my-test-branch
 ```
 
 Run `./trigger-job.sh --help` for more information.
