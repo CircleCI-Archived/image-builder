@@ -15,6 +15,12 @@ test_ruby () {
 
     run ruby_test_bundler
     [ "$status" -eq 0 ]
+
+    run ruby_test_gem_version_fixed 2.6
+    [ "$status" -eq 0 ]
+
+    run ruby_test_bundler_version_fixed 1.14
+    [ "$status" -eq 0 ]
 }
 
 ruby_test_version () {
@@ -27,8 +33,18 @@ ruby_test_gem () {
     gem --version
 }
 
+ruby_test_gem_version_fixed () {
+    local version=$1
+    gem --version | grep $version
+}
+
 ruby_test_bundler () {
     bundler --version
+}
+
+ruby_test_bundler_version_fixed () {
+    local version=$1
+    bundler --version | grep $version
 }
 
 ruby_test_all_installed () {

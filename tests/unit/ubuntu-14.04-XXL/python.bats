@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
 load ../test_helper_python
+load ../bats-support/load
+load ../bats-assert/load
 
 @test "python: all versions are installed" {
     python_test_all_installed
@@ -10,7 +12,7 @@ load ../test_helper_python
 @test "python: default is 2.7.11" {
     run python_test_version 2.7.11
 
-    [ "$status" -eq 0 ]
+    assert_success
 }
 
 @test "python: 2.7.10 works" {
@@ -57,16 +59,20 @@ load ../test_helper_python
     test_python 3.4.4
 }
 
-@test "python: 3.5.1 works" {
-    test_python 3.5.1
-}
-
 @test "python: 3.5.2 works" {
     test_python 3.5.2
 }
 
+@test "python: 3.5.3 works" {
+    test_python 3.5.3
+}
+
 @test "python: 3.6.0 works" {
     test_python 3.6.0
+}
+
+@test "python: 3.6.1 works" {
+    test_python 3.6.1
 }
 
 @test "python: pypy-1.9 works" {
@@ -88,5 +94,5 @@ load ../test_helper_python
 @test "python: switching version with 'pyenv global' works" {
     run python_test_pyenv_global
 
-    [ "$status" -eq 0 ]
+    assert_success
 }

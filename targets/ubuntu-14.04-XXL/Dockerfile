@@ -67,7 +67,9 @@ RUN circleci-install python 3.4.3
 RUN circleci-install python 3.4.4
 RUN circleci-install python 3.5.1
 RUN circleci-install python 3.5.2
+RUN circleci-install python 3.5.3
 RUN circleci-install python 3.6.0
+RUN circleci-install python 3.6.1
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1
@@ -90,19 +92,20 @@ RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
 RUN circleci-install nodejs 6.1.0
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
-RUN circleci-install yarn 0.18.1
+RUN circleci-install yarn 0.21.3
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.7.4
+RUN circleci-install golang 1.8
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.1.9
-RUN circleci-install ruby 2.2.5
 RUN circleci-install ruby 2.2.6
-RUN circleci-install ruby 2.3.1
+RUN circleci-install ruby 2.2.7
 RUN circleci-install ruby 2.3.3
+RUN circleci-install ruby 2.3.4
 RUN circleci-install ruby 2.4.0
+RUN circleci-install ruby 2.4.1
 RUN sudo -H -i -u ubuntu rvm use 2.2.6 --default
 
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
@@ -115,7 +118,9 @@ RUN circleci-install php 5.6.22
 RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
 RUN circleci-install php 7.0.11
+RUN circleci-install php 7.0.17
 RUN circleci-install php 7.1.0
+RUN circleci-install php 7.1.3
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
@@ -125,7 +130,8 @@ ADD circleci-provision-scripts/scala.sh /opt/circleci-provision-scripts/scala.sh
 RUN circleci-install scala
 
 ADD circleci-provision-scripts/haskell.sh /opt/circleci-provision-scripts/haskell.sh
-RUN circleci-install ghc 8.0.1
+RUN circleci-install ghc 8.0.2
+RUN circleci-install stack
 
 ADD circleci-provision-scripts/git-lfs.sh /opt/circleci-provision-scripts/git-lfs.sh
 RUN circleci-install git-lfs 1.5.4

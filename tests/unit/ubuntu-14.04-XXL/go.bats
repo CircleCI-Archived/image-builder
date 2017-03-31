@@ -4,8 +4,8 @@ load ../test_helper_go
 load ../bats-support/load
 load ../bats-assert/load
 
-@test "go: 1.7.4 works" {
-    run go_test_version 1.7.4
+@test "go: 1.8 works" {
+    run go_test_version 1.8
 
     assert_success
 }

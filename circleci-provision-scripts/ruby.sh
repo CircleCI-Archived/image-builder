@@ -71,6 +71,8 @@ EOF
 
 function install_ruby_version_precompile() {
     local INSTALL_RUBY_VERSION=$1
+    local GEM_VERSION="2.6.11"
+    local BUNDLER_VERSION="1.14.6"
     echo ">>> Installing Ruby $INSTALL_RUBY_VERSION"
 
     maybe_run_apt_update
@@ -81,9 +83,10 @@ function install_ruby_version_precompile() {
 echo Installing Ruby version: $INSTALL_RUBY_VERSION
 source ~/.circlerc
 rvm use $INSTALL_RUBY_VERSION
-gem install bundler
+gem install rubygems-update -v "~> $GEM_VERSION" && gem update --system
+gem install bundler -v "~> $BUNDLER_VERSION"
 EOF
-    ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION bash
+    ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION GEM_VERSION=$GEM_VERSION BUNDLER_VERSION=$BUNDLER_VERSION bash
 }
 
 function install_ruby_version() {

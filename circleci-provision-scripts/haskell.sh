@@ -25,6 +25,11 @@ function install_ghc() {
     echo "export PATH=$install_path/bin"':$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }
 
+function install_stack() {
+    curl -sSL https://get.haskellstack.org/ | sh
+    echo "export PATH=~/.local/bin"':$PATH' >> ${CIRCLECI_HOME}/.circlerc
+}
+
 function install_ghc_tool() {
     local name=$1
     local version=$2
