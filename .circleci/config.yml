@@ -47,7 +47,7 @@ jobs:
 
       - run: chmod 600 tests/insecure-ssh-key;
 
-      - run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
+      #- run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
 
       - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
@@ -77,12 +77,14 @@ jobs:
 
       - deploy:
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./docker-export $IMAGE_REPO:$(cat _tag) > build-image-$IMAGE_REPO:$(cat _tag).tar.gz
-              aws s3 cp ./build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read
-              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
-              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
-              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+            if [ "${CIRCLE_BRANCH}" == "debug-deploy" ]; then
+              bash -x ./docker-export $IMAGE_REPO:$(cat _tag) > build-image-$IMAGE_REPO:$(cat _tag).tar.gz
+              ls -la
+              ls -la ./build-image-$IMAGE_REPO:$(cat _tag).tar.gz
+              #aws s3 cp ./build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read
+              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
             fi
 
   ##################################
