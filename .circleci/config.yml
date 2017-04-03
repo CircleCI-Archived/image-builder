@@ -21,7 +21,7 @@ jobs:
     steps:
       - checkout
       - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: docker pull $IMAGE_REPO:$(cat _tag)
+      - run: docker pull circleci/build-image:ubuntu-14.04-XXL-1128-9ee3178
       - run: echo "Building $IMAGE_REPO:$(cat _tag)"
       - run:
           command: |
