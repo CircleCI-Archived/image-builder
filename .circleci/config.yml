@@ -21,7 +21,6 @@ jobs:
     steps:
       - checkout
       - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: docker pull circleci/build-image:ubuntu-14.04-XXL-1128-9ee3178
       - run: echo "Building $IMAGE_REPO:$(cat _tag)"
       - run:
           command: |
@@ -79,14 +78,10 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "debug-deploy" ]; then
-              #bash -x ./docker-export $IMAGE_REPO:$(cat _tag) > build-image-$IMAGE_REPO:$(cat _tag).tar.gz
-              ./docker-export $IMAGE_REPO:$(cat _tag) > /tmp/foo.tar.gz
-              ls -la /tmp/
-              #ls -la ./build-image-$IMAGE_REPO:$(cat _tag).tar.gz
-              #aws s3 cp ./build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read
-              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
-              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
-              #aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+              ./docker-export $IMAGE_REPO:$(cat _tag) | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read:
+              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
+              aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
             fi
 
   ##################################
