@@ -78,7 +78,7 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "debug-deploy" ]; then
-              ./docker-export $IMAGE_REPO:$(cat _tag) | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read:
+              ./docker-export $IMAGE_REPO:$(cat _tag) | aws s3 cp - s3://circle-downloads/build-image-$IMAGE_REPO:$(cat _tag).tar.gz --acl public-read
               aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
               aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
               aws s3 cp s3://circle-downloads//build-image-$IMAGE_REPO:$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$IMAGE_REPO:$(cat _tag).tar.gz  --acl public-read
