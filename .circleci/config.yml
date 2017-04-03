@@ -6,7 +6,6 @@ jobs:
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
-      - run: df -h
 
   ###########################
   #### ubuntu-14.04-XXL #####
@@ -22,6 +21,7 @@ jobs:
     steps:
       - checkout
       - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
+      - run: docker pull $IMAGE_REPO:$(cat _tag)
       - run: echo "Building $IMAGE_REPO:$(cat _tag)"
       - run:
           command: |
