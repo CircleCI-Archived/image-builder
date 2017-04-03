@@ -78,7 +78,6 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "debug-deploy" ]; then
-              ./docker-export
               #bash -x ./docker-export $IMAGE_REPO:$(cat _tag) > build-image-$IMAGE_REPO:$(cat _tag).tar.gz
               ./docker-export $IMAGE_REPO:$(cat _tag) > /tmp/foo.tar.gz
               ls -la /tmp/
