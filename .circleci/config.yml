@@ -6,12 +6,6 @@ jobs:
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
-      - run: aws --version
-      - run: pip install awscli
-      - run: aws --version
-      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images/kim.txt --acl public-read
-      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-east-2/kim.txt --acl public-read --region us-east-2
-      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-west-2/kim.txt --acl public-read --region us-west-2
 
   ###########################
   #### ubuntu-14.04-XXL #####
@@ -86,8 +80,8 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "debug-deploy" ]; then
               ./docker-export $IMAGE_REPO:$(cat _tag) | aws s3 cp - s3://circle-downloads/build-image-$(cat _tag).tar.gz --acl public-read
               aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images/build-image-$(cat _tag).tar.gz --acl public-read
-              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$(cat _tag).tar.gz --acl public-read
-              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$(cat _tag).tar.gz --acl public-read
+              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$(cat _tag).tar.gz --acl public-read --region us-east-2
+              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$(cat _tag).tar.gz --acl public-read --region us-west-2
             fi
 
   ##################################
