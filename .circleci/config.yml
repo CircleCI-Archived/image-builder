@@ -10,8 +10,8 @@ jobs:
       - run: pip install awscli
       - run: aws --version
       - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images/kim.txt --acl public-read
-      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-east-2/kim.txt --acl public-read
-      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-west-2/kim.txt --acl public-read
+      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-east-2/kim.txt --acl public-read --region us-east-2
+      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images-us-west-2/kim.txt --acl public-read --region us-west-2
 
   ###########################
   #### ubuntu-14.04-XXL #####
