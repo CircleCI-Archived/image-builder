@@ -6,6 +6,7 @@ jobs:
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
+      - run: aws --version
 
   ###########################
   #### ubuntu-14.04-XXL #####
