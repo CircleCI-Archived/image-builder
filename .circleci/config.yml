@@ -7,6 +7,7 @@ jobs:
     steps:
       - run: echo doing nothing.
       - run: aws --version
+      - run: aws s3 cp s3://circle-downloads/kim.txt s3://lxc-images/kim.txt --acl public-read
 
   ###########################
   #### ubuntu-14.04-XXL #####
