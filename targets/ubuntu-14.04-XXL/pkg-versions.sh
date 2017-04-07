@@ -118,6 +118,7 @@ cat<<EOF
     "redis": "$(redis-server --version | col 3 | sed 's/^v=//')",
     "memcached": "$(memcached -h | head -1 | col 2)",
     "git": "$(git --version | col 3)",
+    "git-lfs": "$(git-lfs version | col 1 | sed -e s/git-lfs\\///)",
     "gcc": "$(gcc --version | head -n1 | col 4)",
     "g++": "$(g++ --version | head -n1 | col 4)",
     "cc": "$(cc --version | head -1 | col 4)",
