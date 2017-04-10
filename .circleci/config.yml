@@ -47,7 +47,7 @@ jobs:
 
       - run: chmod 600 tests/insecure-ssh-key;
 
-      #- run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
+      - run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
 
       - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
