@@ -95,7 +95,7 @@ RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
 RUN circleci-install yarn 0.21.3
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.7.4
+RUN circleci-install golang 1.8.1
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.1.8
