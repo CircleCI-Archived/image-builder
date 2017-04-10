@@ -1,10 +1,11 @@
 #!/usr/bin/env bats
 
 load ../test_helper_go
+load ../bats-support/load
+load ../bats-assert/load
 
 @test "gcloud works" {
-    gcloud --version
+    run gcloud --version
 
-    [ "$status" -eq 0 ]
+    assert_success
 }
-
