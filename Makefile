@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 IMAGE_REPO = circleci/build-image
 SHA = $(shell git rev-parse --short HEAD)
-VERSION = $(CIRCLE_BUILD_NUM)-$(SHA)
+VERSION = 1.0.$(CIRCLE_BUILD_NUM)-$(SHA)
 NO_CACHE =
 
 define docker-push-with-retry
