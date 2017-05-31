@@ -123,6 +123,12 @@ create_postgis_extention () {
     [ "$status" -eq 0 ]
 }
 
+@test "neo4j: memory limit is placed" {
+    run bash -c "grep -v '#' /etc/neo4j/neo4j-wrapper.conf | grep 'wrapper.java.maxmemory'"
+
+    [ "$status" -eq 0 ]
+}
+
 @test "rabbitmq works" {
     sudo service rabbitmq-server start
 

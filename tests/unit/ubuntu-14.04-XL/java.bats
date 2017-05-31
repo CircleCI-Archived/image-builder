@@ -3,7 +3,7 @@
 load ../test_helper_java
 
 @test "java: default is oraclejdk1.8" {
-    java_test_orackejdk1.8_default
+    java_test_oraclejdk1.8_default
 }
 
 @test "java: openjdk8 works" {

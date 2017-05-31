@@ -33,6 +33,9 @@ function install_neo4j() {
 
     # Disable auth
     sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
+
+    # Memory limitation
+    echo 'wrapper.java.maxmemory=1536' >> /etc/neo4j/neo4j-wrapper.conf
 }
 
 function install_elasticsearch() {

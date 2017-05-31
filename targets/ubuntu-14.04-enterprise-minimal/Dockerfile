@@ -30,6 +30,7 @@ RUN sudo -H -i -u ubuntu pyenv global 2.7.11
 
 ADD circleci-provision-scripts/nodejs.sh /opt/circleci-provision-scripts/nodejs.sh
 RUN circleci-install nodejs
+RUN circleci-install yarn
 
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose

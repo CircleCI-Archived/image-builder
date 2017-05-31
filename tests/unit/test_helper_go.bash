@@ -27,5 +27,8 @@ go_test_get () {
 
 go_test_build () {
     cd $(go_test_repo)/hello
-    go build -v
+    # Writing to /tmp because there is a permission issue with mounted volume.
+    # /home/ubuntu/tests is a volume directory and `go build` trying to write to
+    # the directory gets a permission issue
+    go build -v -o /tmp/hello
 }

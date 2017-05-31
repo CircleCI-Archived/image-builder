@@ -4,15 +4,21 @@ test_python () {
     pyenv global $version
 
     if echo $version | grep pypy; then
-	run pypy_test_version $version
-	[ "$status" -eq 0 ]
+        run pypy_test_version $version
+        [ "$status" -eq 0 ]
     else
-	run python_test_version $version
-	[ "$status" -eq 0 ]
+        run python_test_version $version
+        [ "$status" -eq 0 ]
     fi
 
     run python_test_pip
     [ "$status" -eq 0 ]
+
+    # kludge: I couldn't install curses only in pypy-1.9 for some reasons
+    if ! [ "$version" = "pypy-1.9" ] ; then
+        run python_test_curses
+        [ "$status" -eq 0 ]
+    fi
 }
 
 python_test_version () {
@@ -38,7 +44,7 @@ python_test_pip () {
 
 python_test_pyenv_global () {
     local current_version=$(pyenv global)
-    local new_version=3.5.1
+    local new_version=3.5.3
 
     pyenv global $new_version
     python_test_version $new_version
@@ -51,4 +57,8 @@ python_test_all_installed () {
     run test "$expected" = "$actual"
 
     [ "$status" -eq 0 ]
+}
+
+python_test_curses() {
+    python -c 'import curses'
 }

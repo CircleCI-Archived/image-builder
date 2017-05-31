@@ -24,6 +24,15 @@ nodejs_test_npm () {
     npm --version
 }
 
+test_yarn_version () {
+    local expected=$1
+    local actual=$(yarn --version)
+
+    run test "$expected" = "$actual"
+
+    [ "$status" -eq 0 ]
+}
+
 nodejs_test_all_installed (){
     local expected=$(grep "circleci-install nodejs" /opt/circleci/Dockerfile | awk '{print "v" $4}' | sort)
     local actual=$(ls /opt/circleci/nodejs/ | sort)

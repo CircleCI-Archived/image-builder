@@ -1,38 +1,56 @@
 #!/usr/bin/env bats
 
 load ../test_helper_ruby
+load ../bats-support/load
+load ../bats-assert/load
 
 @test "ruby: all versions are installed" {
     ruby_test_all_installed
 }
 
 # Run this test first before version is changed by subsequent tests
-@test "ruby: default is 2.2.4" {
-    run ruby_test_version 2.2.4
+@test "ruby: default is 2.2.6" {
+    run ruby_test_version 2.2.6
 
-    [ "$status" -eq 0 ]
+    assert_success
 }
 
 @test "ruby: 2.1.8 works" {
-    test_ruby 2.1.8
+    run test_ruby 2.1.8
+    assert_success
 }
 
 @test "ruby: 2.1.9 works" {
-    test_ruby 2.1.9
+    run test_ruby 2.1.9
+    assert_success
 }
 
-@test "ruby: 2.2.4 works" {
-    test_ruby 2.2.4
+@test "ruby: 2.2.6 works" {
+    run test_ruby 2.2.6
+    assert_success
 }
 
-@test "ruby: 2.2.5 works" {
-    test_ruby 2.2.5
+@test "ruby: 2.2.7 works" {
+    run test_ruby 2.2.7
+    assert_success
 }
 
-@test "ruby: 2.3.0 works" {
-    test_ruby 2.3.0
+@test "ruby: 2.3.3 works" {
+    run test_ruby 2.3.3
+    assert_success
 }
 
-@test "ruby: 2.3.1 works" {
-    test_ruby 2.3.1
+@test "ruby: 2.3.4 works" {
+    run test_ruby 2.3.4
+    assert_success
+}
+
+@test "ruby: 2.4.0 works" {
+    run test_ruby 2.4.0
+    assert_success
+}
+
+@test "ruby: 2.4.1 works" {
+    run test_ruby 2.4.1
+    assert_success
 }

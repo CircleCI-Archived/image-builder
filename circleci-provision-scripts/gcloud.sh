@@ -7,6 +7,8 @@ function install_gcloud() {
 sudo bash -c 'curl "https://sdk.cloud.google.com" | CLOUDSDK_CORE_DISABLE_PROMPTS=1 CLOUDSDK_INSTALL_DIR=/opt bash'
 EOF
 	) | as_user bash
-	chown -R $CIRCLECI_USER:$CIRCLECI_USER "/opt/google-cloud-sdk"
+  chown -R $CIRCLECI_USER:$CIRCLECI_USER "/opt/google-cloud-sdk"
 	chown -R $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.config
+
+  echo 'export PATH=/opt/google-cloud-sdk/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
 }

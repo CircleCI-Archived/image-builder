@@ -14,13 +14,6 @@ test_php () {
 
     run php_test_libphp_exists $version
     [ "$status" -eq 0 ]
-
-    # Current version of phpunit (5.3) doesn't support php 5.5
-    # but this appears not to be a major issue for our customers.
-    if ! echo $version | grep "5.5"; then
-       run php_test_phpunit
-       [ "$status" -eq 0 ]
-    fi
 }
 
 php_test_version () {
@@ -33,12 +26,8 @@ php_test_composer () {
     composer --version
 }
 
-php_test_phpunit () {
-    phpunit --version
-}
-
 php_test_pecl () {
-    pecl --version
+    pecl version
 }
 
 php_test_libphp_exists () {

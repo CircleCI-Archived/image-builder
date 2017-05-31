@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
 load ../test_helper_nodejs
+load ../bats-support/load
+load ../bats-assert/load
 
 @test "nodejs: all versions are installed" {
     nodejs_test_all_installed
@@ -10,7 +12,7 @@ load ../test_helper_nodejs
 @test "nodejs: default is 4.2.6" {
     run nodejs_test_version 4.2.6
 
-    [ "$status" -eq 0 ]
+    assert_success
 }
 
 @test "nodejs: 0.12.9 works" {
@@ -71,6 +73,10 @@ load ../test_helper_nodejs
 
 @test "nodejs: 6.1.0 works" {
     test_nodejs 6.1.0
+}
+
+@test "nodejs: yarn 0.21.3 is installed" {
+    test_yarn_version 0.21.3
 }
 
 # We are not testing the behavior of nvm here...

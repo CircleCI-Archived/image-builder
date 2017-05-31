@@ -48,4 +48,14 @@ EOF
     sed -i 's/^exit 0/nohup Xvfb :99 -screen 0 1280x1024x24 \&\nsleep 2\nDISPLAY=:99.0 xfwm4 --daemon\nexit 0/g' /etc/rc.local
 
     echo 'export DISPLAY=:99' >> $CIRCLECI_HOME/.circlerc
+
+    # Avoid GPG signatures errors
+    gpg --keyserver pgp.mit.edu --recv-keys 749D6EEC0353B12C
+    gpg --export --armor 749D6EEC0353B12C | sudo apt-key add -
+    gpg --keyserver pgp.mit.edu --recv-keys F76221572C52609D
+    gpg --export --armor F76221572C52609D | sudo apt-key add -
+
+    # A tweak to make selenium tests stable
+    # https://github.com/SeleniumHQ/docker-selenium/issues/87
+    echo 'export DBUS_SESSION_BUS_ADDRESS=/dev/null' >> $CIRCLECI_HOME/.circlerc
 }

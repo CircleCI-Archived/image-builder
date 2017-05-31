@@ -25,3 +25,7 @@ test_cabal_version () {
 test_cabal_parallel_build_disabled () {
     grep -- '-- jobs:$ncpus' .cabal/config
 }
+
+test_stack_works () {
+    stack --version
+}
