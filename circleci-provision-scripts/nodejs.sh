@@ -6,11 +6,7 @@ function install_nodejs() {
 }
 
 function install_yarn() {
-    local version=$1
-
-    (cat <<EOF
-source ~/.circlerc
-curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $version
-EOF
-    ) | as_user version=$version bash
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt-get update && sudo apt-get install yarn
 }
