@@ -179,11 +179,14 @@ You must configure CircleCI Enterprise builders to point to the container
 image.  You can do so, by passing additional environment variable in your
 launch configuration: `CIRCLE_CONTAINER_IMAGE_URI`.
 
-Currently, builders can only support public http or S3 uris (e.g.
+
+### Docker-based build containers
+If you are using the [Single-Box install](https://circleci.com/docs/enterprise/single-box/) or a [clustered install using Docker](https://circleci.com/docs/enterprise/docker-install/), then you can simply set the `CIRCLE_CONTAINER_IMAGE_URI` env var as documented [here](https://circleci.com/docs/enterprise/docker-builder-config/) to e.g. `docker://my-hub-account/my-image:my-tag` after pushing to public Docker Hub. (You can also use any other registry accessable to your docker daemon.)
+
+### LXC-based build containers
+If you are using LXC-based builders, you will need to follow these instructions to export the container image to an LXC format and expose it via an http or S3 uri (e.g.
 `https://example.com/container_0.0.1.tar.gz` or
-`s3://example/container_0.0.1.tar.gz`.  Future releases will support docker
-URIs (e.g. `docker://acme-org/circleci-test-image:0.0.1`).  For the timebeing,
-we suggest exporting the container and uploading it to S3.
+`s3://example/container_0.0.1.tar.gz`).
 
 Assuming you have the official aws-cli client, you can export the container and
 upload it to a bucket of your choice.  Ideally, it's located in the same region
