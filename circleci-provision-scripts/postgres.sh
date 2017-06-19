@@ -34,8 +34,20 @@ function install_postgres_ext_postgis() {
     disable_96
 }
 
+# symlinks the actual postgres directory to the directory where we keep our postgres installs
+# this is similar to the nginx sites-available/sites-enabled construct
+function enable_postgres_version() {
+    ln -s /usr/lib/postgresql-versions/$1 /usr/lib/postgresql/$1
+    ln -s /etc/postgresql-versions/$1 /etc/postgresql/$1
+}
+
+# we move all of our postgres installs to a separate directory so they can be intentionally enabled individually
 function install_postgres() {
+    mkdir /usr/lib/postgresql-versions
+    mkdir /etc/postgresql-versions
     for POSTGRES_VERSION in ${POSTGRES_VERSIONS[@]}; do
+        mkdir /usr/lib/postgresql-versions/$POSTGRES_VERSION
+        mkdir /etc/postgresql-versions/$POSTGRES_VERSION
         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
         echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
@@ -89,5 +101,7 @@ EOF
 
         # Allow password-less sudo to postgres user
         echo "${CIRCLECI_USER} ALL=(postgres) NOPASSWD:ALL" > /etc/sudoers.d/10-postgres
+        mv /usr/lib/postgresql/$POSTGRES_VERSION /usr/lib/postgresql-versions/$POSTGRES_VERSION
+        mv /etc/postgresql/$POSTGRES_VERSION /etc/postgresql-versions/$POSTGRES_VERSION
     done
 }
