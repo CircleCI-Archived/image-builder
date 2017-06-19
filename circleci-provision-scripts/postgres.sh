@@ -29,8 +29,6 @@ function install_postgres_ext_postgis() {
     export FILE=geos-${VERSION}.tar.bz2
     export DIR=geos-${VERSION}
     export URL=http://download.osgeo.org/geos/${FILE}
-
-    disable_96
 }
 
 # symlinks the actual postgres directory to the directory where we keep our postgres installs
