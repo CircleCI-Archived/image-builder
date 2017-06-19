@@ -2,7 +2,6 @@
 
 # Temporarly disable errexit to avoid a strange test error during make.
 set +o errexit
-POSTGRES_VERSIONS=(9.5 9.6)
 
 function install_postgres_ext_postgis() {
     local VERSION=3.5.0
@@ -42,10 +41,11 @@ function enable_postgres_version() {
 }
 
 # we move all of our postgres installs to a separate directory so they can be intentionally enabled individually
+# accepts arguments: DEFAULT_VERSION [OTHER_VERSION] [OTHER_VERSION...]
 function install_postgres() {
     mkdir /usr/lib/postgresql-versions
     mkdir /etc/postgresql-versions
-    for POSTGRES_VERSION in ${POSTGRES_VERSIONS[@]}; do
+    for POSTGRES_VERSION in $@; do
         mkdir /usr/lib/postgresql-versions/$POSTGRES_VERSION
         mkdir /etc/postgresql-versions/$POSTGRES_VERSION
         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
@@ -104,4 +104,5 @@ EOF
         mv /usr/lib/postgresql/$POSTGRES_VERSION /usr/lib/postgresql-versions/$POSTGRES_VERSION
         mv /etc/postgresql/$POSTGRES_VERSION /etc/postgresql-versions/$POSTGRES_VERSION
     done
+    enable_postgres_version $1
 }
