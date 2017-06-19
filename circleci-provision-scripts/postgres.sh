@@ -96,6 +96,8 @@ EOF
         sudo -u postgres psql -c 'CREATE EXTENSION hstore;' ${CIRCLECI_USER}
         sudo -u postgres psql -c 'CREATE EXTENSION hstore;' circle_test
 
+        # stop the service so we assign all pg installs to port 5432
+        sudo service postgresql stop
 
         # Allow password-less sudo to postgres user
         echo "${CIRCLECI_USER} ALL=(postgres) NOPASSWD:ALL" > /etc/sudoers.d/10-postgres
