@@ -39,7 +39,7 @@ sudo -H -i -u ${CIRCLECI_USER} pyenv global 2.7.12
 circleci-install nodejs 6.1.0
 sudo -H -i -u ${CIRCLECI_USER} nvm alias default 6.1.0
 
-circleci-install golang 1.7.3
+circleci-install golang 1.8.3
 
 circleci-install ruby 2.3.1
 sudo -H -i -u ${CIRCLECI_USER} rvm use 2.3.1 --default
