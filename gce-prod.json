@@ -4,11 +4,11 @@
             "type": "googlecompute",
 	    "account_file": "./prod-credentials.json",
             "project_id": "circleci-picard-mahmood",
-            "source_image": "ubuntu-1404-trusty-v20161213",
+            "source_image": "ubuntu-1404-trusty-v20170619",
             "zone": "us-east1-c",
 	    "image_name": "ubuntu-1404-circleci-image-{{timestamp}}",
 	    "ssh_username": "circleci",
-            "disk_size": 100
+            "disk_size": 20
         }
     ],
     "provisioners" : [

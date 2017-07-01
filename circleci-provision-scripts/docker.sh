@@ -33,10 +33,10 @@ function install_circleci_docker() {
 function install_docker_compose() {
     echo '>>>> Installing Docker compose'
 
-    VERSION=1.9.0
-    CHECKSUM=eeca988428d29534fecdff2768fa2e8c293b812b1c77da8ab5daf7f441c92e5b
+    VERSION=1.14.0
+    CHECKSUM=54a6e8550da5579b6a0b95774b3159fe9588bb538e9d858e5caf6e8e70bd3348
 
-    curl -L -o /tmp/docker-compose https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-Linux-x86_64
+    curl -sSfL -o /tmp/docker-compose https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-Linux-x86_64
     echo "$CHECKSUM /tmp/docker-compose" | sha256sum -c
     chmod +x /tmp/docker-compose
     sudo mv /tmp/docker-compose /usr/local/bin/docker-compose
