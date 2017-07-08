@@ -4,11 +4,11 @@
             "type": "googlecompute",
 	    "account_file": "./prod-credentials.json",
             "project_id": "circleci-picard-mahmood",
-            "source_image": "ubuntu-1404-trusty-v20170619",
+            "source_image": "ubuntu-1404-trusty-v20170703",
             "zone": "us-east1-c",
-	    "image_name": "ubuntu-1404-circleci-image-{{timestamp}}",
+	    "image_name": "ubuntu-1404-trusty-{{timestamp}}",
 	    "ssh_username": "circleci",
-            "disk_size": 20
+            "disk_size": 50
         }
     ],
     "provisioners" : [
@@ -30,6 +30,8 @@
                 "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh' &&  echo done",
 
                 "sudo apt-get purge sshguard",
+                "sudo sed -i -e '/APT::Periodic::Update-Package-Lists/g' /etc/apt/apt.conf.d/10periodic",
+                "echo 'APT::Periodic::Unattended-Upgrade \"0\";' | sudo tee -a /etc/apt/apt.conf.d/10periodic",
                 "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
                 "echo after done",
 	        "exit 0"
