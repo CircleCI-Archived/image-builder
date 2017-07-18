@@ -111,21 +111,21 @@ jobs:
 
       - run: docker rm --force $TARGET-test || true
 
-      #- run:
-      #    command: |
-      #      docker run -d -v /home/circleci/image-builder/tests:/home/ubuntu/tests \
-      #                 -p 12345:22 --name $TARGET-test \
-      #                 $IMAGE_REPO:$(cat _tag)
+      - run:
+          command: |
+            docker run -d -v /home/circleci/image-builder/tests:/home/ubuntu/tests \
+                       -p 12345:22 --name $TARGET-test \
+                       $IMAGE_REPO:$(cat _tag)
 
-      #      sleep 10
+            sleep 10
 
-      #- run: docker cp tests/insecure-ssh-key.pub $TARGET-test:/home/ubuntu/.ssh/authorized_keys
+      - run: docker cp tests/insecure-ssh-key.pub $TARGET-test:/home/ubuntu/.ssh/authorized_keys
 
-      #- run: docker exec -it $TARGET-test bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
+      - run: docker exec -it $TARGET-test bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
 
-      #- run: chmod 600 tests/insecure-ssh-key;
+      - run: chmod 600 tests/insecure-ssh-key;
 
-      #- run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
+      - run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
 
       - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
