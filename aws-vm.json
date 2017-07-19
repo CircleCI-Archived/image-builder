@@ -1,0 +1,42 @@
+{
+    "builders" : [
+        {
+            "type": "amazon-ebs",
+            "access_key": "",
+            "secret_key": "",
+            "region": "us-west-1",
+            "source_ami": "ami-89f3dee9",
+            "instance_type": "t2.medium",
+	        "ami_name": "ubuntu-1404-circle-vm-image-{{timestamp}}",
+            "ssh_username": "circleci",
+            "user_data_file": "aws_user_data",
+            "ami_regions": [],
+            "ami_groups": "all"
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "inline" : [
+                "sleep 30",
+	        "mkdir -p /tmp/circleci-provisioner"
+	    ]
+        },
+        {
+            "type": "file",
+            "source": "./",
+            "destination": "/tmp/circleci-provisioner"
+        },
+        {
+            "type" : "shell",
+            "inline" : [
+                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh' &&  echo done",
+
+                "sudo apt-get purge sshguard",
+                "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
+                "echo after done",
+	        "exit 0"
+	    ]
+        }
+    ]
+}
