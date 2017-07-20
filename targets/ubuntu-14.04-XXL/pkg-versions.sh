@@ -162,8 +162,7 @@ cat<<EOF
       "google-extra": [
         $(ls $ANDROID_HOME/extras/google | quotify | commatize | trailing_last_comma)
       ]
-    },
-	"yarn": "$(yarn --version)"
+    }
   },
   "all": {
     $(dpkg -l | grep -e '^ii' | awk '{printf "\"%s\": \"%s\",\n", $2,$3}' | trailing_last_comma)

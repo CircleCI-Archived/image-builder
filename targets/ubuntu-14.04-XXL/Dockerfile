@@ -68,8 +68,8 @@ RUN circleci-install python 3.4.4
 RUN circleci-install python 3.5.1
 RUN circleci-install python 3.5.2
 RUN circleci-install python 3.5.3
-RUN circleci-install python 3.6.0
 RUN circleci-install python 3.6.1
+RUN circleci-install python 3.6.2
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1
@@ -91,11 +91,13 @@ RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
 RUN circleci-install nodejs 6.1.0
+RUN circleci-install nodejs 8.1.4
+RUN circleci-install nodejs 8.2.0
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
 RUN circleci-install yarn 0.27.5
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.8.1
+RUN circleci-install golang 1.8.3
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.1.8
@@ -119,8 +121,10 @@ RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
 RUN circleci-install php 7.0.11
 RUN circleci-install php 7.0.17
+RUN circleci-install php 7.0.20
 RUN circleci-install php 7.1.0
 RUN circleci-install php 7.1.3
+RUN circleci-install php 7.1.6
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
