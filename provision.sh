@@ -8,28 +8,16 @@ cp circleci-install /usr/local/bin/circleci-install
 cp -r circleci-provision-scripts /opt/circleci-provision-scripts
 circleci-install base_requirements && circleci-install circleci_specific
 
-# Databases
-for package in mysql_57 mongo postgres; do circleci-install $package; done
-
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 circleci-install java oraclejdk8 && circleci-install java openjdk8
 
-for package in sysadmin devtools jq redis memcached rabbitmq ; do circleci-install $package; done
-
-# Dislabe services by default
-for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb mysql postgresql; do sysv-rc-conf $s off; done
-echo manual | tee /etc/init/mongod.override
+for package in sysadmin devtools jq; do circleci-install $package; done
 
 # Browsers
 circleci-install firefox && circleci-install chrome && circleci-install phantomjs
 
 # Install deployment tools
 for package in awscli gcloud heroku; do circleci-install $package; done
-
-# Languages
-export use_precompile=true
-export USE_PRECOMPILE=$use_precompile
-export RUN_APT_UPDATE=true
 
 curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 circleci-install python 2.7.12
