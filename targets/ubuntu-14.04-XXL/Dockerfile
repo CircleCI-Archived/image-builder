@@ -119,8 +119,10 @@ RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
 RUN circleci-install php 7.0.11
 RUN circleci-install php 7.0.17
+RUN circleci-install php 7.0.20
 RUN circleci-install php 7.1.0
 RUN circleci-install php 7.1.3
+RUN circleci-install php 7.1.6
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh
