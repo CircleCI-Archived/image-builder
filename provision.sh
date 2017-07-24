@@ -22,15 +22,15 @@ for package in awscli gcloud heroku; do circleci-install $package; done
 curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 circleci-install python 2.7.12
 circleci-install python 3.5.2
-sudo -H -i -u ${CIRCLECI_USER} pyenv global 2.7.12
+sudo -H -i -u ${CIRCLECI_USER} /bin/bash -l -c 'pyenv global 2.7.12'
 
 circleci-install nodejs 6.1.0
-sudo -H -i -u ${CIRCLECI_USER} nvm alias default 6.1.0
+sudo -H -i -u ${CIRCLECI_USER} /bin/bash -l -c 'nvm alias default 6.1.0'
 
 circleci-install golang 1.8.3
 
 circleci-install ruby 2.3.1
-sudo -H -i -u ${CIRCLECI_USER} rvm use 2.3.1 --default
+sudo -H -i -u ${CIRCLECI_USER} /bin/bash -l -c 'rvm use 2.3.1 --default'
 
 circleci-install clojure
 
