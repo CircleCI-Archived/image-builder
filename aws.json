@@ -1,0 +1,48 @@
+{
+  "builders": [
+        {
+            "name": "machine-aws",
+            "type": "amazon-ebs",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "region": "us-east-1",
+            "source_ami": "ami-012f3917",
+            "instance_type": "r3.2xlarge",
+            "ssh_username": "ubuntu",
+            "ami_name": "CCIE Machine Image {{ timestamp }}"
+        }
+  ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "inline" : [
+                "sleep 30",
+	        "mkdir -p /tmp/circleci-provisioner"
+	    ]
+        },
+        {
+            "type": "file",
+            "source": "./",
+            "destination": "/tmp/circleci-provisioner"
+        },
+        {
+            "type" : "shell",
+            "inline" : [
+                "sudo useradd -m circleci",
+                "echo 'circleci ALL=(ALL:ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers",
+
+                "sudo useradd -m circleci-admin",
+                "echo 'circleci-admin ALL=(ALL:ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers",
+
+                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh' &&  echo done",
+
+                "sudo apt-get purge sshguard || true",
+                "sudo sed -i -e '/APT::Periodic::Update-Package-Lists/g' /etc/apt/apt.conf.d/10periodic",
+                "echo 'APT::Periodic::Unattended-Upgrade \"0\";' | sudo tee -a /etc/apt/apt.conf.d/10periodic",
+                "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
+                "echo after done",
+	        "exit 0"
+	    ]
+        }
+    ]
+}
