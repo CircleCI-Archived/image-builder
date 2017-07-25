@@ -91,6 +91,8 @@ RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
 RUN circleci-install nodejs 6.1.0
+RUN circleci-install nodejs 8.1.4
+RUN circleci-install nodejs 8.2.0
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
 RUN circleci-install yarn 0.27.5
 
