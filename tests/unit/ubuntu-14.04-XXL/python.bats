@@ -67,12 +67,12 @@ load ../bats-assert/load
     test_python 3.5.3
 }
 
-@test "python: 3.6.0 works" {
-    test_python 3.6.0
-}
-
 @test "python: 3.6.1 works" {
     test_python 3.6.1
+}
+
+@test "python: 3.6.2 works" {
+    test_python 3.6.2
 }
 
 @test "python: pypy-1.9 works" {

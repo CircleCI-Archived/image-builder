@@ -75,6 +75,14 @@ load ../bats-assert/load
     test_nodejs 6.1.0
 }
 
+@test "nodejs: 8.1.4 works" {
+    test_nodejs 8.1.4
+}
+
+@test "nodejs: 8.2.0 works" {
+    test_nodejs 8.2.0
+}
+
 @test "nodejs: yarn 0.27.5 is installed" {
     test_yarn_version 0.27.5
 }
