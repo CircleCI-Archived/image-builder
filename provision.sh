@@ -51,6 +51,10 @@ circleci-install scala
 # Docker have be last - to utilize cache better
 circleci-install docker && circleci-install docker_compose
 
+circleci-install socat
+
+circleci-install nsenter
+
 # For some reason dpkg might start throwing errors after VM creation
 # auto correction allows to avoid
 sudo dpkg --configure -a
