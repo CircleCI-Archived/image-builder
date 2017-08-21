@@ -3,10 +3,10 @@
 function install_docker() {
     echo '>>>> Installing Docker'
 
-    # Pin Docker version to 10.x since 11 brings breaking changes
-    echo "deb [arch=amd64] https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+    echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
     apt-get update
-    apt-get install docker-engine=1.10.3-0~trusty
+    apt-get install docker-ce
 
     # Devicemapper files are huge if got created - we don't use device mapper anyway
     rm -rf /var/lib/docker/devicemapper/devicemapper/data
@@ -49,6 +49,6 @@ function install_circleci_docker() {
 function install_docker_compose() {
     echo '>>>> Installing Docker compose'
 
-    curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
 }
