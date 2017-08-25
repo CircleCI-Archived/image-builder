@@ -1,8 +1,7 @@
 version: 2
 jobs:
   build:
-    machine:
-      reusable: true
+    machine: true
     working_directory: /home/circleci/image-builder
     steps:
       - checkout
