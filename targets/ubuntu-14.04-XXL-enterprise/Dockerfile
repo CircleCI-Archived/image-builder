@@ -127,6 +127,29 @@ RUN circleci-install ghc 8.0.1
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
 
+RUN echo '>>>> Installing Docker'
+
+RUN echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN apt-get update
+RUN apt-get install docker-ce
+
+# Devicemapper files are huge if got created - we don't use device mapper anyway
+RUN rm -rf /var/lib/docker/devicemapper/devicemapper/data
+RUN rm -rf /var/lib/docker/devicemapper/devicemapper/metadata
+
+# CirclecI Docker customizations
+RUN sed -i 's|^limit|#limit|g' /etc/init/docker.conf
+RUN usermod -a -G docker ubuntu
+
+# Docker will be running inside a container (lxc or privileged docker)
+# Internally, docker checks container env-var to condition some apparmor profile activities that don't work within lxc
+RUN echo 'env container=yes' >> /etc/init/docker.conf
+
+RUN echo '>>>> Installing Docker compose'
+
+RUN curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+
 # Undivert upstart
 # You shouldn't change the line unless you understad the consequence
 RUN rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl
