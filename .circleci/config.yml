@@ -5,7 +5,9 @@ jobs:
       reusable: true
     working_directory: /home/circleci/image-builder
     steps:
+      - checkout
       - run: echo doing nothing.
+      - run: sleep 90
 
   ###########################
   #### ubuntu-14.04-XXL #####
