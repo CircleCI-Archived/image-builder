@@ -83,8 +83,8 @@ load ../bats-assert/load
     test_nodejs 8.2.0
 }
 
-@test "nodejs: yarn 0.27.5 is installed" {
-    test_yarn_version 0.27.5
+@test "nodejs: yarn 1.1.0 is installed" {
+    test_yarn_version 1.1.0
 }
 
 # We are not testing the behavior of nvm here...
