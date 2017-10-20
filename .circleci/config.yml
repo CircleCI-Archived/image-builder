@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: kimh/picard-trusty:5740
+      - image: busybox
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
