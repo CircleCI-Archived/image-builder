@@ -1,8 +1,8 @@
 version: 2
 jobs:
   build:
-    machine:
-      reusable: true
+   docker:
+      - image: kimh/picard-trusty:5740
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
