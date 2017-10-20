@@ -85,7 +85,7 @@ function install_sdk(){
 
     mkdir -p $TMP_SDK
     sudo apt-get install -y openjdk-7-jdk lib32stdc++6 lib32z1
-    curl -L -o $TMP_SDK/$FILE https://dl.google.com/android/$FILE
+    curl -k -L -o $TMP_SDK/$FILE https://dl.google.com/android/$FILE
     tar --no-same-owner -zxf $TMP_SDK/$FILE -C /usr/local
     echo 'export PATH=/usr/local/android-sdk-linux/tools:$PATH' >> ${CIRCLECI_HOME}/.circlerc
     echo 'export PATH=/usr/local/android-sdk-linux/platform-tools:$PATH' >> ${CIRCLECI_HOME}/.circlerc
