@@ -48,6 +48,8 @@ function install_mysql_56() {
 }
 
 function install_mysql_57() {
+    apt-key adv --keyserver pgp.mit.edu --recv-keys A4A9406876FCBD3C456770C88C718D3B5072E1F5
+
     curl -LO http://dev.mysql.com/get/mysql-apt-config_0.6.0-1_all.deb
 
     {
