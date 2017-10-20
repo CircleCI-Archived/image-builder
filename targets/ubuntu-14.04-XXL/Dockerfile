@@ -91,6 +91,7 @@ RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
 RUN circleci-install nodejs 6.1.0
+RUN circleci-install nodejs 6.11.4
 RUN circleci-install nodejs 8.1.4
 RUN circleci-install nodejs 8.2.0
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
@@ -104,10 +105,10 @@ RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.1.9
 RUN circleci-install ruby 2.2.6
 RUN circleci-install ruby 2.2.7
-RUN circleci-install ruby 2.3.3
 RUN circleci-install ruby 2.3.4
-RUN circleci-install ruby 2.4.0
+RUN circleci-install ruby 2.3.5
 RUN circleci-install ruby 2.4.1
+RUN circleci-install ruby 2.4.2
 RUN sudo -H -i -u ubuntu rvm use 2.2.6 --default
 
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
@@ -117,14 +118,14 @@ RUN circleci-install php 5.5.36
 RUN circleci-install php 5.6.17
 RUN circleci-install php 5.6.18
 RUN circleci-install php 5.6.22
-RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
 RUN circleci-install php 7.0.11
 RUN circleci-install php 7.0.17
 RUN circleci-install php 7.0.20
-RUN circleci-install php 7.1.0
+RUN circleci-install php 7.0.24
 RUN circleci-install php 7.1.3
 RUN circleci-install php 7.1.6
+RUN circleci-install php 7.1.9
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh

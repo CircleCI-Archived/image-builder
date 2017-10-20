@@ -75,6 +75,10 @@ load ../bats-assert/load
     test_nodejs 6.1.0
 }
 
+@test "nodejs: 6.11.4 works" {
+    test_nodejs 6.11.4
+}
+
 @test "nodejs: 8.1.4 works" {
     test_nodejs 8.1.4
 }
