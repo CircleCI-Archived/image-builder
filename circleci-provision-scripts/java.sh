@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function set_default_version() {
+    # Set jdk1.8.0 to the default version
+    update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"
+    update-alternatives --set  "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac"
+    update-alternatives --set  "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws"
+    update-alternatives --set  "javadoc" "/usr/lib/jvm/jdk1.8.0/bin/javadoc"
+}
+
 function _install_oraclejdk() {
     local VERSION=$1
     local RELEASE=$2
@@ -38,12 +46,19 @@ function install_oraclejdk8() {
     echo '>>> Installing Oracle Java 8'
 
     _install_oraclejdk 8 102
+    set_default_version
+}
 
-    # Set jdk1.8.0 to the default version
-    update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"
-    update-alternatives --set  "javac" "/usr/lib/jvm/jdk1.8.0/bin/javac"
-    update-alternatives --set  "javaws" "/usr/lib/jvm/jdk1.8.0/bin/javaws"
-    update-alternatives --set  "javadoc" "/usr/lib/jvm/jdk1.8.0/bin/javadoc"
+function install_oraclejdk9() {
+    echo '>>> Installing Oracle Java 9'
+
+    add-apt-repository --yes ppa:webupd8team/java
+    apt-get update
+
+    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+    apt-get install oracle-java9-installer
+
+    set_default_version
 }
 
 function _install_openjdk() {

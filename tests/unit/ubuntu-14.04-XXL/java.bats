@@ -14,6 +14,10 @@ load ../test_helper_java
     java_test_oraclejdk8
 }
 
+@test "java: oraclejdk9 works" {
+    java_test_oraclejdk9
+}
+
 @test "java: openjdk7 works" {
     java_test_openjdk7
 }
