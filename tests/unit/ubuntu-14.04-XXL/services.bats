@@ -108,11 +108,9 @@ create_postgis_extention () {
 }
 
 @test "memcached works" {
-    wait_time=0
-    until sudo service memcached start || [ $wait_time -eq 5 ]; do
-      sleep $(( wait_time++ ))
-      echo "failed to start memcached. retrying..."
-    done
+    sudo service memcached start
+
+    sleep 5 # memcached is slow to start
 
     run bash -c "echo stats | nc localhost 11211"
 
