@@ -1,31 +1,5 @@
 #!/bin/bash
 
-function update_curl50() {
-    local build_dir=/tmp/curl
-    apt-get build-dep curl
-
-    # Get latest (as of Feb 25, 2016) libcurl
-    mkdir $build_dir
-    cd $build_dir
-    wget http://curl.haxx.se/download/curl-7.50.2.tar.bz2
-    tar -xvjf curl-7.50.2.tar.bz2
-    cd curl-7.50.2
-
-    # The usual steps for building an app from source
-    # ./configure
-    # ./make
-    # sudo make install
-    ./configure
-    make
-    make install
-
-    # Resolve any issues of C-level lib
-    # location caches ("shared library cache")
-    ldconfig
-
-    rm -rf $build_dir
-}
-
 function install_base_requirements() {
     echo "Setting Timezone & Locale to Etc/UTC & C.UTF-8"
 
@@ -102,9 +76,6 @@ unzip
 zip
 EOS
 )
-
-    # Update to the version where recent (as of Oct 2017) vulnerabilities were fixed
-    update_curl50
 
     # For tests
     git clone https://github.com/sstephenson/bats.git && cd bats && ./install.sh /usr/local

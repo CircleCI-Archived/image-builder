@@ -141,6 +141,9 @@ RUN circleci-install stack
 ADD circleci-provision-scripts/git-lfs.sh /opt/circleci-provision-scripts/git-lfs.sh
 RUN circleci-install git-lfs 1.5.4
 
+ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
+RUN circleci-install curl_7_50
+
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
 RUN circleci-install docker && circleci-install docker_compose
