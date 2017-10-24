@@ -12,7 +12,9 @@ RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
 
 ADD circleci-install /usr/local/bin/circleci-install
 ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
+ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
 RUN circleci-install base_requirements && circleci-install circleci_specific
+RUN circleci-install curl_7_50
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
@@ -140,9 +142,6 @@ RUN circleci-install stack
 
 ADD circleci-provision-scripts/git-lfs.sh /opt/circleci-provision-scripts/git-lfs.sh
 RUN circleci-install git-lfs 1.5.4
-
-ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
-RUN circleci-install curl_7_50
 
 # Docker have be last - to utilize cache better
 ADD circleci-provision-scripts/docker.sh /opt/circleci-provision-scripts/docker.sh
