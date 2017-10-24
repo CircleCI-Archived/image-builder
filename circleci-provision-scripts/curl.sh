@@ -1,4 +1,3 @@
-# Update to the version where recent (as of Oct 2017) vulnerabilities were fixed
 function install_curl_7_50() {
     local build_dir=/tmp/curl
     apt-get build-dep curl

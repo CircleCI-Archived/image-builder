@@ -12,9 +12,7 @@ RUN echo 'exit 101' > /usr/sbin/policy-rc.d \
 
 ADD circleci-install /usr/local/bin/circleci-install
 ADD circleci-provision-scripts/base.sh circleci-provision-scripts/circleci-specific.sh /opt/circleci-provision-scripts/
-ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
 RUN circleci-install base_requirements && circleci-install circleci_specific
-RUN circleci-install curl_7_50
 
 # Installing java early beacuse a few things have the dependency to java (i.g. cassandra)
 ADD circleci-provision-scripts/java.sh /opt/circleci-provision-scripts/java.sh
@@ -50,6 +48,10 @@ RUN circleci-install qt
 # Install deployment tools
 ADD circleci-provision-scripts/awscli.sh circleci-provision-scripts/gcloud.sh circleci-provision-scripts/heroku.sh /opt/circleci-provision-scripts/
 RUN for package in awscli gcloud heroku; do circleci-install $package; done
+
+# Update to the version where recent (as of Oct 2017) vulnerabilities were fixed
+ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
+RUN circleci-install curl_7_50
 
 # Languages
 ARG use_precompile=true
