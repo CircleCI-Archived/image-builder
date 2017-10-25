@@ -2,7 +2,6 @@
 
 function install_nvm() {
     echo '>>> Installing NodeJS NVM'
-
     apt-get install build-essential libssl-dev make python g++ curl libssl-dev
 
     echo 'Install NVM'
