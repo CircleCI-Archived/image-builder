@@ -1,4 +1,4 @@
-function install_curl_7_50() {
+function install_curl_7_56() {
     local build_dir=/tmp/curl
     apt-get install libssl-dev # Needed for ssl support for curl
     apt-get build-dep curl
@@ -6,9 +6,9 @@ function install_curl_7_50() {
     # Get latest (as of Feb 25, 2016) libcurl
     mkdir $build_dir
     cd $build_dir
-    wget http://curl.haxx.se/download/curl-7.50.2.tar.bz2
-    tar -xvjf curl-7.50.2.tar.bz2
-    cd curl-7.50.2
+    wget http://curl.haxx.se/download/curl-7.56.1.tar.bz2
+    tar -xvjf curl-7.56.1.tar.bz2
+    cd curl-7.56.1
 
     # The usual steps for building an app from source
     # ./configure
