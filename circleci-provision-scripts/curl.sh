@@ -1,5 +1,6 @@
 function install_curl_7_50() {
     local build_dir=/tmp/curl
+    apt-get install libssl-dev # Needed for ssl support for curl
     apt-get build-dep curl
 
     # Get latest (as of Feb 25, 2016) libcurl
