@@ -12,4 +12,8 @@ function install_heroku() {
 heroku --version
 EOF
     ) | as_user bash
+
+    if [ -e /home/ubuntu/.config ]; then
+        chown -R ubuntu /home/ubuntu/.config
+    fi
 }

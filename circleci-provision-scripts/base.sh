@@ -57,6 +57,8 @@ bsdtar
 build-essential
 cmake
 curl
+ca-certificates
+libssl1.0.0
 dpkg-repack
 gfortran
 git

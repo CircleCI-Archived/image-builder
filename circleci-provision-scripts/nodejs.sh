@@ -2,7 +2,6 @@
 
 function install_nvm() {
     echo '>>> Installing NodeJS NVM'
-
     apt-get install build-essential libssl-dev make python g++ curl libssl-dev
 
     echo 'Install NVM'
@@ -46,6 +45,10 @@ source ~/.circlerc
 curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $version
 EOF
     ) | as_user version=$version bash
+
+    if [ -e /home/ubuntu/.config ]; then
+        chown -R ubuntu /home/ubuntu/.config
+    fi
 }
 
 function install_nodejs_version_nvm() {
