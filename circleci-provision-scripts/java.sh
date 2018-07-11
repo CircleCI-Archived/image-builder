@@ -39,7 +39,7 @@ function _install_oraclejdk() {
 function install_oraclejdk7() {
     echo '>>> Installing Oracle Java 7'
 
-    _install_oraclejdk 7 80
+    _install_oraclejdk 7 181
 }
 
 function install_oraclejdk8() {
