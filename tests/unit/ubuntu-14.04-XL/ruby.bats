@@ -36,3 +36,7 @@ load ../test_helper_ruby
 @test "ruby: 2.3.1 works" {
     test_ruby 2.3.1
 }
+
+@test "ruby: 2.3.7 works" {
+    test_ruby 2.3.7
+}
