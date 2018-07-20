@@ -31,7 +31,7 @@ Host *
 EOF
 
     # Some optimizations for the sshd daemon
-    sed -i 's/PasswordAuthentication yes/PasswordAuthoentication no/g' /etc/ssh/sshd_config
+    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 
     cat <<'EOF' >> /etc/ssh/sshd_config
 UseDns no
