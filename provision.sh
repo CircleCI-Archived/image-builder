@@ -1,6 +1,7 @@
 #!/bin/bash
 export VERBOSE=true
 export CIRCLECI_USER=circleci
+DOCKER_VERSION_TO_INSTALL=$1
 
 set -ex
 
@@ -49,7 +50,7 @@ circleci-install clojure
 circleci-install scala
 
 # Docker have be last - to utilize cache better
-circleci-install docker && circleci-install docker_compose
+circleci-install docker ${DOCKER_VERSION_TO_INSTALL} && circleci-install docker_compose
 
 circleci-install socat
 
