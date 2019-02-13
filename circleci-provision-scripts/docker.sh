@@ -1,9 +1,19 @@
 #!/bin/bash
 
 function install_docker() {
-    echo '>>>> Installing Docker'
+    local SPECIFIED_DOCKER_VERSION=$1
+    if [ -n "$SPECIFIED_DOCKER_VERSION" ]; then
+        echo ">>>> Installing specific Docker version $SPECIFIED_DOCKER_VERSION"
+        sudo apt-get -y install gnupg-agent
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        sudo apt-get -y update
+        sudo apt-get -y install docker-ce=$SPECIFIED_DOCKER_VERSION
+    else
+        echo '>>>> Installing latest version of Docker'
+        curl https://get.docker.com/ | sh
+    fi
 
-    curl https://get.docker.com/ | sh
     useradd -m -s /bin/bash circleci
     sudo usermod -aG docker circleci
 }
