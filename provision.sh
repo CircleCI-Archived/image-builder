@@ -34,7 +34,7 @@ export RUN_APT_UPDATE=true
 
 curl -s https://packagecloud.io/install/repositories/circleci/trusty/script.deb.sh | sudo bash
 circleci-install python 2.7.12
-circleci-install python 3.5.2
+circleci-install python 3.6.2
 sudo -H -i -u ${CIRCLECI_USER} pyenv global 2.7.12
 
 circleci-install nodejs 6.1.0
