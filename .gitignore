@@ -1,3 +1,5 @@
 provision.sh
 .vagrant
 bats.log
+.DS_Store
+thumbs.db
