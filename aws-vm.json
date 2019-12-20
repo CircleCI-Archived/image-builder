@@ -40,8 +40,7 @@
         {
             "type" : "shell",
             "inline" : [
-                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh {{user `docker_version_to_install`}}' &&  echo done",
-
+                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh' &&  echo done",
                 "sudo apt-get purge sshguard",
                 "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
                 "echo after done",
