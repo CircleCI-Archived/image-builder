@@ -1,4 +1,5 @@
 {
+    "_comment": "PASSING AWS CREDENTIALS -> https://www.packer.io/docs/builders/amazon.html#specifying-amazon-credentials",
     "variables": {
         "AWS_REGION": "",
         "INSTANCE_TYPE": ""
