@@ -5,12 +5,15 @@
     "builders" : [
         {
             "type": "amazon-ebs",
-            "access_key": "",
-            "secret_key": "",
-            "region": "us-west-1",
-            "source_ami": "ami-89f3dee9",
-            "instance_type": "t2.medium",
-	        "ami_name": "ubuntu-1404-circle-vm-image-{{timestamp}}",
+            "source_ami_filter": {
+                "filters": {
+                  "virtualization-type": "hvm",
+                  "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+                  "root-device-type": "ebs"
+                },
+                "owners": ["099720109477"],
+                "most_recent": true
+              },
             "ssh_username": "circleci",
             "user_data_file": "aws_user_data",
             "ami_regions": ["us-east-1","us-east-2","us-west-1","us-west-2","ca-central-1","eu-west-1","eu-central-1","eu-west-2","ap-northeast-1","ap-northeast-2","ap-southeast-1","ap-southeast-2","ap-south-1","sa-east-1"],
