@@ -27,7 +27,7 @@ create_postgis_extention () {
     # Drop extentions in case it's already created by previous test run.
     # You need to delete extentions in reverse order because of dependencies.
     for (( i=${#extentions[@]}-1 ; i>=0 ; i-- )) ; do
-	psql -c "DROP EXTENSION ${extentions[i]};" || true
+    psql -c "DROP EXTENSION ${extentions[i]};" || true
     done
 
     for ((i = 0; i < ${#extentions[@]}; i++)) ; do
@@ -109,6 +109,8 @@ create_postgis_extention () {
 
 @test "memcached works" {
     sudo service memcached start
+
+    sleep 5 # memcached is slow to start
 
     run bash -c "echo stats | nc localhost 11211"
 

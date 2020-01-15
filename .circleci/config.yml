@@ -1,8 +1,8 @@
 version: 2
 jobs:
   build:
-    machine:
-      reusable: true
+    docker:
+      - image: busybox
     working_directory: /home/circleci/image-builder
     steps:
       - run: echo doing nothing.
@@ -12,7 +12,7 @@ jobs:
   ###########################
   ubuntu-14.04-XXL:
     machine:
-      reusable: true
+      docker_layer_caching: true
     working_directory: /home/circleci/image-builder
     environment:
       IMAGE_REPO: circleci/build-image
@@ -39,7 +39,7 @@ jobs:
                        -p 12345:22 --name $TARGET-test \
                        $IMAGE_REPO:$(cat _tag)
 
-            sleep 10
+            sleep 20
 
       - run: docker cp tests/insecure-ssh-key.pub $TARGET-test:/home/ubuntu/.ssh/authorized_keys
 
@@ -90,7 +90,7 @@ jobs:
   ###########################
   ubuntu-14.04-XXL-upstart:
     machine:
-      reusable: true
+      docker_layer_caching: true
     working_directory: /home/circleci/image-builder
     environment:
       IMAGE_REPO: circleci/build-image
@@ -136,7 +136,7 @@ jobs:
   ##################################
   ubuntu-14.04-enterprise:
     machine:
-      reusable: true
+      docker_layer_caching: true
     working_directory: /home/circleci/image-builder
     environment:
       IMAGE_REPO: circleci/build-image
@@ -187,7 +187,7 @@ jobs:
   ######################################
   ubuntu-14.04-XXL-enterprise:
     machine:
-      reusable: true
+      docker_layer_caching: true
     working_directory: /home/circleci/image-builder
     environment:
       IMAGE_REPO: circleci/build-image

@@ -25,6 +25,10 @@ RUN for package in mysql_57 mongo postgres postgres_ext_postgis sqlite3_15; do c
 ADD circleci-provision-scripts/misc.sh /opt/circleci-provision-scripts/misc.sh
 RUN for package in sysadmin devtools jq redis memcached rabbitmq neo4j elasticsearch beanstalkd cassandra riak couchdb; do circleci-install $package; done
 
+# Update to the version where recent (as of Oct 2017) vulnerabilities were fixed
+ADD circleci-provision-scripts/curl.sh /opt/circleci-provision-scripts/curl.sh
+RUN circleci-install curl_7_56
+
 # Dislabe services by default
 RUN for s in apache2 memcached rabbitmq-server neo4j neo4j-service elasticsearch beanstalkd cassandra riak couchdb; do sysv-rc-conf $s off; done
 
@@ -68,8 +72,8 @@ RUN circleci-install python 3.4.4
 RUN circleci-install python 3.5.1
 RUN circleci-install python 3.5.2
 RUN circleci-install python 3.5.3
-RUN circleci-install python 3.6.0
 RUN circleci-install python 3.6.1
+RUN circleci-install python 3.6.2
 RUN circleci-install python pypy-1.9
 RUN circleci-install python pypy-2.6.1
 RUN circleci-install python pypy-4.0.1
@@ -91,21 +95,24 @@ RUN circleci-install nodejs 5.5.0
 RUN circleci-install nodejs 5.6.0
 RUN circleci-install nodejs 5.7.0
 RUN circleci-install nodejs 6.1.0
+RUN circleci-install nodejs 6.11.4
+RUN circleci-install nodejs 8.1.4
+RUN circleci-install nodejs 8.2.0
 RUN sudo -H -i -u ubuntu nvm alias default 4.2.6
-RUN circleci-install yarn 0.21.3
+RUN circleci-install yarn 1.1.0
 
 ADD circleci-provision-scripts/go.sh /opt/circleci-provision-scripts/go.sh
-RUN circleci-install golang 1.8.1
+RUN circleci-install golang 1.9.1
 
 ADD circleci-provision-scripts/ruby.sh /opt/circleci-provision-scripts/ruby.sh
 RUN circleci-install ruby 2.1.8
 RUN circleci-install ruby 2.1.9
 RUN circleci-install ruby 2.2.6
 RUN circleci-install ruby 2.2.7
-RUN circleci-install ruby 2.3.3
 RUN circleci-install ruby 2.3.4
-RUN circleci-install ruby 2.4.0
+RUN circleci-install ruby 2.3.5
 RUN circleci-install ruby 2.4.1
+RUN circleci-install ruby 2.4.2
 RUN sudo -H -i -u ubuntu rvm use 2.2.6 --default
 
 ADD circleci-provision-scripts/php.sh /opt/circleci-provision-scripts/php.sh
@@ -115,12 +122,14 @@ RUN circleci-install php 5.5.36
 RUN circleci-install php 5.6.17
 RUN circleci-install php 5.6.18
 RUN circleci-install php 5.6.22
-RUN circleci-install php 7.0.4
 RUN circleci-install php 7.0.7
 RUN circleci-install php 7.0.11
 RUN circleci-install php 7.0.17
-RUN circleci-install php 7.1.0
+RUN circleci-install php 7.0.20
+RUN circleci-install php 7.0.24
 RUN circleci-install php 7.1.3
+RUN circleci-install php 7.1.6
+RUN circleci-install php 7.1.9
 RUN sudo -H -i -u ubuntu phpenv global 5.6.17
 
 ADD circleci-provision-scripts/clojure.sh /opt/circleci-provision-scripts/clojure.sh

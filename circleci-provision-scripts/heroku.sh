@@ -3,7 +3,7 @@
 function install_heroku() {
     echo '>>> Installing heroku'
 
-    wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+    wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh  | sh
 
     chown -R $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.config
 
@@ -12,4 +12,8 @@ function install_heroku() {
 heroku --version
 EOF
     ) | as_user bash
+
+    if [ -e /home/ubuntu/.config ]; then
+        chown -R ubuntu /home/ubuntu/.config
+    fi
 }
