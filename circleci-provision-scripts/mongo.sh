@@ -8,7 +8,7 @@ function install_mongo() {
 
     # From http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
     echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/${MONGO_MAJOR} multiverse" \
         | tee /etc/apt/sources.list.d/mongodb-org-${MONGO_MAJOR}.list
     apt-get update

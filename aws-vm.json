@@ -1,45 +1,58 @@
 {
-    "variables": {
-        "docker_version_to_install": "17.06.0~ce-0~ubuntu"
+    "variables":{
+      "aws_region": "" 
     },
-    "builders" : [
-        {
-            "type": "amazon-ebs",
-            "access_key": "",
-            "secret_key": "",
-            "region": "us-west-1",
-            "source_ami": "ami-89f3dee9",
-            "instance_type": "t2.medium",
-	        "ami_name": "ubuntu-1404-circle-vm-image-{{timestamp}}",
-            "ssh_username": "circleci",
-            "user_data_file": "aws_user_data",
-            "ami_regions": ["us-east-1","us-east-2","us-west-1","us-west-2","ca-central-1","eu-west-1","eu-central-1","eu-west-2","ap-northeast-1","ap-northeast-2","ap-southeast-1","ap-southeast-2","ap-south-1","sa-east-1"],
-            "ami_groups": "all"
-        }
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "region": "{{user `aws_region`}}",
+        "source_ami_filter": {
+          "filters": {
+            "virtualization-type": "hvm",
+            "root-device-type": "ebs",
+            "name": "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"
+          },
+          "owners": [
+            "099720109477"
+          ],
+          "most_recent": true
+        },
+        "instance_type": "t3.medium",
+        "ami_name": "ubuntu-1604-vm-circleci-classic-{{timestamp}}",
+        "ssh_username": "circleci",
+        "ami_groups": "all",
+        "user_data": "#cloud-config\nsystem_info:\n  default_user:\n    name: circleci\n"
+      }
     ],
-    "provisioners" : [
-        {
-            "type" : "shell",
-            "inline" : [
-                "sleep 30",
-	        "mkdir -p /tmp/circleci-provisioner"
-	    ]
-        },
-        {
-            "type": "file",
-            "source": "./",
-            "destination": "/tmp/circleci-provisioner"
-        },
-        {
-            "type" : "shell",
-            "inline" : [
-                "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh {{user `docker_version_to_install`}}' &&  echo done",
-
-                "sudo apt-get purge sshguard",
-                "sudo rm -rf /home/circleci/.ssh/authorized_keys /tmp/circleci-provisioner",
-                "echo after done",
-	        "exit 0"
-	    ]
-        }
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline": [
+          "sleep 30",
+          "mkdir -p /tmp/circleci-provisioner"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "./",
+        "destination": "/tmp/circleci-provisioner"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "cd /tmp/circleci-provisioner && sudo su root -c './provision.sh'"
+        ]
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "set -ex",
+          "sudo apt-get purge sshguard",
+          "sudo sed -i -e '/APT::Periodic::Update-Package-Lists/g' /etc/apt/apt.conf.d/10periodic",
+          "echo 'APT::Periodic::Unattended-Upgrade \"0\";' | sudo tee -a /etc/apt/apt.conf.d/10periodic",
+          "sudo rm -rf ~/.ssh/authorized_keys /tmp/circleci-provisioner",
+          "echo yay it finished"
+        ]
+      }
     ]
-}
+  }

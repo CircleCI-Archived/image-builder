@@ -11,8 +11,4 @@ EOF
 	chown -R $CIRCLECI_USER:$CIRCLECI_USER ${CIRCLECI_HOME}/.config
 
   echo 'export PATH=/opt/google-cloud-sdk/bin:$PATH' >> ${CIRCLECI_HOME}/.circlerc
-
-  if [ -e /home/ubuntu/.config ]; then
-      chown -R ubuntu /home/ubuntu/.config
-  fi
 }

@@ -6,7 +6,7 @@ function install_rvm() {
     apt-get install libmagickwand-dev
 
     as_user gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-    curl -sSL https://get.rvm.io | as_user bash -s stable --path $CIRCLECI_PKG_DIR/.rvm
+    curl -sSL https://get.rvm.io | as_user bash -s -- --path $CIRCLECI_PKG_DIR/.rvm
 
     echo "[[ -s '$CIRCLECI_PKG_DIR/.rvm/scripts/rvm' ]] && . $CIRCLECI_PKG_DIR/.rvm/scripts/rvm # Load RVM function" | as_user tee -a ${CIRCLECI_HOME}/.circlerc
 
@@ -84,7 +84,6 @@ echo Installing Ruby version: $INSTALL_RUBY_VERSION
 source ~/.circlerc
 rvm use $INSTALL_RUBY_VERSION
 gem install rubygems-update -v "~> $GEM_VERSION" && gem update --system
-gem uninstall bundler --all
 gem install bundler -v "~> $BUNDLER_VERSION"
 EOF
     ) | as_user INSTALL_RUBY_VERSION=$INSTALL_RUBY_VERSION GEM_VERSION=$GEM_VERSION BUNDLER_VERSION=$BUNDLER_VERSION bash

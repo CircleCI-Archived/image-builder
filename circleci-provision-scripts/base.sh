@@ -57,8 +57,6 @@ bsdtar
 build-essential
 cmake
 curl
-ca-certificates
-libssl1.0.0
 dpkg-repack
 gfortran
 git
@@ -76,6 +74,12 @@ unzip
 zip
 EOS
 )
+
+    # configure ulimit
+    cat <<'EOF' > /etc/security/limits.d/01-openfiles.conf
+*               soft    nofile          65536
+*               hard    nofile          65536
+EOF
 
     # For tests
     git clone https://github.com/sstephenson/bats.git && cd bats && ./install.sh /usr/local
