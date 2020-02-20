@@ -37,7 +37,7 @@ function install_oraclejdk7() {
 function install_oraclejdk8() {
     echo '>>> Installing Oracle Java 8'
 
-    _install_oraclejdk 8 102
+    _install_oraclejdk 8 131
 
     # Set jdk1.8.0 to the default version
     update-alternatives --set  "java" "/usr/lib/jvm/jdk1.8.0/bin/java"

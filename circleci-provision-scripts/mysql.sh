@@ -64,7 +64,9 @@ function install_mysql_57() {
 	echo mysql-community-server mysql-community-server/root-pass    password ""
     } | debconf-set-selections
 
-    DEBIAN_FRONTEND=noninteractive dpkg -i mysql-apt-config_0.6.0-1_all.deb
+    sudo apt-key adv --keyserver pgp.mit.edu --recv-keys A4A9406876FCBD3C456770C88C718D3B5072E1F5
+    export DEBIAN_FRONTEND=noninteractive 
+    dpkg -i mysql-apt-config_0.6.0-1_all.deb
 
     apt-get update
 

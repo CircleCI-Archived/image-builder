@@ -35,22 +35,22 @@ load ../bats-assert/load
     assert_success
 }
 
-@test "ruby: 2.3.3 works" {
-    run test_ruby 2.3.3
-    assert_success
-}
-
 @test "ruby: 2.3.4 works" {
     run test_ruby 2.3.4
     assert_success
 }
 
-@test "ruby: 2.4.0 works" {
-    run test_ruby 2.4.0
+@test "ruby: 2.3.5 works" {
+    run test_ruby 2.3.5
     assert_success
 }
 
 @test "ruby: 2.4.1 works" {
     run test_ruby 2.4.1
+    assert_success
+}
+
+@test "ruby: 2.4.2 works" {
+    run test_ruby 2.4.2
     assert_success
 }

@@ -1,19 +1,9 @@
 #!/bin/bash
 
 function install_docker() {
-    local SPECIFIED_DOCKER_VERSION=$1
-    if [ -n "$SPECIFIED_DOCKER_VERSION" ]; then
-        echo ">>>> Installing specific Docker version $SPECIFIED_DOCKER_VERSION"
-        sudo apt-get -y install gnupg-agent
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        sudo apt-get -y update
-        sudo apt-get -y install docker-ce=$SPECIFIED_DOCKER_VERSION
-    else
-        echo '>>>> Installing latest version of Docker'
-        curl https://get.docker.com/ | sh
-    fi
+    echo '>>>> Installing Docker'
 
+    curl https://get.docker.com/ | sh
     useradd -m -s /bin/bash circleci
     sudo usermod -aG docker circleci
 }
@@ -43,11 +33,10 @@ function install_circleci_docker() {
 function install_docker_compose() {
     echo '>>>> Installing Docker compose'
 
-    VERSION=1.9.0
-    CHECKSUM=eeca988428d29534fecdff2768fa2e8c293b812b1c77da8ab5daf7f441c92e5b
+    VERSION="$1"
 
-    curl -L -o /tmp/docker-compose https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-Linux-x86_64
-    echo "$CHECKSUM /tmp/docker-compose" | sha256sum -c
+    curl -sSfL -o /tmp/docker-compose https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-Linux-x86_64
     chmod +x /tmp/docker-compose
     sudo mv /tmp/docker-compose /usr/local/bin/docker-compose
+    docker-compose version
 }

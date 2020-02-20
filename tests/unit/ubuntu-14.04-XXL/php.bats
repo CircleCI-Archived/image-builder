@@ -51,10 +51,22 @@ load ../bats-assert/load
     test_php 7.0.17
 }
 
-@test "php: 7.1.0 works" {
-    test_php 7.1.0
+@test "php: 7.0.20 works" {
+    test_php 7.0.20
+}
+
+@test "php: 7.0.24 works" {
+    test_php 7.0.24
 }
 
 @test "php: 7.1.3 works" {
     test_php 7.1.3
+}
+
+@test "php: 7.1.6 works" {
+    test_php 7.1.6
+}
+
+@test "php: 7.1.9 works" {
+    test_php 7.1.9
 }

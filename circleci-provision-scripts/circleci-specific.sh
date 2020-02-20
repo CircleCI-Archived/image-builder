@@ -50,10 +50,8 @@ EOF
     echo 'export DISPLAY=:99' >> $CIRCLECI_HOME/.circlerc
 
     # Avoid GPG signatures errors
-    gpg --keyserver pgp.mit.edu --recv-keys 749D6EEC0353B12C
-    gpg --export --armor 749D6EEC0353B12C | sudo apt-key add -
-    gpg --keyserver pgp.mit.edu --recv-keys F76221572C52609D
-    gpg --export --armor F76221572C52609D | sudo apt-key add -
+    sudo apt-key adv --keyserver pgp.mit.edu --recv-key 514A2AD631A57A16DD0047EC749D6EEC0353B12C
+    sudo apt-key adv --keyserver pgp.mit.edu --recv-key 58118E89F3A912897C070ADBF76221572C52609D
 
     # A tweak to make selenium tests stable
     # https://github.com/SeleniumHQ/docker-selenium/issues/87
