@@ -1,234 +1,40 @@
 version: 2
 jobs:
+  this_wont_work:
+    machine:
+      image: ubuntu-1604:201903-01
+    environment:
+      # some random deps
+      DEPS: "git bc python-pip python-setuptools wget sudo ssh curl binutils jq"
+    steps:
+      - run:
+          name: Initialize Builder
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends ${DEPS}
+            # Install Docker 19.03 or higher to use buildx for cross platform builds.
+            sudo apt-get remove docker docker-engine docker.io containerd runc
+            sudo apt-get install --no-install-recommends apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends docker-ce docker-ce-cli containerd.io
+            sudo apt-cache madison docker-ce
+            # Enable experimental mode for Docker CLI and Docker engine to enable buildx
+            # support. This is needed for PPC cross build natively within docker.
+            sudo mkdir -p /home/circleci/.docker
+            echo '{"experimental": true}'      | sudo tee /etc/docker/daemon.json
+            echo '{"experimental": "enabled"}' | sudo tee /home/circleci/.docker/config.json
+            sudo service docker restart
+            docker version
+      - checkout
+      - run:
+          name: Build
+          command: |
+            echo "this should not work"
+            sudo docker buildx build --platform linux/ppc64le -t my-image --no-cache .
+workflows:
+  version: 2
   build:
-    docker:
-      - image: busybox
-    working_directory: /home/circleci/image-builder
-    steps:
-      - run: echo doing nothing.
-
-  ###########################
-  #### ubuntu-14.04-XXL #####
-  ###########################
-  ubuntu-14.04-XXL:
-    machine:
-      docker_layer_caching: true
-    working_directory: /home/circleci/image-builder
-    environment:
-      IMAGE_REPO: circleci/build-image
-      TARGET: ubuntu-14.04-XXL
-      _TARGET: ubuntu-14_04-XXL
-    steps:
-      - checkout
-      - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: echo "Building $IMAGE_REPO:$(cat _tag)"
-      - run:
-          command: |
-            docker build \
-            $NO_CACHE \
-            --build-arg IMAGE_TAG=$(cat _tag) \
-            -t $IMAGE_REPO:$(cat _tag) \
-            -f targets/$TARGET/Dockerfile \
-            .
-
-      - run: docker rm --force $TARGET-test || true
-
-      - run:
-          command: |
-            docker run -d -v /home/circleci/image-builder/tests:/home/ubuntu/tests \
-                       -p 12345:22 --name $TARGET-test \
-                       $IMAGE_REPO:$(cat _tag)
-
-            sleep 20
-
-      - run: docker cp tests/insecure-ssh-key.pub $TARGET-test:/home/ubuntu/.ssh/authorized_keys
-
-      - run: docker exec -it $TARGET-test bash -c "chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys"
-
-      - run: chmod 600 tests/insecure-ssh-key;
-
-      - run: ssh -i tests/insecure-ssh-key -p 12345 ubuntu@localhost bats /home/ubuntu/tests/unit/$TARGET
-
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run: |
-           for i in 1 2 3; do
-             docker push $IMAGE_REPO:$(cat _tag)
-             if [ $? -eq 0 ]; then
-               exit 0
-             fi
-             echo "Retrying...."
-           done
-           exit 1
-
-      - run: docker run $IMAGE_REPO:$(cat _tag) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > versions-$_TARGET.json
-
-      - run: curl -o versions.json.before https://circleci.com/docs/environments/$TARGET.json
-
-      - run: diff -uw versions.json.before versions-$_TARGET.json > versions-$_TARGET.diff || true
-
-      - store_artifacts:
-          path: versions-ubuntu-14_04-XXL.diff
-          destination: versions-ubuntu-14.04-XXL.diff
-
-      - store_artifacts:
-          path: versions-ubuntu-14_04-XXL.json
-          destination: versions-ubuntu-14.04-XXL.json
-
-      - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              # Streaming to awscli because disk space is not enough in the machine VM
-              ./docker-export $IMAGE_REPO:$(cat _tag) | aws s3 cp - s3://circle-downloads/build-image-$(cat _tag).tar.gz --acl public-read
-              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images/build-image-$(cat _tag).tar.gz --acl public-read
-              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-east-2/build-image-$(cat _tag).tar.gz --acl public-read --region us-east-2
-              aws s3 cp s3://circle-downloads/build-image-$(cat _tag).tar.gz s3://lxc-images-us-west-2/build-image-$(cat _tag).tar.gz --acl public-read --region us-west-2
-            fi
-
-  ###########################
-  #### ubuntu-14.04-XXL-upstart #####
-  ###########################
-  ubuntu-14.04-XXL-upstart:
-    machine:
-      docker_layer_caching: true
-    working_directory: /home/circleci/image-builder
-    environment:
-      IMAGE_REPO: circleci/build-image
-      TARGET: ubuntu-14.04-XXL-upstart
-      _TARGET: ubuntu-14_04-XXL-upstart
-    steps:
-      - checkout
-      - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: echo "Building $IMAGE_REPO:$(cat _tag)"
-      - run:
-          command: |
-            docker build \
-            $NO_CACHE \
-            --build-arg IMAGE_TAG=$(cat _tag) \
-            -t $IMAGE_REPO:$(cat _tag) \
-            -f targets/$TARGET/Dockerfile \
-            .
-
-      - run: docker rm --force $TARGET-test || true
-
-      - run:
-          command: |
-            docker run -d -v /home/circleci/image-builder/tests:/home/ubuntu/tests \
-                       -p 12345:22 --name $TARGET-test \
-                       $IMAGE_REPO:$(cat _tag)
-
-            sleep 10
-
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run: |
-           for i in 1 2 3; do
-             docker push $IMAGE_REPO:$(cat _tag)
-             if [ $? -eq 0 ]; then
-               exit 0
-             fi
-             echo "Retrying...."
-           done
-           exit 1
-
-  ##################################
-  #### ubuntu-14.04-enterprise #####
-  ##################################
-  ubuntu-14.04-enterprise:
-    machine:
-      docker_layer_caching: true
-    working_directory: /home/circleci/image-builder
-    environment:
-      IMAGE_REPO: circleci/build-image
-      TARGET: ubuntu-14.04-enterprise
-    steps:
-      - checkout
-      - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: echo "Building $IMAGE_REPO:$(cat _tag)"
-      - run:
-          command: |
-            docker build \
-            $NO_CACHE \
-            --build-arg IMAGE_TAG=$(cat _tag) \
-            -t $IMAGE_REPO:$(cat _tag) \
-            -f targets/$TARGET/Dockerfile \
-            .
-
-      - run: docker rm --force $TARGET-test || true
-
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run: |
-           for i in 1 2 3; do
-             docker push $IMAGE_REPO:$(cat _tag)
-             if [ $? -eq 0 ]; then
-               exit 0
-             fi
-             echo "Retrying...."
-           done
-           exit 1
-
-      - run: docker run $IMAGE_REPO:$(cat _tag) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > versions-$TARGET.json
-
-      - run: curl -o versions.json.before https://circleci.com/docs/environments/$TARGET.json
-
-      - run: diff -uw versions.json.before versions-$TARGET.json > versions-$TARGET.diff || true
-
-      - store_artifacts:
-          path: versions-ubuntu-14.04-enterprise.diff
-          destination: versions-ubuntu-14.04-enterprise.diff
-
-      - store_artifacts:
-          path: versions-ubuntu-14.04-enterprise.json
-          destination: versions-ubuntu-14.04-enterprise.json
-
-  ######################################
-  #### ubuntu-14.04-XXL-enterprise #####
-  ######################################
-  ubuntu-14.04-XXL-enterprise:
-    machine:
-      docker_layer_caching: true
-    working_directory: /home/circleci/image-builder
-    environment:
-      IMAGE_REPO: circleci/build-image
-      TARGET: ubuntu-14.04-XXL-enterprise
-    steps:
-      - checkout
-      - run: echo -n "$TARGET-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)" > _tag
-      - run: echo "Building $IMAGE_REPO:$(cat _tag)"
-      - run:
-          command: |
-            docker build \
-            $NO_CACHE \
-            --build-arg IMAGE_TAG=$(cat _tag) \
-            -t $IMAGE_REPO:$(cat _tag) \
-            -f targets/$TARGET/Dockerfile \
-            .
-
-      - run: docker rm --force $TARGET-test || true
-
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run: |
-           for i in 1 2 3; do
-             docker push $IMAGE_REPO:$(cat _tag)
-             if [ $? -eq 0 ]; then
-               exit 0
-             fi
-             echo "Retrying...."
-           done
-           exit 1
-
-      - run: docker run $IMAGE_REPO:$(cat _tag) sudo -H -i -u ubuntu /opt/circleci/bin/pkg-versions.sh | jq . > versions-$TARGET.json
-
-      - run: curl -o versions.json.before https://circleci.com/docs/environments/$TARGET.json
-
-      - run: diff -uw versions.json.before versions-$TARGET.json > versions-$TARGET.diff || true
-
-      - store_artifacts:
-          path: versions-ubuntu-14.04-XXL-enterprise.diff
-          destination: versions-ubuntu-14.04-XXL-enterprise.diff
-
-      - store_artifacts:
-          path: versions-ubuntu-14.04-XXL-enterprise.json
-          destination: versions-ubuntu-14.04-XXL-enterprise.json
+    jobs:
+      - this_wont_work
