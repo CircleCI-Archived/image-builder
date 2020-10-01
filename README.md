@@ -203,3 +203,15 @@ Once uploaded, attempt to start a new builder configured with
 `CIRCLE_CONTAINER_IMAGE_URI=s3://circleci-enterprise-bucket/containers/example-image_0.0.1.tar.gz`.
 Try running new builds on it.  Once it's all good, update the AutoScalingGroup
 Launch configuration to use the environment variable as well.
+
+# Contributing to CircleCI Image Builder
+
+Thank you for your interest in contributing to the CircleCI Image Builder.
+
+We welcome all contributions to CircleCI Image Builder. These contributions come in two forms: issues and pull requests.
+You can refer to the CONTRIBUTING.md file for the same.
+
+
+If you have a question or need help debugging, please head to [CircleCI
+Discuss](https://discuss.circleci.com/) where our support team will help you
+out.
