@@ -1,3 +1,7 @@
+# This is Depricated
+Use the [Linux Image Builder](https://github.com/CircleCI-Public/circleci-server-linux-image-builder) or the [Windows Image Builder](https://github.com/CircleCI-Public/circleci-server-windows-image-builder) instead
+
+
 # CircleCI Image Builder
 
 `image-builder` is a repo that CircleCI is using to build various build images. This repo
