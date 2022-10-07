@@ -12,7 +12,7 @@ for VER in $(echo $SBT_LAUNCH_VERSIONS); do
 
 SBT_DIR=~/.sbt/.lib/${VER}
 SBT_JAR=$SBT_DIR/sbt-launch.jar
-SBT_URL="http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${VER}/sbt-launch.jar"
+SBT_URL="https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${VER}/sbt-launch.jar"
 
 mkdir -p $SBT_DIR
 curl -L -o $SBT_JAR $SBT_URL
